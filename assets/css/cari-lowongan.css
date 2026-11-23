@@ -1,0 +1,1208 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
+
+/* =========================================
+   1. VARIABLES
+========================================= */
+
+:root {
+    --navy: #173D70;
+    --navy-light: #28588D;
+    --blue: #1557AB;
+    --background: #F3F5FB;
+    --white: #FFFFFF;
+    --text: #192F53;
+    --muted: #607394;
+    --border: #DCE5F2;
+    --light-blue: #E8F1FF;
+    --green: #15945E;
+}
+
+/* =========================================
+   2. RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background: #333333;
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+/* =========================================
+   3. MAIN LAYOUT
+========================================= */
+
+.layout {
+    display: flex;
+    width: 100%;
+    max-width: 1600px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--background);
+}
+
+/* =========================================
+   4. SIDEBAR
+========================================= */
+
+.sidebar {
+    width: clamp(190px, 18vw, 250px);
+    min-width: clamp(190px, 18vw, 250px);
+
+    height: 100vh;
+    min-height: 100vh;
+
+    position: sticky;
+    top: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 17px 14px 20px;
+
+    background: var(--navy);
+    color: white;
+}
+
+/* BRAND */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 0 9px;
+    margin-bottom: 32px;
+}
+
+.brand img {
+    width: 33px;
+    height: 39px;
+    object-fit: contain;
+}
+
+.brand span {
+    font-size: clamp(16px, 1.5vw, 19px);
+    font-weight: 700;
+    color: white;
+    white-space: nowrap;
+}
+
+/* ROLE */
+
+.role-label {
+    padding: 0 9px;
+    margin-bottom: 12px;
+
+    color: #B9CBE3;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* NAVIGATION */
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.nav-link {
+    min-height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    color: #E0E9F6;
+    font-size: 13px;
+
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.10);
+    color: white;
+}
+
+.nav-link.active {
+    background: var(--navy-light);
+    color: white;
+    font-weight: 700;
+}
+
+/* SIDEBAR FOOTER */
+
+.sidebar-footer {
+    margin-top: auto;
+
+    border-top: 1px solid rgba(255,255,255,0.20);
+
+    padding: 24px 9px 5px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.sidebar-footer a {
+    color: #E0E9F6;
+    font-size: 11px;
+}
+
+.sidebar-footer a:hover {
+    color: white;
+}
+
+.sidebar-footer .logout {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+}
+
+/* =========================================
+   5. MAIN CONTENT
+========================================= */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+
+    padding: clamp(22px, 2.5vw, 40px);
+}
+
+/* =========================================
+   6. HEADER
+========================================= */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    font-size: clamp(23px, 2vw, 29px);
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 7px;
+}
+
+.page-header p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    background: var(--light-blue);
+    color: var(--blue);
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* =========================================
+   7. SEARCH SECTION
+========================================= */
+
+.search-section {
+    width: 100%;
+
+    padding: 13px 18px 8px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    margin-bottom: 17px;
+}
+
+.search-form {
+    display: grid;
+
+    grid-template-columns:
+        minmax(180px, 2fr)
+        minmax(110px, 0.9fr)
+        minmax(110px, 0.9fr)
+        minmax(130px, 1.25fr);
+
+    align-items: end;
+    gap: 16px;
+}
+
+.form-group {
+    min-width: 0;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    height: 39px;
+
+    padding: 0 12px;
+
+    background: #F3F5FB;
+    border: 1px solid #E0E7F1;
+    border-radius: 8px;
+
+    outline: none;
+
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.form-group input::placeholder {
+    color: #8799B4;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--blue);
+}
+
+/* SEARCH BUTTON */
+
+.search-button {
+    width: 100%;
+    height: 39px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: var(--blue);
+    color: white;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.search-button:hover {
+    background: var(--navy);
+}
+
+/* =========================================
+   8. LOCATION SECTION
+========================================= */
+
+.location-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    width: 100%;
+
+    padding: 17px 18px;
+
+    background: #E8F1FF;
+    border: 1px solid #D0E1FA;
+    border-radius: 13px;
+
+    margin-bottom: 24px;
+}
+
+/* LOCATION ICON */
+
+.location-icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    border-radius: 10px;
+
+    color: var(--blue);
+    font-size: 23px;
+}
+
+/* LOCATION INFORMATION */
+
+.location-information {
+    flex: 1;
+    min-width: 0;
+}
+
+.location-information h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+
+    margin-bottom: 5px;
+}
+
+.location-information p {
+    font-size: 11px;
+    color: var(--muted);
+
+    margin-bottom: 13px;
+}
+
+.location-information span {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* LOCATION BUTTON */
+
+.location-button {
+    width: 215px;
+    min-width: 175px;
+    height: 40px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: var(--blue);
+    color: white;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.location-button:hover {
+    background: var(--navy);
+}
+
+.location-button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+/* =========================================
+   9. RESULT SECTION
+========================================= */
+
+.result-section {
+    width: 100%;
+}
+
+.result-heading {
+    margin-bottom: 18px;
+}
+
+.result-heading h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 6px;
+}
+
+.result-heading p {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+/* =========================================
+   10. FILTER TOOLBAR
+========================================= */
+
+.filter-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 13px;
+}
+
+.distance-filter {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.distance-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+
+    margin-right: 5px;
+}
+
+.distance-button {
+    min-width: 60px;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0 12px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.distance-button:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+.distance-button.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+}
+
+/* MAP TOGGLE */
+
+.map-toggle {
+    min-width: 150px;
+    height: 34px;
+
+    padding: 0 15px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.map-toggle:hover {
+    background: var(--light-blue);
+}
+
+/* =========================================
+   11. MAP AND RESULTS LAYOUT
+========================================= */
+
+.results-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.15fr)
+        minmax(0, 0.9fr);
+
+    gap: 15px;
+
+    align-items: stretch;
+}
+
+/* =========================================
+   12. MAP CONTAINER
+========================================= */
+
+.map-container {
+    min-width: 0;
+    min-height: 330px;
+
+    background: #E5EEE7;
+    border-radius: 13px;
+
+    overflow: hidden;
+}
+
+.map-area {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+    min-height: 330px;
+
+    background: #E5EEE7;
+    overflow: hidden;
+}
+
+/* MAP BLOCKS */
+
+.map-block {
+    position: absolute;
+
+    background: #D3E3D4;
+    border-radius: 8px;
+}
+
+.block-one {
+    left: 5%;
+    top: 9%;
+    width: 24%;
+    height: 24%;
+}
+
+.block-two {
+    left: 35%;
+    top: 8%;
+    width: 26%;
+    height: 25%;
+}
+
+.block-three {
+    right: 7%;
+    top: 12%;
+    width: 27%;
+    height: 23%;
+}
+
+.block-four {
+    left: 7%;
+    bottom: 24%;
+    width: 26%;
+    height: 24%;
+}
+
+.block-five {
+    left: 44%;
+    bottom: 23%;
+    width: 25%;
+    height: 27%;
+}
+
+.block-six {
+    right: 6%;
+    bottom: 26%;
+    width: 23%;
+    height: 24%;
+}
+
+/* MAP ROADS */
+
+.road {
+    position: absolute;
+    z-index: 2;
+
+    background: white;
+}
+
+.road-one {
+    width: 110%;
+    height: 13px;
+
+    left: -5%;
+    top: 43%;
+
+    transform: rotate(-4deg);
+    border-radius: 50%;
+}
+
+.road-two {
+    width: 110%;
+    height: 12px;
+
+    left: -5%;
+    top: 72%;
+
+    border-radius: 50%;
+}
+
+.road-three {
+    width: 13px;
+    height: 115%;
+
+    left: 32%;
+    top: -7%;
+
+    transform: rotate(-3deg);
+    border-radius: 50%;
+}
+
+.road-four {
+    width: 13px;
+    height: 115%;
+
+    right: 34%;
+    top: -8%;
+
+    transform: rotate(9deg);
+    border-radius: 50%;
+}
+
+/* MAP MARKERS */
+
+.map-marker {
+    position: absolute;
+    z-index: 5;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--blue);
+    color: white;
+
+    border: 3px solid white;
+    border-radius: 50%;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.marker-one {
+    left: 26%;
+    top: 37%;
+}
+
+.marker-two {
+    left: 60%;
+    top: 49%;
+}
+
+.marker-three {
+    right: 17%;
+    top: 22%;
+}
+
+/* CURRENT LOCATION */
+
+.current-location {
+    position: absolute;
+    z-index: 6;
+
+    width: 21px;
+    height: 21px;
+
+    left: 50%;
+    top: 69%;
+
+    transform: translate(-50%, -50%);
+
+    background: var(--green);
+    border: 3px solid white;
+    border-radius: 50%;
+}
+
+/* MAP CAPTION */
+
+.map-caption {
+    position: absolute;
+    z-index: 7;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+
+    padding: 12px 14px;
+
+    background: rgba(229,238,231,0.9);
+
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* =========================================
+   13. NEARBY JOBS PANEL
+========================================= */
+
+.nearby-jobs {
+    min-width: 0;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    padding: 19px;
+}
+
+.nearby-header {
+    margin-bottom: 23px;
+}
+
+.nearby-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 6px;
+}
+
+.nearby-header p {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+/* =========================================
+   14. JOB LIST
+========================================= */
+
+.job-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.job-item {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    padding: 12px 13px;
+
+    background: #F3F5FB;
+    border-radius: 10px;
+
+    transition: 0.2s;
+}
+
+.job-item:hover {
+    background: #EBF1FA;
+}
+
+.job-detail {
+    min-width: 0;
+    flex: 1;
+}
+
+.job-detail h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 6px;
+}
+
+.job-detail p {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.5;
+
+    margin-bottom: 6px;
+}
+
+.job-type {
+    display: inline-block;
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.job-type.internship {
+    color: var(--blue);
+}
+
+.job-type.fulltime {
+    color: var(--green);
+}
+
+/* JOB DETAIL BUTTON */
+
+.job-detail-button {
+    min-width: 82px;
+    height: 32px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0 10px;
+
+    background: #E3EEFF;
+    color: var(--blue);
+
+    border-radius: 8px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    transition: 0.2s;
+}
+
+.job-detail-button:hover {
+    background: var(--blue);
+    color: white;
+}
+
+/* =========================================
+   15. EMPTY STATE
+========================================= */
+
+.empty-state {
+    text-align: center;
+    padding: 35px 15px;
+}
+
+.empty-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 auto 14px;
+
+    border-radius: 50%;
+    background: var(--light-blue);
+
+    color: var(--blue);
+    font-size: 25px;
+}
+
+.empty-state h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--muted);
+
+    margin-bottom: 15px;
+}
+
+.empty-state a {
+    display: inline-block;
+
+    padding: 9px 15px;
+
+    background: var(--blue);
+    color: white;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* =========================================
+   16. MAP TOGGLE STATE
+========================================= */
+
+.map-container.hidden {
+    display: none;
+}
+
+.results-layout.list-only {
+    grid-template-columns: 1fr;
+}
+
+/* =========================================
+   17. LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1400px) {
+
+    .sidebar {
+        width: 250px;
+        min-width: 250px;
+    }
+
+    .main-content {
+        padding: 38px 45px;
+    }
+
+    .map-container,
+    .map-area {
+        min-height: 380px;
+    }
+
+    .nearby-jobs {
+        padding: 22px;
+    }
+
+}
+
+/* =========================================
+   18. LAPTOP
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .sidebar {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .main-content {
+        padding: 24px;
+    }
+
+    .search-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .results-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .map-container,
+    .map-area {
+        min-height: 300px;
+    }
+
+}
+
+/* =========================================
+   19. TABLET
+========================================= */
+
+@media (max-width: 760px) {
+
+    .layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: relative;
+        top: auto;
+
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: auto;
+
+        padding: 15px;
+    }
+
+    .brand {
+        margin-bottom: 15px;
+    }
+
+    .role-label {
+        display: none;
+    }
+
+    .navigation {
+        display: flex;
+        flex-direction: row;
+        gap: 7px;
+
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .nav-link {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 10px 13px;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 24px 20px;
+    }
+
+    .location-section {
+        flex-wrap: wrap;
+    }
+
+    .location-button {
+        width: 100%;
+    }
+
+    .filter-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .map-container,
+    .map-area {
+        min-height: 280px;
+    }
+
+}
+
+/* =========================================
+   20. SMARTPHONE
+========================================= */
+
+@media (max-width: 480px) {
+
+    .main-content {
+        padding: 20px 14px;
+    }
+
+    .page-header {
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .page-header h1 {
+        font-size: 22px;
+    }
+
+    .page-header p {
+        font-size: 11px;
+    }
+
+    .search-form {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .search-section {
+        padding: 15px;
+    }
+
+    .location-section {
+        align-items: flex-start;
+        padding: 14px;
+    }
+
+    .location-information {
+        width: calc(100% - 55px);
+    }
+
+    .location-information h2 {
+        font-size: 13px;
+    }
+
+    .location-information p {
+        line-height: 1.5;
+    }
+
+    .location-button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .distance-filter {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .distance-label {
+        width: 100%;
+        margin-bottom: 3px;
+    }
+
+    .distance-button {
+        flex: 1;
+        min-width: 0;
+        padding: 0 7px;
+    }
+
+    .map-toggle {
+        width: 100%;
+    }
+
+    .map-container,
+    .map-area {
+        min-height: 250px;
+    }
+
+    .nearby-jobs {
+        padding: 14px;
+    }
+
+    .job-item {
+        padding: 11px;
+        gap: 7px;
+    }
+
+    .job-detail h3 {
+        font-size: 11px;
+    }
+
+    .job-detail-button {
+        min-width: 70px;
+        font-size: 9px;
+    }
+
+}
+
+/* =========================================
+   21. SMALL SMARTPHONE
+========================================= */
+
+@media (max-width: 350px) {
+
+    .page-header h1 {
+        font-size: 19px;
+    }
+
+    .job-item {
+        flex-wrap: wrap;
+    }
+
+    .job-detail-button {
+        margin-left: auto;
+    }
+
+    .distance-filter {
+        gap: 4px;
+    }
+
+    .distance-button {
+        font-size: 9px;
+    }
+
+}
