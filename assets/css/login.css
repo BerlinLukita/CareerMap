@@ -1,0 +1,528 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
+
+/* =================================
+   1. ROOT VARIABLES
+================================= */
+
+:root {
+    --navy: #183B6A;
+    --blue: #205BA8;
+    --blue-hover: #174B8C;
+    --background: #F2F5FB;
+    --white: #FFFFFF;
+    --text: #183B6A;
+    --muted: #8798B3;
+    --red: #EF3024;
+    --border: #E5EAF2;
+}
+
+/* =================================
+   2. RESET
+================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Roboto Condensed', sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+/* =================================
+   3. MAIN LAYOUT
+================================= */
+
+.login-page {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* =================================
+   4. LEFT PANEL
+================================= */
+
+.login-left {
+    width: 43%;
+    min-height: 100vh;
+    padding: 35px 5%;
+    background: var(--navy);
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* BRAND */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--white);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* LOGO UAJY */
+
+.brand-logo {
+    width: 55px;
+    height: 65px;
+    object-fit: contain;
+    background: var(--white);
+    padding: 4px;
+    border-radius: 7px;
+    flex-shrink: 0;
+}
+
+/* LEFT CONTENT */
+
+.left-content {
+    margin: auto 0;
+    max-width: 390px;
+}
+
+.left-content h1 {
+    font-size: 32px;
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 22px;
+}
+
+.left-content h1 span {
+    color: #F5C329;
+}
+
+.left-content p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #E5EAF2;
+}
+
+/* =================================
+   5. RIGHT PANEL
+================================= */
+
+.login-right {
+    width: 57%;
+    min-height: 100vh;
+    padding: 35px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--background);
+}
+
+/* =================================
+   6. LOGIN CARD
+================================= */
+
+.login-card {
+    width: 100%;
+    max-width: 650px;
+    min-height: 600px;
+
+    padding: 60px 70px;
+
+    background: var(--white);
+    border-radius: 30px;
+}
+
+/* =================================
+   7. LOGIN HEADER
+================================= */
+
+.login-header {
+    margin-bottom: 65px;
+}
+
+.login-header h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.login-header p {
+    font-size: 19px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* =================================
+   8. FORM GROUP
+================================= */
+
+.form-group {
+    margin-bottom: 35px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 18px;
+}
+
+.form-group input {
+    display: block;
+    width: 100%;
+    height: 69px;
+
+    padding: 0 23px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background: #F3F6FC;
+    color: #34425A;
+
+    font-family: inherit;
+    font-size: 17px;
+
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #98A6BA;
+}
+
+.form-group input:focus {
+    border-color: var(--blue);
+    background: var(--white);
+}
+
+/* =================================
+   9. INVALID INPUT
+================================= */
+
+.form-group input.is-invalid {
+    border: 2px solid var(--red);
+    background: #F3F6FC;
+}
+
+.form-group input.is-invalid:focus {
+    border: 2px solid var(--red);
+    box-shadow: none;
+}
+
+/* =================================
+   10. ERROR MESSAGE
+================================= */
+
+.field-error {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    margin-top: 13px;
+    padding-left: 3px;
+
+    color: var(--red);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+/* ERROR ICON */
+
+.error-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 20px;
+    height: 20px;
+
+    background: var(--red);
+    color: var(--white);
+
+    border-radius: 50%;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* =================================
+   11. GENERAL MESSAGE
+================================= */
+
+.message {
+    padding: 13px 16px;
+    margin-bottom: 22px;
+
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 8px;
+
+    color: #DC2626;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* =================================
+   12. FORGOT PASSWORD
+================================= */
+
+.forgot-password {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 5px;
+    margin-bottom: 43px;
+}
+
+.forgot-password a {
+    color: var(--blue);
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* =================================
+   13. LOGIN BUTTON
+================================= */
+
+.login-button {
+    width: 100%;
+    height: 58px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: var(--blue);
+    color: var(--white);
+
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.login-button:hover {
+    background: var(--blue-hover);
+}
+
+.login-button:active {
+    transform: scale(0.99);
+}
+
+/* =================================
+   14. REGISTER TEXT
+================================= */
+
+.register-text {
+    margin-top: 35px;
+
+    text-align: center;
+
+    color: var(--muted);
+    font-size: 16px;
+}
+
+.register-text a {
+    color: var(--blue);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.register-text a:hover {
+    text-decoration: underline;
+}
+
+/* =================================
+   15. RESPONSIVE TABLET
+================================= */
+
+@media (max-width: 1024px) {
+
+    .login-left {
+        width: 38%;
+    }
+
+    .login-right {
+        width: 62%;
+        padding: 25px;
+    }
+
+    .login-card {
+        padding: 45px 40px;
+    }
+
+    .login-header h2 {
+        font-size: 29px;
+    }
+
+    .login-header {
+        margin-bottom: 45px;
+    }
+}
+
+/* =================================
+   16. RESPONSIVE MOBILE
+================================= */
+
+@media (max-width: 768px) {
+
+    .login-page {
+        flex-direction: column;
+    }
+
+    .login-left {
+        width: 100%;
+        min-height: 220px;
+        padding: 25px 30px;
+    }
+
+    .brand-logo {
+        width: 45px;
+        height: 53px;
+    }
+
+    .left-content {
+        margin: 35px 0 10px;
+    }
+
+    .left-content h1 {
+        font-size: 25px;
+        margin-bottom: 12px;
+    }
+
+    .left-content p {
+        font-size: 13px;
+    }
+
+    .login-right {
+        width: 100%;
+        min-height: 650px;
+        padding: 25px 18px;
+    }
+
+    .login-card {
+        max-width: 550px;
+        min-height: auto;
+        padding: 40px 30px;
+        border-radius: 20px;
+    }
+
+    .login-header {
+        margin-bottom: 40px;
+    }
+
+    .login-header h2 {
+        font-size: 27px;
+    }
+
+    .login-header p {
+        font-size: 15px;
+    }
+
+    .form-group input {
+        height: 55px;
+    }
+
+    .forgot-password {
+        margin-bottom: 30px;
+    }
+
+    .login-button {
+        height: 52px;
+        font-size: 17px;
+    }
+}
+
+
+/* =================================
+   17. SMALL MOBILE
+================================= */
+
+@media (max-width: 400px) {
+
+    .login-card {
+        padding: 30px 22px;
+    }
+
+    .login-header h2 {
+        font-size: 23px;
+    }
+
+    .login-header p {
+        font-size: 13px;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .field-error {
+        font-size: 12px;
+    }
+
+    .register-text {
+        font-size: 13px;
+    }
+
+}
+
+/* =================================
+   18. BACK TO HOME
+================================= */
+
+.login-card a.nav-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 11px 18px;
+    margin-bottom: 30px;
+
+    background-color: #ffffff;
+    color: #1453a8;
+
+    border: 1px solid #e4eaf3;
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: all 0.2s ease;
+}
+
+.login-card a.nav-back:hover {
+    background-color: #eaf2ff;
+    border-color: #1453a8;
+    text-decoration: none;
+}
+
+/* RESPONSIVE BACK BUTTON */
+
+@media (max-width: 640px) {
+
+    .login-card a.nav-back {
+        padding: 9px 12px;
+        font-size: 11px;
+    }
+
+}
