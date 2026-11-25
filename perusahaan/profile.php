@@ -1,479 +1,701 @@
 <?php
 session_start();
+require_once '../config/database.php';
 
-if (
-    !isset($_SESSION["user_id"]) ||
-    $_SESSION["role"] != "company"
-) {
+if (empty($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit;
 }
 
-require_once "../config/database.php";
+$user_id = (int) $_SESSION['user_id'];
+$error = '';
+$success = isset($_GET['saved']) ? 'Profil dan dokumen perusahaan berhasil diperbarui.' : '';
+$is_edit_mode = isset($_GET['edit']) && $_GET['edit'] === '1';
 
-$user_id = $_SESSION["user_id"];
-$message = "";
-
-// Mengambil data profil perusahaan dan dokumen terbaru
-$sql = "SELECT
-            users.email,
-            company_profiles.company_name,
-            company_profiles.industry,
-            company_profiles.address,
-            company_profiles.phone,
-            company_profiles.website,
-            company_profiles.description,
-            company_profiles.year_founded,
-            company_profiles.logo_path,
-            company_profiles.verification_status,
-            company_profiles.verification_note,
-            company_documents.document_name,
-            company_documents.file_path
-        FROM company_profiles
-        JOIN users ON company_profiles.user_id = users.id
-        LEFT JOIN company_documents
-            ON company_documents.id = (
-                SELECT MAX(id)
-                FROM company_documents
-                WHERE company_id = company_profiles.user_id
-            )
-        WHERE company_profiles.user_id = ?";
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$user_id]);
-$profile = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$profile) {
-    die("Profil perusahaan tidak ditemukan.");
+function makeCompanyInitials(string $name): string {
+    $clean = trim($name);
+    if ($clean === '') {
+        return 'PR';
+    }
+    $parts = preg_split('/\s+/', $clean);
+    $first = isset($parts[0][0]) ? strtoupper($parts[0][0]) : 'P';
+    $second = isset($parts[1][0]) ? strtoupper($parts[1][0]) : '';
+    return $first . $second;
 }
 
-// Proses form
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+function getPublicFileSrc(string $relPath): string {
+    $trim = trim($relPath);
+    if ($trim === '') {
+        return '';
+    }
+    if (str_starts_with($trim, 'http://') || str_starts_with($trim, 'https://')) {
+        return $trim;
+    }
+    return '../' . ltrim($trim, '/');
+}
 
-    $company_name = trim($_POST["company_name"]);
-    $industry = trim($_POST["industry"]);
-    $phone = trim($_POST["phone"]);
-    $website = trim($_POST["website"]);
-    $address = trim($_POST["address"]);
-    $description = trim($_POST["description"]);
-    $year_founded = trim($_POST["year_founded"]);
-
-    $logo_path = $profile["logo_path"];
-    $new_logo = "";
-    $new_document = "";
-
-    // Validasi data
-    if (empty($company_name)) {
-        $message = "Nama perusahaan wajib diisi!";
-
-    } elseif (
-        $website != "" &&
-        !filter_var($website, FILTER_VALIDATE_URL)
-    ) {
-        $message = "Format website tidak valid!";
-
-    } elseif (
-        $year_founded != "" &&
-        (
-            !ctype_digit($year_founded) ||
-            (int)$year_founded < 1800 ||
-            (int)$year_founded > (int)date("Y")
-        )
-    ) {
-        $message = "Tahun berdiri tidak valid!";
+function uploadCompanyLogo(array $file, int $userId): array {
+    if (!isset($file['error']) || $file['error'] === UPLOAD_ERR_NO_FILE) {
+        return ['ok' => true, 'path' => null];
+    }
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['ok' => false, 'message' => 'Gagal mengunggah file logo.'];
+    }
+    if (($file['size'] ?? 0) > 2 * 1024 * 1024) {
+        return ['ok' => false, 'message' => 'Ukuran logo maksimal 2 MB.'];
     }
 
-    // Upload logo perusahaan
-    if (
-        $message == "" &&
-        isset($_FILES["logo"]) &&
-        $_FILES["logo"]["error"] != UPLOAD_ERR_NO_FILE
-    ) {
+    $ext = strtolower(pathinfo($file['name'] ?? '', PATHINFO_EXTENSION));
+    $allowedExt = ['jpg', 'jpeg', 'png', 'webp'];
+    if (!in_array($ext, $allowedExt, true)) {
+        return ['ok' => false, 'message' => 'Format logo harus JPG, JPEG, PNG, atau WEBP.'];
+    }
 
-        if ($_FILES["logo"]["error"] != UPLOAD_ERR_OK) {
-            $message = "Terjadi kesalahan saat mengupload logo.";
+    $uploadDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'perusahaan' . DIRECTORY_SEPARATOR . 'logos';
+    if (!is_dir($uploadDir) && !mkdir($uploadDir, 0775, true)) {
+        return ['ok' => false, 'message' => 'Folder penyimpanan logo tidak dapat dibuat.'];
+    }
 
-        } elseif ($_FILES["logo"]["size"] > 2 * 1024 * 1024) {
-            $message = "Ukuran logo maksimal 2 MB.";
+    $fileName = 'logo_company_' . $userId . '_' . time() . '.' . $ext;
+    $destPath = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
 
-        } else {
+    if (!move_uploaded_file($file['tmp_name'], $destPath)) {
+        return ['ok' => false, 'message' => 'Gagal memindahkan file logo ke folder tujuan.'];
+    }
 
-            $logo_mime = mime_content_type($_FILES["logo"]["tmp_name"]);
+    return ['ok' => true, 'path' => 'uploads/perusahaan/logos/' . $fileName];
+}
 
-            if ($logo_mime == "image/jpeg") {
-                $logo_extension = "jpg";
-            } elseif ($logo_mime == "image/png") {
-                $logo_extension = "png";
-            } else {
-                $message = "Logo harus berformat JPG atau PNG.";
-            }
+function uploadVerificationDocument(array $file, int $userId): array {
+    if (!isset($file['error']) || $file['error'] === UPLOAD_ERR_NO_FILE) {
+        return ['ok' => true, 'path' => null, 'original_name' => null];
+    }
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['ok' => false, 'message' => 'Gagal mengunggah dokumen verifikasi.'];
+    }
+    if (($file['size'] ?? 0) > 5 * 1024 * 1024) {
+        return ['ok' => false, 'message' => 'Ukuran dokumen verifikasi maksimal 5 MB.'];
+    }
 
-            if ($message == "") {
+    $origName = basename($file['name'] ?? 'dokumen.pdf');
+    $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+    $allowedExt = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx'];
+    if (!in_array($ext, $allowedExt, true)) {
+        return ['ok' => false, 'message' => 'Format dokumen harus PDF, JPG, JPEG, PNG, DOC, atau DOCX.'];
+    }
 
-                if (getimagesize($_FILES["logo"]["tmp_name"]) === false) {
-                    $message = "File logo tidak valid.";
+    $uploadDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'perusahaan' . DIRECTORY_SEPARATOR . 'documents';
+    if (!is_dir($uploadDir) && !mkdir($uploadDir, 0775, true)) {
+        return ['ok' => false, 'message' => 'Folder penyimpanan dokumen tidak dapat dibuat.'];
+    }
 
-                } else {
+    $safeBase = preg_replace('/[^A-Za-z0-9_-]/', '_', pathinfo($origName, PATHINFO_FILENAME));
+    $storedName = 'doc_company_' . $userId . '_' . time() . '_' . ($safeBase ?: 'file') . '.' . $ext;
+    $destPath = $uploadDir . DIRECTORY_SEPARATOR . $storedName;
 
-                    $logo_filename = bin2hex(random_bytes(16))
-                                   . "." . $logo_extension;
+    if (!move_uploaded_file($file['tmp_name'], $destPath)) {
+        return ['ok' => false, 'message' => 'Gagal memindahkan file dokumen ke folder tujuan.'];
+    }
 
-                    $logo_destination = "../uploads/perusahaan/logos/"
-                                     . $logo_filename;
+    return [
+        'ok'            => true,
+        'path'          => 'uploads/perusahaan/documents/' . $storedName,
+        'original_name' => $origName,
+    ];
+}
 
-                    if (move_uploaded_file(
-                        $_FILES["logo"]["tmp_name"],
-                        $logo_destination
-                    )) {
-                        $new_logo = "uploads/perusahaan/logos/"
-                                  . $logo_filename;
+function saveCompanyDocumentRecord(PDO $pdo, int $companyId, string $filePath, string $originalName): void {
+    $colsStmt = $pdo->query("SHOW COLUMNS FROM company_documents");
+    $cols = $colsStmt ? $colsStmt->fetchAll(PDO::FETCH_COLUMN) : [];
+    if (empty($cols)) {
+        return;
+    }
 
-                        $logo_path = $new_logo;
+    $ownerCol = in_array('company_id', $cols, true) ? 'company_id' : (in_array('user_id', $cols, true) ? 'user_id' : null);
+    if ($ownerCol === null) {
+        return;
+    }
 
-                    } else {
-                        $message = "Gagal menyimpan logo perusahaan.";
-                    }
-                }
-            }
+    $data = [$ownerCol => $companyId];
+
+    if (in_array('file_name', $cols, true)) {
+        $data['file_name'] = $originalName;
+    } elseif (in_array('document_name', $cols, true)) {
+        $data['document_name'] = $originalName;
+    } elseif (in_array('title', $cols, true)) {
+        $data['title'] = $originalName;
+    }
+
+    if (in_array('file_path', $cols, true)) {
+        $data['file_path'] = $filePath;
+    } elseif (in_array('document_path', $cols, true)) {
+        $data['document_path'] = $filePath;
+    } elseif (in_array('path', $cols, true)) {
+        $data['path'] = $filePath;
+    }
+
+    $placeholders = [];
+    $params = [];
+    foreach ($data as $k => $v) {
+        $placeholders[] = ':' . $k;
+        $params[':' . $k] = $v;
+    }
+
+    $sql = "INSERT INTO company_documents (" . implode(', ', array_keys($data)) . ") VALUES (" . implode(', ', $placeholders) . ")";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+}
+
+function getLatestCompanyDocument(PDO $pdo, int $companyId): array {
+    $result = ['label' => '', 'path' => ''];
+    try {
+        $colsStmt = $pdo->query("SHOW COLUMNS FROM company_documents");
+        $cols = $colsStmt ? $colsStmt->fetchAll(PDO::FETCH_COLUMN) : [];
+        if (empty($cols)) {
+            return $result;
         }
-    }
 
-    // Upload dokumen verifikasi
-    if (
-        $message == "" &&
-        isset($_FILES["document"]) &&
-        $_FILES["document"]["error"] != UPLOAD_ERR_NO_FILE
-    ) {
-
-        if ($_FILES["document"]["error"] != UPLOAD_ERR_OK) {
-            $message = "Terjadi kesalahan saat mengupload dokumen.";
-
-        } elseif ($_FILES["document"]["size"] > 5 * 1024 * 1024) {
-            $message = "Ukuran dokumen maksimal 5 MB.";
-
-        } else {
-
-            $document_mime = mime_content_type(
-                $_FILES["document"]["tmp_name"]
-            );
-
-            $document_extension = strtolower(
-                pathinfo(
-                    $_FILES["document"]["name"],
-                    PATHINFO_EXTENSION
-                )
-            );
-
-            if (
-                $document_mime != "application/pdf" ||
-                $document_extension != "pdf"
-            ) {
-                $message = "Dokumen verifikasi harus berformat PDF.";
-
-            } else {
-
-                $document_filename = bin2hex(random_bytes(16)) . ".pdf";
-
-                $document_destination =
-                    "../uploads/perusahaan/documents/"
-                    . $document_filename;
-
-                if (move_uploaded_file(
-                    $_FILES["document"]["tmp_name"],
-                    $document_destination
-                )) {
-                    $new_document = "uploads/perusahaan/documents/"
-                                  . $document_filename;
-
-                } else {
-                    $message = "Gagal menyimpan dokumen verifikasi.";
-                }
-            }
+        $ownerCol = in_array('company_id', $cols, true) ? 'company_id' : (in_array('user_id', $cols, true) ? 'user_id' : null);
+        if ($ownerCol === null) {
+            return $result;
         }
+
+        $orderCol = in_array('id', $cols, true) ? 'id DESC' : (in_array('created_at', $cols, true) ? 'created_at DESC' : '');
+        $orderSql = $orderCol !== '' ? " ORDER BY $orderCol" : "";
+
+        $stmt = $pdo->prepare("SELECT * FROM company_documents WHERE $ownerCol = :cid$orderSql LIMIT 1");
+        $stmt->execute([':cid' => $companyId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            $pathVal = $row['file_path'] ?? $row['document_path'] ?? $row['path'] ?? '';
+            $nameVal = $row['file_name'] ?? $row['document_name'] ?? $row['title'] ?? ($pathVal !== '' ? basename($pathVal) : '');
+            $result['label'] = (string) $nameVal;
+            $result['path']  = (string) $pathVal;
+        }
+    } catch (Throwable $e) {
     }
+    return $result;
+}
 
-    // Simpan perubahan ke database
-    if ($message == "") {
-
+// Proses unggah logo cepat dari mode lihat profil
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'upload_logo_quick') {
+    $uploadRes = uploadCompanyLogo($_FILES['quick_logo'] ?? [], $user_id);
+    if (!$uploadRes['ok']) {
+        $error = $uploadRes['message'];
+    } elseif (!empty($uploadRes['path']) && isset($pdo)) {
         try {
-
-            $pdo->beginTransaction();
-
-            $updateProfile = $pdo->prepare(
-                "UPDATE company_profiles
-                 SET company_name = ?,
-                     industry = ?,
-                     address = ?,
-                     phone = ?,
-                     website = ?,
-                     description = ?,
-                     year_founded = ?,
-                     logo_path = ?
-                 WHERE user_id = ?"
-            );
-
-            $updateProfile->execute([
-                $company_name,
-                $industry,
-                $address,
-                $phone,
-                $website,
-                $description,
-                $year_founded == "" ? null : $year_founded,
-                $logo_path,
-                $user_id
-            ]);
-
-            // Jika ada dokumen baru, simpan sebagai dokumen pending
-            if ($new_document != "") {
-
-                $document_name = basename($_FILES["document"]["name"]);
-
-                $insertDocument = $pdo->prepare(
-                    "INSERT INTO company_documents
-                     (company_id, document_name, file_path, document_status)
-                     VALUES (?, ?, ?, 'pending')"
-                );
-
-                $insertDocument->execute([
-                    $user_id,
-                    $document_name,
-                    $new_document
-                ]);
-
-                // Perusahaan perlu diverifikasi kembali
-                $updateVerification = $pdo->prepare(
-                    "UPDATE company_profiles
-                     SET verification_status = 'pending',
-                         verification_note = NULL,
-                         verified_at = NULL
-                     WHERE user_id = ?"
-                );
-
-                $updateVerification->execute([$user_id]);
+            $chk = $pdo->prepare("SELECT user_id FROM company_profiles WHERE user_id = :uid LIMIT 1");
+            $chk->execute([':uid' => $user_id]);
+            if ($chk->fetchColumn()) {
+                $upd = $pdo->prepare("UPDATE company_profiles SET logo_path = :logo WHERE user_id = :uid");
+                $upd->execute([':logo' => $uploadRes['path'], ':uid' => $user_id]);
+            } else {
+                $ins = $pdo->prepare("INSERT INTO company_profiles (user_id, company_name, logo_path) VALUES (:uid, 'Perusahaan', :logo)");
+                $ins->execute([':uid' => $user_id, ':logo' => $uploadRes['path']]);
             }
+            header("Location: profile.php?saved=1");
+            exit;
+        } catch (Throwable $e) {
+            $error = 'Gagal menyimpan logo: ' . $e->getMessage();
+        }
+    }
+}
 
-            $pdo->commit();
+// Proses simpan perubahan profil & unggah file dokumen verifikasi
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'save_profile') {
+    $is_edit_mode = true;
+    $company_name = trim($_POST['company_name'] ?? '');
+    $email        = trim($_POST['email'] ?? '');
+    $website      = trim($_POST['website'] ?? '');
+    $industry     = trim($_POST['industry'] ?? '');
+    $description  = trim($_POST['description'] ?? '');
+    $address      = trim($_POST['address'] ?? '');
+    $phone        = trim($_POST['phone'] ?? '');
 
-            // Hapus logo lama jika berhasil diganti
-            if (
-                $new_logo != "" &&
-                !empty($profile["logo_path"]) &&
-                strpos($profile["logo_path"], "uploads/perusahaan/logos/") === 0
-            ) {
+    if ($company_name === '') {
+        $error = 'Nama perusahaan wajib diisi.';
+    } else {
+        $logoRes = uploadCompanyLogo($_FILES['logo_file'] ?? [], $user_id);
+        $docRes  = uploadVerificationDocument($_FILES['verification_doc'] ?? [], $user_id);
 
-                $old_logo = "../" . $profile["logo_path"];
+        if (!$logoRes['ok']) {
+            $error = $logoRes['message'];
+        } elseif (!$docRes['ok']) {
+            $error = $docRes['message'];
+        } else {
+            try {
+                if (isset($pdo)) {
+                    $curStmt = $pdo->prepare("SELECT logo_path FROM company_profiles WHERE user_id = :uid LIMIT 1");
+                    $curStmt->execute([':uid' => $user_id]);
+                    $hasRow = (bool) $curStmt->fetch(PDO::FETCH_ASSOC);
+                    $curLogo = $hasRow ? ($curStmt->fetchColumn() ?: null) : null;
 
-                if (is_file($old_logo)) {
-                    unlink($old_logo);
+                    // Ambil ulang logo_path dengan query terpisah agar akurat
+                    $logoStmt = $pdo->prepare("SELECT logo_path FROM company_profiles WHERE user_id = :uid LIMIT 1");
+                    $logoStmt->execute([':uid' => $user_id]);
+                    $existingRow = $logoStmt->fetch(PDO::FETCH_ASSOC);
+                    $finalLogo = !empty($logoRes['path']) ? $logoRes['path'] : ($existingRow['logo_path'] ?? null);
+
+                    if ($existingRow) {
+                        $stmt = $pdo->prepare("
+                            UPDATE company_profiles
+                            SET company_name = :cname,
+                                industry = :industry,
+                                address = :address,
+                                phone = :phone,
+                                website = :website,
+                                description = :description,
+                                logo_path = :logo_path
+                            WHERE user_id = :uid
+                        ");
+                        $stmt->execute([
+                            ':cname'       => $company_name,
+                            ':industry'    => $industry !== '' ? $industry : null,
+                            ':address'     => $address !== '' ? $address : null,
+                            ':phone'       => $phone !== '' ? $phone : null,
+                            ':website'     => $website !== '' ? $website : null,
+                            ':description' => $description !== '' ? $description : null,
+                            ':logo_path'   => $finalLogo,
+                            ':uid'         => $user_id,
+                        ]);
+                    } else {
+                        $stmt = $pdo->prepare("
+                            INSERT INTO company_profiles
+                                (user_id, company_name, industry, address, phone, website, description, logo_path)
+                            VALUES
+                                (:uid, :cname, :industry, :address, :phone, :website, :description, :logo_path)
+                        ");
+                        $stmt->execute([
+                            ':uid'         => $user_id,
+                            ':cname'       => $company_name,
+                            ':industry'    => $industry !== '' ? $industry : null,
+                            ':address'     => $address !== '' ? $address : null,
+                            ':phone'       => $phone !== '' ? $phone : null,
+                            ':website'     => $website !== '' ? $website : null,
+                            ':description' => $description !== '' ? $description : null,
+                            ':logo_path'   => $finalLogo,
+                        ]);
+                    }
+
+                    if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $uStmt = $pdo->prepare("UPDATE users SET email = :email WHERE id = :uid");
+                        $uStmt->execute([':email' => $email, ':uid' => $user_id]);
+                    }
+
+                    if (!empty($docRes['path'])) {
+                        saveCompanyDocumentRecord($pdo, $user_id, $docRes['path'], $docRes['original_name'] ?? basename($docRes['path']));
+                    }
+
+                    header("Location: profile.php?saved=1");
+                    exit;
+                } else {
+                    $error = 'Koneksi database tidak ditemukan.';
                 }
+            } catch (Throwable $e) {
+                $error = 'Gagal menyimpan perubahan profil: ' . $e->getMessage();
             }
-
-            $_SESSION["name"] = $company_name;
-
-            $message = "Profil perusahaan berhasil diperbarui!";
-
-            // Ambil ulang data terbaru
-            $stmt->execute([$user_id]);
-            $profile = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        } catch (PDOException $e) {
-
-            if ($pdo->inTransaction()) {
-                $pdo->rollBack();
-            }
-
-            // Hapus file baru jika database gagal menyimpan
-            if ($new_logo != "" && is_file("../" . $new_logo)) {
-                unlink("../" . $new_logo);
-            }
-
-            if ($new_document != "" && is_file("../" . $new_document)) {
-                unlink("../" . $new_document);
-            }
-
-            $message = "Gagal memperbarui profil perusahaan.";
         }
     }
+}
 
-    // Bersihkan file baru jika validasi gagal
-    if ($message != "Profil perusahaan berhasil diperbarui!") {
+$profile = [
+    'company_name'        => '',
+    'email'               => '',
+    'website'             => '',
+    'industry'            => '',
+    'document_name'       => '',
+    'document_path'       => '',
+    'description'         => '',
+    'address'             => '',
+    'phone'               => '',
+    'logo_path'           => '',
+    'verification_status' => 'pending',
+];
 
-        if ($new_logo != "" && is_file("../" . $new_logo)) {
-            unlink("../" . $new_logo);
+try {
+    if (isset($pdo)) {
+        $uStmt = $pdo->prepare("SELECT name, email FROM users WHERE id = :uid LIMIT 1");
+        $uStmt->execute([':uid' => $user_id]);
+        if ($uRow = $uStmt->fetch(PDO::FETCH_ASSOC)) {
+            $profile['email'] = $uRow['email'] ?? '';
+            $profile['company_name'] = $uRow['name'] ?? '';
         }
 
-        if ($new_document != "" && is_file("../" . $new_document)) {
-            unlink("../" . $new_document);
+        $cStmt = $pdo->prepare("SELECT * FROM company_profiles WHERE user_id = :uid LIMIT 1");
+        $cStmt->execute([':uid' => $user_id]);
+        if ($cRow = $cStmt->fetch(PDO::FETCH_ASSOC)) {
+            $profile = array_merge($profile, $cRow);
         }
+
+        $latestDoc = getLatestCompanyDocument($pdo, $user_id);
+        $profile['document_name'] = $latestDoc['label'];
+        $profile['document_path'] = $latestDoc['path'];
     }
+} catch (Throwable $e) {
+    $error = 'Gagal memuat profil perusahaan: ' . $e->getMessage();
+}
+
+$displayName = $profile['company_name'] !== '' ? $profile['company_name'] : 'Perusahaan';
+$initials = makeCompanyInitials($displayName);
+$logoSrc = getPublicFileSrc($profile['logo_path'] ?? '');
+$docSrc = getPublicFileSrc($profile['document_path'] ?? '');
+$vStatus = $profile['verification_status'] ?? 'pending';
+
+if ($vStatus === 'verified') {
+    $badgeClass = 'badge-verified';
+    $badgeLabel = 'Terverifikasi';
+} elseif ($vStatus === 'rejected') {
+    $badgeClass = 'badge-rejected';
+    $badgeLabel = 'Ditolak';
+} else {
+    $badgeClass = 'badge-pending';
+    $badgeLabel = 'Menunggu Verifikasi';
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Profil Perusahaan CareerMap</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><?= $is_edit_mode ? 'Edit Profil Saya' : 'Profil Saya' ?> - CareerMap</title>
+  <link rel="stylesheet" href="../assets/css/profile-perusahaan.css?v=2">
 </head>
-
 <body>
 
-    <h2>Profil Perusahaan</h2>
-
-    <p>
-        <?php echo htmlspecialchars($message); ?>
-    </p>
-
-    <h3>Status Verifikasi</h3>
-
-    <?php
-    if ($profile["verification_status"] == "verified") {
-        echo "<p>Perusahaan sudah terverifikasi.</p>";
-    } elseif ($profile["verification_status"] == "rejected") {
-        echo "<p>Verifikasi perusahaan ditolak.</p>";
-    } else {
-        echo "<p>Perusahaan sedang menunggu verifikasi admin.</p>";
-    }
-    ?>
-
-    <?php if (!empty($profile["verification_note"])): ?>
-        <p>
-            Catatan Admin:
-            <?php echo htmlspecialchars($profile["verification_note"]); ?>
-        </p>
-    <?php endif; ?>
-
-    <hr>
-
-    <form method="POST" enctype="multipart/form-data">
-
-        <h3>Informasi Umum</h3>
-
-        <label>Nama Perusahaan</label><br>
-        <input
-            type="text"
-            name="company_name"
-            value="<?php echo htmlspecialchars($profile["company_name"] ?? ""); ?>"
-            required
+  <aside class="sidebar">
+    <div>
+      <a href="dashboard.php" class="sidebar-brand">
+        <img
+          src="../assets/images/logo-uajy.jpg"
+          alt="Logo CareerMap"
+          class="brand-logo"
+          width="30"
+          height="30"
+          style="width:30px;height:30px;max-width:30px;max-height:30px;border-radius:50%;object-fit:cover;background:#ffffff;padding:1px;flex-shrink:0;"
         >
-        <br><br>
+        <span>CareerMap</span>
+      </a>
 
-        <label>Email Perusahaan</label><br>
-        <input
-            type="email"
-            value="<?php echo htmlspecialchars($profile["email"] ?? ""); ?>"
-            disabled
-        >
-        <br><br>
+      <div class="sidebar-section-label">PERUSAHAAN</div>
+      <ul class="nav-menu">
+        <li><a href="dashboard.php" class="nav-link">Dashboard</a></li>
+        <li><a href="jobs.php" class="nav-link">Kelola Lowongan</a></li>
+        <li><a href="applicants.php" class="nav-link">Pelamar</a></li>
+        <li><a href="profile.php" class="nav-link active">Profil Perusahaan</a></li>
+      </ul>
+    </div>
 
-        <label>Bidang Industri</label><br>
-        <input
-            type="text"
-            name="industry"
-            value="<?php echo htmlspecialchars($profile["industry"] ?? ""); ?>"
-        >
-        <br><br>
+    <div class="sidebar-footer">
+      <a href="../support.php" class="support-link">Bantuan &amp; Pusat Dukungan</a>
+      <a href="../auth/logout.php" class="logout-link">Keluar</a>
+    </div>
+  </aside>
 
-        <label>Nomor Telepon</label><br>
-        <input
-            type="text"
-            name="phone"
-            value="<?php echo htmlspecialchars($profile["phone"] ?? ""); ?>"
-        >
-        <br><br>
+  <main class="main-content">
+    <?php if ($is_edit_mode): ?>
+      <div class="page-header">
+        <h1 class="page-title">Edit Profil Saya</h1>
+        <p class="page-subtitle">Ubah informasi profil yang ditampilkan.</p>
+      </div>
 
-        <label>Website</label><br>
-        <input
-            type="url"
-            name="website"
-            value="<?php echo htmlspecialchars($profile["website"] ?? ""); ?>"
-        >
-        <br><br>
+      <?php if ($error !== ''): ?>
+        <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
+      <?php endif; ?>
 
-        <label>Tahun Berdiri</label><br>
-        <input
-            type="number"
-            name="year_founded"
-            min="1800"
-            max="<?php echo date("Y"); ?>"
-            value="<?php echo htmlspecialchars($profile["year_founded"] ?? ""); ?>"
-        >
-        <br><br>
+      <section class="profile-outer-card">
+        <div class="edit-inner-card">
+          <h2 class="edit-card-heading">Edit Informasi Profil</h2>
+          <p class="edit-card-sub">Perbarui informasi perusahaanmu.</p>
 
-        <label>Alamat Perusahaan</label><br>
-        <textarea name="address" rows="3"><?php
-            echo htmlspecialchars($profile["address"] ?? "");
-        ?></textarea>
-        <br><br>
+          <form action="profile.php?edit=1" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="save_profile">
 
-        <label>Deskripsi Perusahaan</label><br>
-        <textarea name="description" rows="5"><?php
-            echo htmlspecialchars($profile["description"] ?? "");
-        ?></textarea>
-        <br><br>
-
-        <hr>
-
-        <h3>Logo Perusahaan</h3>
-
-        <?php if (!empty($profile["logo_path"])): ?>
-            <img
-                src="../<?php echo htmlspecialchars($profile["logo_path"]); ?>"
-                width="120"
-                alt="Logo Perusahaan"
-            >
-            <br>
-        <?php endif; ?>
-
-        <label>Upload Logo (JPG/PNG, maksimal 2 MB)</label><br>
-
-        <input
-            type="file"
-            name="logo"
-            accept=".jpg,.jpeg,.png"
-        >
-        <br><br>
-
-        <hr>
-
-        <h3>Dokumen Verifikasi</h3>
-
-        <?php if (!empty($profile["file_path"])): ?>
-
-            <p>
-                Dokumen saat ini:
-                <a
-                    href="../<?php echo htmlspecialchars($profile["file_path"]); ?>"
-                    target="_blank"
+            <div class="edit-grid">
+              <div class="form-group">
+                <label for="company_name" class="form-label">Nama Perusahaan</label>
+                <input
+                  type="text"
+                  id="company_name"
+                  name="company_name"
+                  class="form-control"
+                  value="<?= htmlspecialchars($_POST['company_name'] ?? $profile['company_name']) ?>"
+                  required
                 >
-                    <?php echo htmlspecialchars($profile["document_name"]); ?>
-                </a>
-            </p>
+              </div>
 
-        <?php else: ?>
+              <div class="form-group">
+                <label for="email" class="form-label">Email Perusahaan</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  value="<?= htmlspecialchars($_POST['email'] ?? $profile['email']) ?>"
+                >
+              </div>
 
-            <p>Belum ada dokumen verifikasi yang diunggah.</p>
+              <div class="form-group">
+                <label for="website" class="form-label">Website</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  class="form-control"
+                  value="<?= htmlspecialchars($_POST['website'] ?? ($profile['website'] ?? '')) ?>"
+                >
+              </div>
 
-        <?php endif; ?>
+              <div class="form-group">
+                <label for="industry" class="form-label">Bidang Industri</label>
+                <input
+                  type="text"
+                  id="industry"
+                  name="industry"
+                  class="form-control"
+                  value="<?= htmlspecialchars($_POST['industry'] ?? ($profile['industry'] ?? '')) ?>"
+                >
+              </div>
 
-        <label>Upload Dokumen Legal (PDF, maksimal 5 MB)</label><br>
+              <div class="form-group">
+                <span class="form-label">Dokumen Verifikasi</span>
+                <input
+                  type="file"
+                  id="verificationDocInput"
+                  name="verification_doc"
+                  accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                  style="display:none;"
+                >
+                <div class="doc-upload-row">
+                  <button type="button" class="btn-outline-action" id="btnPilihDokumen">Pilih File Dokumen</button>
+                  <span class="doc-file-name" id="selectedDocName">
+                    <?= htmlspecialchars($profile['document_name'] ?: 'Belum ada file dipilih (PDF/JPG/PNG/DOC)') ?>
+                  </span>
+                </div>
+                <?php if ($docSrc !== ''): ?>
+                  <a href="<?= htmlspecialchars($docSrc) ?>" target="_blank" class="doc-current-link">
+                    Lihat dokumen tersimpan saat ini
+                  </a>
+                <?php endif; ?>
+              </div>
 
-        <input
-            type="file"
-            name="document"
-            accept=".pdf"
-        >
-        <br><br>
+              <div class="form-group">
+                <label for="description" class="form-label">Deskripsi Perusahaan</label>
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  class="form-control"
+                  value="<?= htmlspecialchars($_POST['description'] ?? ($profile['description'] ?? '')) ?>"
+                >
+              </div>
 
-        <button type="submit">Simpan Perubahan</button>
+              <div class="form-group">
+                <label for="address" class="form-label">Alamat</label>
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  class="form-control"
+                  value="<?= htmlspecialchars($_POST['address'] ?? ($profile['address'] ?? '')) ?>"
+                >
+              </div>
 
-    </form>
+              <div class="form-group">
+                <label for="phone" class="form-label">Nomor Telepon</label>
+                <input
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  class="form-control"
+                  value="<?= htmlspecialchars($_POST['phone'] ?? ($profile['phone'] ?? '')) ?>"
+                >
+              </div>
+            </div>
 
-    <br>
+            <div class="photo-edit-section">
+              <span class="form-label">Foto Profil</span>
 
-    <a href="dashboard.php">Kembali ke Dashboard</a>
+              <div class="edit-bottom-bar">
+                <div class="photo-edit-row" style="margin-top:0;">
+                  <div class="photo-square-box" id="editSquarePreview">
+                    <?php if ($logoSrc !== ''): ?>
+                      <img src="<?= htmlspecialchars($logoSrc) ?>" alt="Logo Perusahaan">
+                    <?php else: ?>
+                      <?= htmlspecialchars($initials) ?>
+                    <?php endif; ?>
+                  </div>
+
+                  <input type="file" id="logoFileInput" name="logo_file" accept=".jpg,.jpeg,.png,.webp" style="display:none;">
+                  <button type="button" class="btn-outline-action" id="btnGantiFoto">Ganti Foto</button>
+                </div>
+
+                <div class="edit-action-buttons">
+                  <a href="profile.php" class="btn-cancel">Batal</a>
+                  <button type="submit" class="btn-save">Simpan</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    <?php else: ?>
+      <div class="page-header">
+        <h1 class="page-title">Profil Saya</h1>
+        <p class="page-subtitle">Kelola informasi pribadi, foto profil, dan dokumen perusahaan.</p>
+      </div>
+
+      <?php if ($error !== ''): ?>
+        <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
+      <?php endif; ?>
+
+      <?php if ($success !== ''): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+      <?php endif; ?>
+
+      <section class="profile-outer-card">
+        <div class="profile-view-grid">
+          <div class="profile-summary-card">
+            <div class="profile-avatar-circle">
+              <?php if ($logoSrc !== ''): ?>
+                <img src="<?= htmlspecialchars($logoSrc) ?>" alt="Logo Perusahaan">
+              <?php else: ?>
+                <?= htmlspecialchars($initials) ?>
+              <?php endif; ?>
+            </div>
+
+            <div class="summary-company-name"><?= htmlspecialchars($displayName) ?></div>
+            <div class="summary-meta">
+              <?= htmlspecialchars($profile['industry'] ?: '-') ?>
+              <?php if (!empty($profile['address'])): ?>
+                &bull; <?= htmlspecialchars($profile['address']) ?>
+              <?php endif; ?>
+            </div>
+
+            <span class="verify-badge <?= $badgeClass ?>"><?= htmlspecialchars($badgeLabel) ?></span>
+
+            <div class="summary-details">
+              <div>
+                <div class="summary-item-label">Alamat</div>
+                <div class="summary-item-val"><?= htmlspecialchars($profile['address'] ?: '-') ?></div>
+              </div>
+
+              <div>
+                <div class="summary-item-label">Nomor Telepon</div>
+                <div class="summary-item-val"><?= htmlspecialchars($profile['phone'] ?: '-') ?></div>
+              </div>
+
+              <div>
+                <div class="summary-item-label">Deskripsi Perusahaan</div>
+                <div class="summary-item-val"><?= htmlspecialchars($profile['description'] ?: '-') ?></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-info-card">
+            <div class="info-card-top">
+              <h2 class="info-card-title">Informasi Umum</h2>
+              <a href="profile.php?edit=1" class="btn-outline-action">Edit Profil</a>
+            </div>
+
+            <div class="view-fields-stack">
+              <div class="view-field-group">
+                <span class="view-field-label">Nama Perusahaan</span>
+                <div class="view-field-box"><?= htmlspecialchars($displayName) ?></div>
+              </div>
+
+              <div class="view-field-group">
+                <span class="view-field-label">Email Perusahaan</span>
+                <div class="view-field-box"><?= htmlspecialchars($profile['email'] ?: '-') ?></div>
+              </div>
+
+              <div class="view-field-group">
+                <span class="view-field-label">Website</span>
+                <div class="view-field-box <?= empty($profile['website']) ? 'muted-box' : '' ?>">
+                  <?= htmlspecialchars($profile['website'] ?: '-') ?>
+                </div>
+              </div>
+
+              <div class="view-field-group">
+                <span class="view-field-label">Bidang Industri</span>
+                <div class="view-field-box"><?= htmlspecialchars($profile['industry'] ?: '-') ?></div>
+              </div>
+
+              <div class="view-field-group">
+                <span class="view-field-label">Dokumen Verifikasi</span>
+                <div class="view-field-box <?= empty($profile['document_name']) ? 'muted-box' : '' ?>">
+                  <?php if (!empty($profile['document_name']) && $docSrc !== ''): ?>
+                    <a href="<?= htmlspecialchars($docSrc) ?>" target="_blank" class="doc-current-link">
+                      <?= htmlspecialchars($profile['document_name']) ?>
+                    </a>
+                  <?php else: ?>
+                    <?= htmlspecialchars($profile['document_name'] ?: '-') ?>
+                  <?php endif; ?>
+                </div>
+              </div>
+            </div>
+
+            <form action="profile.php" method="POST" enctype="multipart/form-data" id="quickLogoForm">
+              <input type="hidden" name="action" value="upload_logo_quick">
+              <input type="file" name="quick_logo" id="quickLogoInput" accept=".jpg,.jpeg,.png,.webp" style="display:none;">
+              <div class="upload-logo-row">
+                <button type="button" class="btn-outline-action" id="btnUnggahLogo">Unggah Logo</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    <?php endif; ?>
+  </main>
+
+  <script>
+    (function () {
+      const btnUnggahLogo = document.getElementById('btnUnggahLogo');
+      const quickLogoInput = document.getElementById('quickLogoInput');
+      const quickLogoForm = document.getElementById('quickLogoForm');
+
+      if (btnUnggahLogo && quickLogoInput && quickLogoForm) {
+        btnUnggahLogo.addEventListener('click', () => quickLogoInput.click());
+        quickLogoInput.addEventListener('change', () => {
+          if (quickLogoInput.files && quickLogoInput.files.length > 0) {
+            quickLogoForm.submit();
+          }
+        });
+      }
+
+      const btnGantiFoto = document.getElementById('btnGantiFoto');
+      const logoFileInput = document.getElementById('logoFileInput');
+      const editSquarePreview = document.getElementById('editSquarePreview');
+
+      if (btnGantiFoto && logoFileInput) {
+        btnGantiFoto.addEventListener('click', () => logoFileInput.click());
+        logoFileInput.addEventListener('change', () => {
+          const file = logoFileInput.files && logoFileInput.files[0];
+          if (!file || !editSquarePreview) return;
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            editSquarePreview.innerHTML = '<img src="' + ev.target.result + '" alt="Preview Logo">';
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      const btnPilihDokumen = document.getElementById('btnPilihDokumen');
+      const verificationDocInput = document.getElementById('verificationDocInput');
+      const selectedDocName = document.getElementById('selectedDocName');
+
+      if (btnPilihDokumen && verificationDocInput) {
+        btnPilihDokumen.addEventListener('click', () => verificationDocInput.click());
+        verificationDocInput.addEventListener('change', () => {
+          const file = verificationDocInput.files && verificationDocInput.files[0];
+          if (file && selectedDocName) {
+            selectedDocName.textContent = file.name;
+          }
+        });
+      }
+    })();
+  </script>
 
 </body>
 </html>
