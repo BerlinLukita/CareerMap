@@ -1,148 +1,137 @@
 <?php
 session_start();
 
-// =====================================
-// PROTEKSI LOGIN
-// =====================================
-
-if (
-    !isset($_SESSION["user_id"]) ||
-    !isset($_SESSION["role"]) ||
-    $_SESSION["role"] !== "student"
-) {
+if (!isset($_SESSION["user_id"]) || ($_SESSION["role"] ?? "") !== "student") {
     header("Location: ../auth/login.php");
     exit;
 }
 
-$name = htmlspecialchars(
-    $_SESSION["name"] ?? "Mahasiswa",
-    ENT_QUOTES,
-    "UTF-8"
-);
+require_once "../config/database.php";
 
-$initial = strtoupper(substr($_SESSION["name"] ?? "M", 0, 1));
+function e($value) {
+    return htmlspecialchars((string)($value ?? ""), ENT_QUOTES, "UTF-8");
+}
 
+$name = e($_SESSION["name"] ?? "Mahasiswa");
+$initial = strtoupper(mb_substr($_SESSION["name"] ?? "M", 0, 1));
 
-// =====================================
-// DATA LOWONGAN CONTOH
-// Nantinya dapat diganti dengan database
-// =====================================
+// ==========================================
+// SIMPAN / HAPUS LOWONGAN DARI DAFTAR SIMPANAN
+// ==========================================
+if (empty($_SESSION["csrf_saved_jobs"])) {
+    $_SESSION["csrf_saved_jobs"] = bin2hex(random_bytes(32));
+}
 
-$jobs = [
-    [
-        "id" => 1,
-        "position" => "UI/UX Design Intern",
-        "company" => "Kreasi Digital",
-        "location" => "Yogyakarta",
-        "type" => "Magang",
-        "category" => "Desain",
-        "distance" => 1.2,
-        "initial" => "K"
-    ],
-    [
-        "id" => 2,
-        "position" => "Frontend Developer",
-        "company" => "Nusa Teknologi",
-        "location" => "Yogyakarta",
-        "type" => "Full-time",
-        "category" => "Teknologi",
-        "distance" => 3.4,
-        "initial" => "N"
-    ],
-    [
-        "id" => 3,
-        "position" => "QA Engineer Intern",
-        "company" => "Solusi Cerdas",
-        "location" => "Yogyakarta",
-        "type" => "Magang",
-        "category" => "Teknologi",
-        "distance" => 7.8,
-        "initial" => "S"
-    ],
-    [
-        "id" => 4,
-        "position" => "Data Analyst Intern",
-        "company" => "Mitra Inovasi",
-        "location" => "Yogyakarta",
-        "type" => "Magang",
-        "category" => "Data",
-        "distance" => 12.5,
-        "initial" => "M"
-    ]
-];
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["saved_action"])) {
+    $token = $_POST["csrf_token"] ?? "";
+    $postedJobId = filter_input(INPUT_POST, "job_id", FILTER_VALIDATE_INT);
+    $action = $_POST["saved_action"];
 
+    if (!is_string($token) || !hash_equals($_SESSION["csrf_saved_jobs"], $token)) {
+        $_SESSION["saved_job_notice"] = "Sesi tidak valid. Silakan coba kembali.";
+    } elseif (!$postedJobId || $postedJobId <= 0) {
+        $_SESSION["saved_job_notice"] = "Lowongan tidak valid.";
+    } else {
+        try {
+            if ($action === "save") {
+                $saveStmt = $pdo->prepare("
+                    INSERT IGNORE INTO saved_jobs (student_id, job_id)
+                    SELECT :student_id, j.id
+                    FROM job_vacancies j
+                    WHERE j.id = :job_id AND j.status = 'published'
+                ");
+                $saveStmt->execute([
+                    ":student_id" => (int)$_SESSION["user_id"],
+                    ":job_id" => $postedJobId
+                ]);
+                $_SESSION["saved_job_notice"] = $saveStmt->rowCount() > 0
+                    ? "Lowongan berhasil disimpan."
+                    : "Lowongan sudah tersimpan atau tidak tersedia.";
+            } elseif ($action === "remove") {
+                $removeStmt = $pdo->prepare("
+                    DELETE FROM saved_jobs
+                    WHERE student_id = :student_id AND job_id = :job_id
+                ");
+                $removeStmt->execute([
+                    ":student_id" => (int)$_SESSION["user_id"],
+                    ":job_id" => $postedJobId
+                ]);
+                $_SESSION["saved_job_notice"] = "Lowongan dihapus dari simpanan.";
+            }
+        } catch (PDOException $ex) {
+            error_log("Saved jobs error: " . $ex->getMessage());
+            $_SESSION["saved_job_notice"] = "Tidak dapat memperbarui daftar simpanan. Pastikan profil mahasiswa sudah tersedia.";
+        }
+    }
 
-// =====================================
-// AMBIL FILTER PENCARIAN
-// =====================================
+    $queryString = $_SERVER["QUERY_STRING"] ?? "";
+    header("Location: cari_lowongan.php" . ($queryString !== "" ? "?" . $queryString : ""));
+    exit;
+}
+
+$savedNotice = $_SESSION["saved_job_notice"] ?? "";
+unset($_SESSION["saved_job_notice"]);
+
+$savedStmt = $pdo->prepare("SELECT job_id FROM saved_jobs WHERE student_id = :student_id");
+$savedStmt->execute([":student_id" => (int)$_SESSION["user_id"]]);
+$savedJobIds = array_map("intval", $savedStmt->fetchAll(PDO::FETCH_COLUMN));
 
 $keyword = trim($_GET["keyword"] ?? "");
 $type = trim($_GET["type"] ?? "");
 $category = trim($_GET["category"] ?? "");
 
 $allowedDistances = [5, 10, 25, 50];
-
 $distance = (int)($_GET["distance"] ?? 10);
-
 if (!in_array($distance, $allowedDistances, true)) {
     $distance = 10;
 }
 
+// Kategori berasal dari tabel job_categories.
+$categoryStmt = $pdo->query("
+    SELECT category_name
+    FROM job_categories
+    ORDER BY category_name
+");
+$categories = $categoryStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// =====================================
-// FILTER LOWONGAN
-// =====================================
+// Jarak belum dapat dihitung karena SQL belum memiliki koordinat pengguna.
+// Filter keyword, tipe, dan kategori tetap diterapkan ke database.
+$where = ["j.status = 'published'"];
+$params = [];
 
-$filteredJobs = array_filter($jobs, function ($job) use (
-    $keyword,
-    $type,
-    $category,
-    $distance
-) {
+if ($keyword !== "") {
+    $where[] = "(j.title LIKE :keyword OR j.description LIKE :keyword
+                 OR j.department LIKE :keyword OR cp.company_name LIKE :keyword
+                 OR j.location LIKE :keyword OR jc.category_name LIKE :keyword)";
+    $params["keyword"] = "%" . $keyword . "%";
+}
 
-    $matchKeyword = true;
+if ($type !== "") {
+    $where[] = "j.job_type = :job_type";
+    $params["job_type"] = $type;
+}
 
-    if ($keyword !== "") {
-        $searchText = strtolower(
-            $job["position"] . " " .
-            $job["company"] . " " .
-            $job["category"] . " " .
-            $job["location"]
-        );
+if ($category !== "") {
+    $where[] = "jc.category_name = :category";
+    $params["category"] = $category;
+}
 
-        $matchKeyword = strpos(
-            $searchText,
-            strtolower($keyword)
-        ) !== false;
-    }
+$sql = "
+    SELECT j.id, j.title AS position, cp.company_name AS company,
+           j.location, j.job_type AS type, jc.category_name AS category,
+           cp.logo_path
+    FROM job_vacancies j
+    INNER JOIN company_profiles cp ON cp.user_id = j.company_id
+    INNER JOIN job_categories jc ON jc.id = j.category_id
+    WHERE " . implode(" AND ", $where) . "
+    ORDER BY j.published_at DESC, j.created_at DESC
+";
 
-    $matchType = (
-        $type === "" ||
-        $job["type"] === $type
-    );
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$filteredJobs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $matchCategory = (
-        $category === "" ||
-        $job["category"] === $category
-    );
-
-    $matchDistance = $job["distance"] <= $distance;
-
-    return (
-        $matchKeyword &&
-        $matchType &&
-        $matchCategory &&
-        $matchDistance
-    );
-});
-
-
-// =====================================
-// URL FILTER JARAK
-// =====================================
-
-function distanceUrl($value, $keyword, $type, $category)
-{
+function distanceUrl($value, $keyword, $type, $category) {
     return "?" . http_build_query([
         "keyword" => $keyword,
         "type" => $type,
@@ -150,9 +139,7 @@ function distanceUrl($value, $keyword, $type, $category)
         "distance" => $value
     ]);
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -238,6 +225,9 @@ function distanceUrl($value, $keyword, $type, $category)
 
     <main class="main-content">
 
+        <?php if ($savedNotice !== ""): ?>
+            <div class="saved-notice"><?php echo e($savedNotice); ?></div>
+        <?php endif; ?>
 
         <!-- HEADER -->
 
@@ -325,20 +315,12 @@ function distanceUrl($value, $keyword, $type, $category)
 
                         <option value="">Semua Kategori</option>
 
-                        <option value="Teknologi"
-                            <?php echo $category === "Teknologi" ? "selected" : ""; ?>>
-                            Teknologi
-                        </option>
-
-                        <option value="Desain"
-                            <?php echo $category === "Desain" ? "selected" : ""; ?>>
-                            Desain
-                        </option>
-
-                        <option value="Data"
-                            <?php echo $category === "Data" ? "selected" : ""; ?>>
-                            Data
-                        </option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?php echo e($cat["category_name"]); ?>"
+                                <?php echo $category === $cat["category_name"] ? "selected" : ""; ?>>
+                                <?php echo e($cat["category_name"]); ?>
+                            </option>
+                        <?php endforeach; ?>
 
                     </select>
 
@@ -480,7 +462,7 @@ function distanceUrl($value, $keyword, $type, $category)
                         <div class="current-location"></div>
 
                         <div class="map-caption">
-                            Peta ilustrasi • Lokasi akan tampil setelah izin GPS diberikan.
+                            Peta ilustrasi • Lokasi lowongan ditampilkan berdasarkan data perusahaan.
                         </div>
 
                     </div>
@@ -523,8 +505,7 @@ function distanceUrl($value, $keyword, $type, $category)
                                             <?php echo htmlspecialchars($job["company"]); ?>
                                             •
                                             <?php echo htmlspecialchars($job["location"]); ?>
-                                            •
-                                            <?php echo number_format($job["distance"], 1); ?> km
+
                                         </p>
 
                                         <span class="job-type <?php echo $job["type"] === "Full-time" ? "fulltime" : "internship"; ?>">
@@ -533,12 +514,17 @@ function distanceUrl($value, $keyword, $type, $category)
 
                                     </div>
 
-                                    <a
-                                        href="detail_lowongan.php?id=<?php echo (int)$job["id"]; ?>"
-                                        class="job-detail-button"
-                                    >
-                                        Detail →
-                                    </a>
+                                    <div class="job-item-actions">
+                                        <form method="POST" action="cari_lowongan.php<?php echo !empty($_SERVER["QUERY_STRING"]) ? "?" . e($_SERVER["QUERY_STRING"]) : ""; ?>">
+                                            <input type="hidden" name="csrf_token" value="<?php echo e($_SESSION["csrf_saved_jobs"]); ?>">
+                                            <input type="hidden" name="job_id" value="<?php echo (int)$job["id"]; ?>">
+                                            <?php $isSaved = in_array((int)$job["id"], $savedJobIds, true); ?>
+                                            <button type="submit" name="saved_action" value="<?php echo $isSaved ? "remove" : "save"; ?>" class="save-job-button <?php echo $isSaved ? "is-saved" : ""; ?>" aria-label="<?php echo $isSaved ? "Hapus dari simpanan" : "Simpan lowongan"; ?>" title="<?php echo $isSaved ? "Tersimpan - klik untuk menghapus" : "Simpan lowongan"; ?>">
+                                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.75A2.75 2.75 0 0 1 8.75 2h6.5A2.75 2.75 0 0 1 18 4.75V22l-6-3.8L6 22V4.75Z"/></svg>
+                                            </button>
+                                        </form>
+                                        <a href="detail_lowongan.php?id=<?php echo (int)$job["id"]; ?>" class="job-detail-button">Detail →</a>
+                                    </div>
 
                                 </article>
 
@@ -636,7 +622,7 @@ locationButton.addEventListener("click", function () {
         function (position) {
 
             locationStatus.textContent =
-                "Lokasi perangkat berhasil dibaca. Pencarian berbasis koordinat belum dihubungkan ke database.";
+                "Lokasi perangkat berhasil dibaca. Jarak aktual belum tersedia karena data koordinat lowongan belum diisi.";
 
             locationButton.textContent = "Lokasi Ditemukan";
             locationButton.disabled = false;

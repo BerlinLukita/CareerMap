@@ -1,24 +1,84 @@
 <?php
 session_start();
 
-if (
-    !isset($_SESSION["user_id"]) ||
-    !isset($_SESSION["role"]) ||
-    $_SESSION["role"] !== "student"
-) {
+if (!isset($_SESSION["user_id"]) || ($_SESSION["role"] ?? "") !== "student") {
     header("Location: ../auth/login.php");
     exit;
 }
 
-$name = htmlspecialchars(
-    $_SESSION["name"] ?? "Mahasiswa",
-    ENT_QUOTES,
-    "UTF-8"
-);
+require_once "../config/database.php";
 
-$initial = strtoupper(substr($_SESSION["name"] ?? "M", 0, 1));
+function e($value) {
+    return htmlspecialchars((string)($value ?? ""), ENT_QUOTES, "UTF-8");
+}
+
+$userId = (int) $_SESSION["user_id"];
+
+$userStmt = $pdo->prepare("
+    SELECT u.name, u.email, sp.nim, sp.study_program, sp.cv_path, sp.portfolio_url
+    FROM users u
+    LEFT JOIN student_profiles sp ON sp.user_id = u.id
+    WHERE u.id = :id AND u.role = 'student'
+    LIMIT 1
+");
+$userStmt->execute(["id" => $userId]);
+$student = $userStmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$student) {
+    session_destroy();
+    header("Location: ../auth/login.php");
+    exit;
+}
+
+$_SESSION["name"] = $student["name"];
+$name = e($student["name"]);
+$initial = strtoupper(mb_substr($student["name"], 0, 1));
+
+$countStmt = $pdo->prepare("SELECT COUNT(*) FROM applications WHERE student_id = ?");
+$countStmt->execute([$userId]);
+$totalApplications = (int) $countStmt->fetchColumn();
+
+$processStmt = $pdo->prepare("
+    SELECT COUNT(*) FROM applications
+    WHERE student_id = ? AND status IN ('submitted','under_review')
+");
+$processStmt->execute([$userId]);
+$inProcessCount = (int) $processStmt->fetchColumn();
+
+$interviewStmt = $pdo->prepare("
+    SELECT COUNT(*) FROM applications
+    WHERE student_id = ? AND status = 'interview'
+");
+$interviewStmt->execute([$userId]);
+$interviewCount = (int) $interviewStmt->fetchColumn();
+
+// Belum ada tabel pencatatan kunjungan lowongan pada database.
+$viewsCount = 0;
+
+$jobsStmt = $pdo->prepare("
+    SELECT j.id, j.title, j.job_type, j.location, cp.company_name
+    FROM job_vacancies j
+    INNER JOIN company_profiles cp ON cp.user_id = j.company_id
+    WHERE j.status = 'published'
+    ORDER BY j.published_at DESC, j.created_at DESC
+    LIMIT 3
+");
+$jobsStmt->execute();
+$recommendedJobs = $jobsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+$profileCompletion = 0;
+$profileFields = [
+    !empty($student["name"]),
+    !empty($student["email"]),
+    !empty($student["nim"]),
+    !empty($student["study_program"]),
+    !empty($student["cv_path"]),
+    !empty($student["portfolio_url"])
+];
+$profileCompletion = (int) round(count(array_filter($profileFields)) / count($profileFields) * 100);
+
+$cvFileName = !empty($student["cv_path"]) ? basename($student["cv_path"]) : "";
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -139,22 +199,22 @@ $initial = strtoupper(substr($_SESSION["name"] ?? "M", 0, 1));
         <section class="statistics">
 
             <div class="stat-card">
-                <h2>12</h2>
+                <h2><?php echo (int)$viewsCount; ?></h2>
                 <p>Lowongan dilihat</p>
             </div>
 
             <div class="stat-card">
-                <h2>4</h2>
+                <h2><?php echo (int)$totalApplications; ?></h2>
                 <p>Lamaran terkirim</p>
             </div>
 
             <div class="stat-card">
-                <h2>2</h2>
+                <h2><?php echo (int)$inProcessCount; ?></h2>
                 <p>Dalam proses</p>
             </div>
 
             <div class="stat-card">
-                <h2>1</h2>
+                <h2><?php echo (int)$interviewCount; ?></h2>
                 <p>Interview</p>
             </div>
 
@@ -175,71 +235,27 @@ $initial = strtoupper(substr($_SESSION["name"] ?? "M", 0, 1));
                 </div>
 
 
-                <!-- JOB 1 -->
-                <article class="job-card">
-
-                    <div class="company-logo blue-logo">N</div>
-
-                    <div class="job-info">
-
-                        <h3>Frontend Developer Intern</h3>
-
-                        <p>Nusa Teknologi • Remote</p>
-
-                        <span class="badge internship">Magang</span>
-
-                    </div>
-
-                    <a href="detail_lowongan.php?id=1" class="detail-button">
-                        Lihat Detail →
-                    </a>
-
-                </article>
-
-
-                <!-- JOB 2 -->
-                <article class="job-card">
-
-                    <div class="company-logo blue-logo">K</div>
-
-                    <div class="job-info">
-
-                        <h3>UI/UX Design Intern</h3>
-
-                        <p>Kreasi Digital • Yogyakarta</p>
-
-                        <span class="badge internship">Magang</span>
-
-                    </div>
-
-                    <a href="detail_lowongan.php?id=2" class="detail-button">
-                        Lihat Detail →
-                    </a>
-
-                </article>
-
-
-                <!-- JOB 3 -->
-                <article class="job-card">
-
-                    <div class="company-logo blue-logo">S</div>
-
-                    <div class="job-info">
-
-                        <h3>QA Engineer</h3>
-
-                        <p>Solusi Cerdas • Yogyakarta</p>
-
-                        <span class="badge fulltime">Full-time</span>
-
-                    </div>
-
-                    <a href="detail_lowongan.php?id=3" class="detail-button">
-                        Lihat Detail →
-                    </a>
-
-                </article>
-
+                <?php if (!empty($recommendedJobs)): ?>
+                    <?php foreach ($recommendedJobs as $job): ?>
+                        <article class="job-card">
+                            <div class="company-logo blue-logo">
+                                <?php echo e(mb_substr($job["company_name"], 0, 1)); ?>
+                            </div>
+                            <div class="job-info">
+                                <h3><?php echo e($job["title"]); ?></h3>
+                                <p><?php echo e($job["company_name"]); ?> • <?php echo e($job["location"]); ?></p>
+                                <span class="badge <?php echo $job["job_type"] === "Full-time" ? "fulltime" : "internship"; ?>">
+                                    <?php echo e($job["job_type"]); ?>
+                                </span>
+                            </div>
+                            <a href="detail_lowongan.php?id=<?php echo (int)$job["id"]; ?>" class="detail-button">
+                                Lihat Detail →
+                            </a>
+                        </article>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>Belum ada lowongan yang dipublikasikan.</p>
+                <?php endif; ?>
             </div>
 
 
@@ -250,10 +266,10 @@ $initial = strtoupper(substr($_SESSION["name"] ?? "M", 0, 1));
 
                     <h3>Lengkapi Profil</h3>
 
-                    <p class="percentage">Profilmu 80% lengkap</p>
+                    <p class="percentage">Profilmu <?php echo (int)$profileCompletion; ?>% lengkap</p>
 
                     <div class="progress">
-                        <div class="progress-value"></div>
+                        <div class="progress-value" style="width: <?php echo (int)$profileCompletion; ?>%;"></div>
                     </div>
 
                     <h4>Tingkatkan peluang dilirik</h4>
@@ -265,7 +281,7 @@ $initial = strtoupper(substr($_SESSION["name"] ?? "M", 0, 1));
                     <h3 class="document-title">Dokumen Karier</h3>
 
                     <div class="document">
-                        CV_Berlin_Lukita.pdf
+                        <?php echo $cvFileName ? e($cvFileName) : "CV belum diunggah"; ?>
                     </div>
 
                     <a href="profile.php" class="edit-button">

@@ -1206,3 +1206,56 @@ select {
     }
 
 }
+
+
+/* =========================================
+   TOMBOL SIMPAN LOWONGAN
+========================================= */
+.saved-notice {
+    margin-bottom: 16px;
+    padding: 11px 14px;
+    border: 1px solid #C9E6D2;
+    border-radius: 8px;
+    background: #EFF9F1;
+    color: #267443;
+    font-size: 12px;
+}
+.job-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+.job-item-actions form { margin: 0; }
+.save-job-button {
+    width: 34px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #D7E2F1;
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: #527096;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+.save-job-button svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linejoin: round;
+}
+.save-job-button:hover, .save-job-button.is-saved {
+    border-color: #1959A8;
+    background: #EAF2FF;
+    color: #1959A8;
+}
+.save-job-button.is-saved svg { fill: #1959A8; }
+@media (max-width: 520px) {
+    .job-item { align-items: flex-start; }
+    .job-item-actions { flex-direction: column; }
+    .job-detail-button { min-width: 75px; }
+}

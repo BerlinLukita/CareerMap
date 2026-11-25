@@ -1,136 +1,131 @@
 <?php
 session_start();
 
-// ==========================================
-// 1. PROTEKSI LOGIN
-// ==========================================
-
-if (
-    !isset($_SESSION["user_id"]) ||
-    !isset($_SESSION["role"]) ||
-    $_SESSION["role"] !== "student"
-) {
+if (!isset($_SESSION["user_id"]) || ($_SESSION["role"] ?? "") !== "student") {
     header("Location: ../auth/login.php");
     exit;
 }
 
-// ==========================================
-// 2. DATA PENGGUNA
-// ==========================================
+require_once "../config/database.php";
 
 $name = $_SESSION["name"] ?? "Mahasiswa";
-$initialUser = strtoupper(substr($name, 0, 1));
+$initialUser = strtoupper(mb_substr($name, 0, 1));
 
 function e($value) {
-    return htmlspecialchars((string)$value, ENT_QUOTES, "UTF-8");
+    return htmlspecialchars((string)($value ?? ""), ENT_QUOTES, "UTF-8");
 }
-
-// ==========================================
-// 3. DATA LOWONGAN CONTOH
-// Nantinya diambil dari database jobs
-// ==========================================
-
-$jobs = [
-    1 => [
-        "id" => 1,
-        "position" => "UI/UX Design Intern",
-        "company" => "Kreasi Digital",
-        "initial" => "K",
-        "location" => "Yogyakarta",
-        "country" => "Indonesia",
-        "description" => "Membantu tim produk melakukan riset pengguna, menyusun wireframe, dan merancang antarmuka digital yang mudah digunakan.",
-        "qualifications" => [
-            "Mahasiswa aktif minimal semester 5",
-            "Memahami Figma dan prinsip UI/UX",
-            "Memiliki portofolio menjadi nilai tambah"
-        ],
-        "type" => "Magang",
-        "duration" => "3 bulan",
-        "industry" => "Teknologi Informasi",
-        "distance" => "1,2 km",
-        "company_description" => "Kreasi Digital bergerak di bidang pengembangan produk digital dan teknologi.",
-        "website" => "https://kreasidigital.co.id"
-    ],
-
-    2 => [
-        "id" => 2,
-        "position" => "Frontend Developer",
-        "company" => "Nusa Teknologi",
-        "initial" => "N",
-        "location" => "Yogyakarta",
-        "country" => "Indonesia",
-        "description" => "Membantu pengembangan antarmuka website yang responsif, interaktif, dan mudah digunakan oleh pengguna.",
-        "qualifications" => [
-            "Memahami HTML, CSS, dan JavaScript",
-            "Memahami dasar PHP menjadi nilai tambah",
-            "Mampu bekerja dalam tim"
-        ],
-        "type" => "Full-time",
-        "duration" => "Tetap",
-        "industry" => "Teknologi Informasi",
-        "distance" => "3,4 km",
-        "company_description" => "Nusa Teknologi menyediakan layanan pengembangan perangkat lunak.",
-        "website" => "#"
-    ],
-
-    3 => [
-        "id" => 3,
-        "position" => "QA Engineer Intern",
-        "company" => "Solusi Cerdas",
-        "initial" => "S",
-        "location" => "Yogyakarta",
-        "country" => "Indonesia",
-        "description" => "Membantu proses pengujian aplikasi, menemukan bug, dan memastikan kualitas produk digital.",
-        "qualifications" => [
-            "Mahasiswa aktif minimal semester 5",
-            "Memahami dasar software testing",
-            "Teliti dan mampu bekerja sama"
-        ],
-        "type" => "Magang",
-        "duration" => "3 bulan",
-        "industry" => "Teknologi Informasi",
-        "distance" => "7,8 km",
-        "company_description" => "Solusi Cerdas bergerak dalam pengembangan solusi teknologi digital.",
-        "website" => "#"
-    ],
-
-    4 => [
-        "id" => 4,
-        "position" => "Data Analyst Intern",
-        "company" => "Mitra Inovasi",
-        "initial" => "M",
-        "location" => "Yogyakarta",
-        "country" => "Indonesia",
-        "description" => "Membantu mengolah data, membuat visualisasi, dan menyusun laporan analisis untuk kebutuhan perusahaan.",
-        "qualifications" => [
-            "Memahami Microsoft Excel",
-            "Memahami dasar pengolahan data",
-            "Memiliki kemampuan analisis yang baik"
-        ],
-        "type" => "Magang",
-        "duration" => "3 bulan",
-        "industry" => "Data dan Analitik",
-        "distance" => "12,5 km",
-        "company_description" => "Mitra Inovasi bergerak dalam bidang analisis dan pengembangan bisnis.",
-        "website" => "#"
-    ]
-];
-
-// ==========================================
-// 4. AMBIL ID LOWONGAN
-// ==========================================
 
 $jobId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+$job = null;
+$savedNotice = "";
 
-if (!$jobId || !isset($jobs[$jobId])) {
-    http_response_code(404);
-    $job = null;
-} else {
-    $job = $jobs[$jobId];
+// Token keamanan untuk aksi simpan / batal simpan.
+if (empty($_SESSION["csrf_saved_jobs"])) {
+    $_SESSION["csrf_saved_jobs"] = bin2hex(random_bytes(32));
 }
 
-?>
+// Proses tombol simpan atau hapus simpanan.
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["saved_action"])) {
+    $token = $_POST["csrf_token"] ?? "";
+    $postedJobId = filter_input(INPUT_POST, "job_id", FILTER_VALIDATE_INT);
+    $action = $_POST["saved_action"];
 
+    if (!is_string($token) || !hash_equals($_SESSION["csrf_saved_jobs"], $token)) {
+        $_SESSION["saved_job_notice"] = "Sesi tidak valid. Silakan coba kembali.";
+    } elseif (!$postedJobId || $postedJobId <= 0) {
+        $_SESSION["saved_job_notice"] = "Lowongan tidak valid.";
+    } else {
+        try {
+            if ($action === "save") {
+                $saveStmt = $pdo->prepare("
+                    INSERT IGNORE INTO saved_jobs (student_id, job_id)
+                    SELECT :student_id, j.id FROM job_vacancies j
+                    WHERE j.id = :job_id
+                ");
+                $saveStmt->execute([
+                    ":student_id" => (int)$_SESSION["user_id"],
+                    ":job_id" => $postedJobId
+                ]);
+                $_SESSION["saved_job_notice"] = $saveStmt->rowCount() > 0
+                    ? "Lowongan berhasil disimpan."
+                    : "Lowongan sudah ada di daftar simpanan.";
+            } elseif ($action === "remove") {
+                $removeStmt = $pdo->prepare("
+                    DELETE FROM saved_jobs WHERE student_id = :student_id AND job_id = :job_id
+                ");
+                $removeStmt->execute([
+                    ":student_id" => (int)$_SESSION["user_id"],
+                    ":job_id" => $postedJobId
+                ]);
+                $_SESSION["saved_job_notice"] = "Lowongan dihapus dari simpanan.";
+            }
+        } catch (PDOException $ex) {
+            error_log("Saved jobs detail error: " . $ex->getMessage());
+            $_SESSION["saved_job_notice"] = "Tidak dapat memperbarui simpanan. Pastikan profil mahasiswa tersedia.";
+        }
+    }
+
+    header("Location: detail_lowongan.php?id=" . (int)$jobId);
+    exit;
+}
+
+$savedNotice = $_SESSION["saved_job_notice"] ?? "";
+unset($_SESSION["saved_job_notice"]);
+
+if ($jobId) {
+    $stmt = $pdo->prepare("
+        SELECT
+            j.id,
+            j.title AS position,
+            j.job_type AS type,
+            j.duration,
+            j.location,
+            j.description,
+            j.qualifications,
+            j.status,
+            cp.company_name AS company,
+            cp.industry,
+            cp.address AS company_address,
+            cp.description AS company_description,
+            cp.website,
+            cp.logo_path,
+            jc.category_name AS category
+        FROM job_vacancies j
+        INNER JOIN company_profiles cp ON cp.user_id = j.company_id
+        INNER JOIN job_categories jc ON jc.id = j.category_id
+        WHERE j.id = :id
+        LIMIT 1
+    ");
+    $stmt->execute(["id" => $jobId]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $row["initial"] = strtoupper(mb_substr($row["company"], 0, 1));
+        $row["country"] = "Indonesia";
+        $row["qualifications"] = preg_split(
+            '/\\r\\n|\\r|\\n/',
+            trim((string)$row["qualifications"]),
+            -1,
+            PREG_SPLIT_NO_EMPTY
+        );
+        $job = $row;
+    }
+}
+
+if (!$job) {
+    http_response_code(404);
+}
+
+$isJobSaved = false;
+if ($job) {
+    $checkSavedStmt = $pdo->prepare("SELECT id FROM saved_jobs WHERE student_id = :student_id AND job_id = :job_id LIMIT 1");
+    $checkSavedStmt->execute([
+        ":student_id" => (int)$_SESSION["user_id"],
+        ":job_id" => (int)$job["id"]
+    ]);
+    $isJobSaved = (bool)$checkSavedStmt->fetchColumn();
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -219,6 +214,10 @@ if (!$jobId || !isset($jobs[$jobId])) {
 
     <main class="main-content">
 
+        <?php if ($savedNotice !== ""): ?>
+            <div class="saved-notice"><?php echo e($savedNotice); ?></div>
+        <?php endif; ?>
+
         <?php if (!$job): ?>
 
             <section class="not-found">
@@ -292,12 +291,19 @@ if (!$jobId || !isset($jobs[$jobId])) {
 
                         </div>
 
-                        <a
-                            href="laporkan_lowongan.php?id=<?php echo (int)$job["id"]; ?>"
-                            class="report-button"
-                        >
-                            Laporkan Lowongan
-                        </a>
+                        <div class="job-header-actions">
+                            <form method="POST" action="detail_lowongan.php?id=<?php echo (int)$job["id"]; ?>">
+                                <input type="hidden" name="csrf_token" value="<?php echo e($_SESSION["csrf_saved_jobs"]); ?>">
+                                <input type="hidden" name="job_id" value="<?php echo (int)$job["id"]; ?>">
+                                <button type="submit" name="saved_action" value="<?php echo $isJobSaved ? "remove" : "save"; ?>" class="detail-save-button <?php echo $isJobSaved ? "is-saved" : ""; ?>">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.75A2.75 2.75 0 0 1 8.75 2h6.5A2.75 2.75 0 0 1 18 4.75V22l-6-3.8L6 22V4.75Z"/></svg>
+                                    <?php echo $isJobSaved ? "Tersimpan" : "Simpan Lowongan"; ?>
+                                </button>
+                            </form>
+                            <a href="laporkan_lowongan.php?id=<?php echo (int)$job["id"]; ?>" class="report-button">
+                                Laporkan Lowongan
+                            </a>
+                        </div>
 
                     </div>
 

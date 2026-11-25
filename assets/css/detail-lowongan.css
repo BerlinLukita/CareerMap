@@ -903,3 +903,61 @@ button {
     }
 
 }
+
+
+/* =========================================
+   TOMBOL SIMPAN DI HALAMAN DETAIL
+========================================= */
+.saved-notice {
+    margin-bottom: 16px;
+    padding: 11px 14px;
+    border: 1px solid #C9E6D2;
+    border-radius: 8px;
+    background: #EFF9F1;
+    color: #267443;
+    font-size: 12px;
+}
+.job-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+.job-header-actions form { margin: 0; }
+.detail-save-button {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 12px;
+    border: 1px solid var(--blue);
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: var(--blue);
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+.detail-save-button svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linejoin: round;
+}
+.detail-save-button:hover, .detail-save-button.is-saved {
+    background: #EAF2FF;
+}
+.detail-save-button.is-saved svg { fill: var(--blue); }
+@media (max-width: 900px) {
+    .job-header-actions { margin-left: 63px; }
+}
+@media (max-width: 760px) {
+    .job-header-actions { width: 100%; margin: 5px 0 0; flex-wrap: wrap; }
+    .job-header-actions form { flex: 1; }
+    .detail-save-button, .job-header-actions .report-button { width: 100%; }
+}
