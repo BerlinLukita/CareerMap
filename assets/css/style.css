@@ -158,8 +158,8 @@ select {
     width: 100%;
     min-height: 390px;
 
-    background-image: url('../images/hero-mahasiswa.jpg');
-    background-size: cover;
+    background-image: url('../images/hero-mahasiswa.jpg?v=3');
+    background-size: 100% 100%;
     background-position: center center;
     background-repeat: no-repeat;
 
@@ -876,3 +876,1600 @@ select {
     }
 
 }
+/* =========================================
+   LOWONGAN TERBARU
+========================================= */
+
+.latest-jobs-section {
+    padding: 65px 0;
+    background-color: #F4F6FB;
+}
+
+.latest-jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.latest-job-card {
+    background: #FFFFFF;
+    border: 1px solid #E5EAF2;
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.latest-job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(17, 54, 107, 0.10);
+}
+
+.latest-job-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.latest-job-logo {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #E9F2FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #1354A5;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.latest-job-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.latest-job-type {
+    background: #E9F2FF;
+    color: #1354A5;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.latest-job-content {
+    flex: 1;
+}
+
+.latest-job-category {
+    display: inline-block;
+    color: #6B7890;
+    font-size: 12px;
+    margin-bottom: 9px;
+}
+
+.latest-job-content h3 {
+    color: #162A4D;
+    font-size: 19px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.latest-job-company {
+    color: #1354A5;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.latest-job-info {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    color: #6B7890;
+    font-size: 13px;
+}
+
+.latest-job-footer {
+    border-top: 1px solid #E5EAF2;
+    margin-top: 22px;
+    padding-top: 16px;
+}
+
+.latest-job-footer a {
+    color: #1354A5;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.latest-job-footer a:hover {
+    color: #11366B;
+}
+
+
+/* LOWONGAN KOSONG */
+
+.latest-jobs-empty {
+    background: #FFFFFF;
+    border: 1px solid #E5EAF2;
+    border-radius: 14px;
+    padding: 45px 20px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.empty-icon {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.latest-jobs-empty h3 {
+    color: #162A4D;
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.latest-jobs-empty p {
+    color: #6B7890;
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto 20px;
+}
+
+.latest-jobs-empty a {
+    display: inline-block;
+    background: #1354A5;
+    color: #FFFFFF;
+    padding: 11px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.latest-jobs-empty a:hover {
+    background: #11366B;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.site-footer {
+    background: #11366B;
+    color: #FFFFFF;
+    padding: 50px 0 0;
+}
+
+.footer-container {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 55px;
+    padding-bottom: 40px;
+}
+
+.footer-brand {
+    max-width: 430px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 18px;
+}
+
+.footer-logo img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 6px;
+    background: #FFFFFF;
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.footer-logo h3 {
+    font-size: 21px;
+    margin-bottom: 4px;
+}
+
+.footer-logo span {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    color: #D5E3F7;
+}
+
+.footer-brand > p {
+    color: #D5E3F7;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.footer-links h4 {
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.footer-links a {
+    color: #D5E3F7;
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #F5C329;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    color: #D5E3F7;
+    font-size: 12px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 992px) {
+    .latest-jobs-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-container {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .latest-jobs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 35px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 1.6;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-brand {
+        grid-column: auto;
+    }
+
+    .latest-jobs-section {
+        padding: 45px 0;
+    }
+}
+
+
+/* =========================================
+   DETAIL LOWONGAN
+========================================= */
+
+.job-detail-page {
+    min-height: 70vh;
+    padding: 35px 0 65px;
+    background: #F4F6FB;
+}
+
+.job-detail-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.job-back-link {
+    display: inline-block;
+    color: #1354A5;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.job-back-link:hover {
+    color: #11366B;
+}
+
+.job-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+    gap: 25px;
+}
+
+.job-detail-main {
+    background: #FFFFFF;
+    border: 1px solid #E5EAF2;
+    border-radius: 14px;
+    padding: 30px;
+    min-width: 0;
+}
+
+.job-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #E5EAF2;
+}
+
+.job-detail-company-logo {
+    width: 65px;
+    height: 65px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #E9F2FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #1354A5;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.job-detail-company-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.job-detail-title h1 {
+    color: #11366B;
+    font-size: 25px;
+    line-height: 1.4;
+    margin-bottom: 7px;
+}
+
+.job-detail-title p {
+    color: #6B7890;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.job-detail-title p span {
+    margin: 0 5px;
+}
+
+.job-detail-type {
+    display: inline-block;
+    background: #E9F2FF;
+    color: #1354A5;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.job-detail-section {
+    padding: 25px 0;
+    border-bottom: 1px solid #E5EAF2;
+}
+
+.job-detail-section h2 {
+    color: #11366B;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.job-description-text {
+    color: #53627A;
+    font-size: 14px;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+.job-information-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.job-information-item {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.job-information-item span {
+    color: #6B7890;
+    font-size: 12px;
+}
+
+.job-information-item strong {
+    color: #162A4D;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* SIDEBAR RINGKASAN */
+
+.job-detail-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.job-summary-card,
+.job-company-card {
+    background: #FFFFFF;
+    border: 1px solid #E5EAF2;
+    border-radius: 14px;
+    padding: 24px;
+}
+
+.job-summary-card h2 {
+    color: #11366B;
+    font-size: 18px;
+    margin-bottom: 22px;
+}
+
+.job-summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 17px;
+}
+
+.job-summary-item span {
+    color: #6B7890;
+    font-size: 12px;
+}
+
+.job-summary-item strong {
+    color: #162A4D;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.job-summary-divider {
+    border-top: 1px solid #E5EAF2;
+    margin: 22px 0;
+}
+
+.job-apply-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #1354A5;
+    color: #FFFFFF;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.job-apply-button:hover {
+    background: #11366B;
+}
+
+.job-apply-note {
+    color: #6B7890;
+    font-size: 11px;
+    line-height: 1.6;
+    text-align: center;
+    margin-top: 12px;
+}
+
+
+/* INFORMASI PERUSAHAAN */
+
+.job-company-card h3 {
+    color: #11366B;
+    font-size: 16px;
+    margin-bottom: 18px;
+}
+
+.job-company-card > strong {
+    display: block;
+    color: #162A4D;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.job-company-card p {
+    color: #6B7890;
+    font-size: 12px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+}
+
+.job-company-card > a {
+    display: inline-block;
+    color: #1354A5;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+
+/* LOWONGAN TIDAK DITEMUKAN */
+
+.job-detail-error {
+    width: 90%;
+    max-width: 600px;
+    margin: 70px auto;
+    padding: 45px 25px;
+    background: #FFFFFF;
+    border: 1px solid #E5EAF2;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.job-error-icon {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.job-detail-error h1 {
+    color: #11366B;
+    font-size: 23px;
+    margin-bottom: 12px;
+}
+
+.job-detail-error p {
+    color: #6B7890;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 22px;
+}
+
+.job-back-button {
+    display: inline-block;
+    background: #1354A5;
+    color: #FFFFFF;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* RESPONSIVE DETAIL LOWONGAN */
+
+@media (max-width: 992px) {
+    .job-detail-layout {
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 18px;
+    }
+
+    .job-detail-main {
+        padding: 24px;
+    }
+
+    .job-detail-title h1 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 768px) {
+    .job-detail-page {
+        padding: 25px 0 45px;
+    }
+
+    .job-detail-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .job-detail-sidebar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+}
+
+@media (max-width: 480px) {
+    .job-detail-container {
+        width: 92%;
+    }
+
+    .job-detail-main {
+        padding: 20px;
+    }
+
+    .job-detail-header {
+        align-items: flex-start;
+        gap: 13px;
+    }
+
+    .job-detail-company-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .job-detail-title h1 {
+        font-size: 18px;
+    }
+
+    .job-information-grid {
+        grid-template-columns: 1fr;
+        gap: 17px;
+    }
+
+    .job-detail-sidebar {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================
+   DIREKTORI PERUSAHAAN
+========================================= */
+
+.company-page {
+    min-height: 70vh;
+    background: #F4F6FB;
+}
+
+/* HERO PERUSAHAAN */
+
+.company-hero {
+    background: #FFFFFF;
+    padding: 65px 25px;
+}
+
+.company-hero-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.company-hero-label {
+    display: inline-block;
+    color: #1354A5;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin-bottom: 15px;
+}
+
+.company-hero h1 {
+    color: #11366B;
+    font-size: 36px;
+    line-height: 1.25;
+    margin-bottom: 15px;
+}
+
+.company-hero p {
+    color: #6B7890;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+/* PENCARIAN PERUSAHAAN */
+
+.company-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 850px;
+    padding: 8px;
+    background: #FFFFFF;
+    border: 1px solid #E5EAF2;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(17, 54, 107, 0.07);
+}
+
+.company-search input {
+    flex: 1;
+    min-width: 0;
+    height: 45px;
+    padding: 0 14px;
+    border: none;
+    outline: none;
+    color: #162A4D;
+    font-size: 13px;
+}
+
+.company-search button,
+.company-search-button {
+    display: inline-block;
+    border: none;
+    background: #1354A5;
+    color: #FFFFFF;
+    padding: 14px 22px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.company-search button:hover,
+.company-search-button:hover {
+    background: #11366B;
+}
+
+
+/* DAFTAR PERUSAHAAN */
+
+.company-directory-section {
+    padding: 60px 25px 70px;
+}
+
+.company-directory-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.company-directory-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.company-directory-heading h2 {
+    color: #11366B;
+    font-size: 27px;
+    margin-bottom: 9px;
+}
+
+.company-directory-heading p {
+    color: #6B7890;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.company-total {
+    color: #1354A5;
+    background: #E9F2FF;
+    padding: 9px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+
+/* GRID PERUSAHAAN */
+
+.company-directory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.company-directory-card {
+    background: #FFFFFF;
+    border: 1px solid #E5EAF2;
+    border-radius: 13px;
+    padding: 24px;
+    min-width: 0;
+    transition: 0.2s;
+}
+
+.company-directory-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(17, 54, 107, 0.09);
+    border-color: #C9D9F0;
+}
+
+.company-directory-logo {
+    width: 55px;
+    height: 55px;
+    background: #E9F2FF;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 18px;
+    color: #1354A5;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.company-directory-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.company-directory-card h3 {
+    color: #11366B;
+    font-size: 17px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.company-industry {
+    color: #1354A5;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.company-location {
+    color: #6B7890;
+    font-size: 12px;
+    line-height: 1.6;
+    min-height: 35px;
+    overflow-wrap: anywhere;
+}
+
+.company-directory-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid #E5EAF2;
+    margin-top: 18px;
+    padding-top: 16px;
+}
+
+.company-directory-footer span {
+    color: #6B7890;
+    font-size: 12px;
+}
+
+.company-directory-footer a {
+    color: #1354A5;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.company-directory-footer a:hover {
+    color: #11366B;
+}
+
+
+/* PERUSAHAAN KOSONG */
+
+.company-empty-state,
+.company-not-found {
+    background: #FFFFFF;
+    border: 1px solid #E5EAF2;
+    border-radius: 13px;
+    padding: 50px 25px;
+    text-align: center;
+}
+
+.company-empty-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.company-empty-state h3,
+.company-not-found h1 {
+    color: #11366B;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.company-empty-state p,
+.company-not-found p {
+    color: #6B7890;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   DETAIL PERUSAHAAN
+========================================= */
+
+.company-detail-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 35px 0 65px;
+}
+
+.company-back-link {
+    display: inline-block;
+    color: #1354A5;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 22px;
+}
+
+.company-detail-card {
+    background: #FFFFFF;
+    border: 1px solid #E5EAF2;
+    border-radius: 14px;
+    padding: 30px;
+}
+
+.company-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #E5EAF2;
+}
+
+.company-detail-logo {
+    width: 75px;
+    height: 75px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    background: #E9F2FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #1354A5;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.company-detail-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.company-verified-label {
+    display: inline-block;
+    color: #16804A;
+    background: #E8F7EF;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 9px;
+}
+
+.company-detail-heading h1 {
+    color: #11366B;
+    font-size: 26px;
+    margin-bottom: 7px;
+}
+
+.company-detail-heading p {
+    color: #6B7890;
+    font-size: 13px;
+}
+
+.company-detail-content,
+.company-detail-information,
+.company-detail-jobs {
+    padding: 25px 0;
+    border-bottom: 1px solid #E5EAF2;
+}
+
+.company-detail-content h2,
+.company-detail-information h2,
+.company-detail-jobs h2 {
+    color: #11366B;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.company-detail-content > p {
+    color: #53627A;
+    font-size: 14px;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+.company-information-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.company-information-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.company-information-grid span {
+    color: #6B7890;
+    font-size: 12px;
+}
+
+.company-information-grid strong {
+    color: #162A4D;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.company-website-button {
+    display: inline-block;
+    margin-top: 25px;
+    background: #1354A5;
+    color: #FFFFFF;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.company-detail-job-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.company-detail-job-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 17px;
+    border: 1px solid #E5EAF2;
+    border-radius: 9px;
+}
+
+.company-detail-job-item h3 {
+    color: #11366B;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.company-detail-job-item p {
+    color: #6B7890;
+    font-size: 12px;
+}
+
+.company-detail-job-item a {
+    color: #1354A5;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.company-no-jobs {
+    color: #6B7890;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+
+/* RESPONSIVE PERUSAHAAN */
+
+@media (max-width: 992px) {
+    .company-directory-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .company-hero {
+        padding: 45px 20px;
+    }
+
+    .company-hero h1 {
+        font-size: 29px;
+    }
+
+    .company-directory-section {
+        padding: 45px 20px;
+    }
+
+    .company-directory-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .company-directory-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .company-search {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .company-search button {
+        width: 100%;
+    }
+
+    .company-directory-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .company-hero h1 {
+        font-size: 25px;
+    }
+
+    .company-detail-card {
+        padding: 20px;
+    }
+
+    .company-detail-header {
+        align-items: flex-start;
+        gap: 13px;
+    }
+
+    .company-detail-logo {
+        width: 55px;
+        height: 55px;
+    }
+
+    .company-detail-heading h1 {
+        font-size: 20px;
+    }
+
+    .company-information-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .company-detail-job-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
+/* =========================================
+   HALAMAN TENTANG CAREERMAP
+========================================= */
+
+.about-page {
+    background: #F4F6FB;
+}
+
+/* HERO */
+
+.about-hero {
+    background: #FFFFFF;
+    padding: 75px 25px;
+}
+
+.about-hero-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
+}
+
+.about-label {
+    display: inline-block;
+    color: #1354A5;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 18px;
+}
+
+.about-hero h1 {
+    color: #11366B;
+    font-size: 39px;
+    line-height: 1.25;
+    margin-bottom: 18px;
+}
+
+.about-hero p {
+    max-width: 650px;
+    color: #6B7890;
+    font-size: 14px;
+    line-height: 1.9;
+    margin-bottom: 27px;
+}
+
+.about-hero-button {
+    display: inline-block;
+    background: #1354A5;
+    color: #FFFFFF;
+    padding: 13px 21px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.about-hero-button:hover {
+    background: #11366B;
+}
+
+
+/* CONTAINER SECTION */
+
+.about-section-container {
+    max-width: 1200px;
+    width: 90%;
+    margin: auto;
+}
+
+
+/* PENGENALAN */
+
+.about-introduction {
+    padding: 75px 25px;
+    background: #F4F6FB;
+}
+
+.about-intro-content {
+    max-width: 650px;
+}
+
+.about-intro-content h2 {
+    color: #11366B;
+    font-size: 29px;
+    line-height: 1.4;
+    margin: 12px 0 20px;
+}
+
+.about-intro-content p {
+    color: #6B7890;
+    font-size: 14px;
+    line-height: 1.9;
+    margin-bottom: 14px;
+}
+
+.about-intro-visual {
+    margin-top: 35px;
+    background: linear-gradient(135deg, #11366B, #1354A5);
+    border-radius: 16px;
+    padding: 40px;
+    color: #FFFFFF;
+    text-align: center;
+    overflow: hidden;
+}
+
+.about-visual-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.about-intro-visual h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.about-intro-visual p {
+    color: #DCE9FA;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.about-visual-decoration {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.about-visual-decoration span {
+    background: rgba(255, 255, 255, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 9px 16px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+
+/* HEADING SECTION */
+
+.about-section-heading {
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto 35px;
+}
+
+.about-section-heading h2 {
+    color: #11366B;
+    font-size: 28px;
+    margin: 12px 0;
+}
+
+.about-section-heading p {
+    color: #6B7890;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+
+/* VISI MISI */
+
+.about-vision-mission {
+    background: #FFFFFF;
+    padding: 70px 25px;
+}
+
+.vision-mission-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.vision-card,
+.mission-card {
+    background: #F4F6FB;
+    border: 1px solid #E5EAF2;
+    border-radius: 13px;
+    padding: 28px;
+}
+
+.about-card-icon {
+    width: 48px;
+    height: 48px;
+    background: #E9F2FF;
+    border-radius: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 23px;
+    margin-bottom: 17px;
+}
+
+.vision-card h3,
+.mission-card h3 {
+    color: #11366B;
+    font-size: 19px;
+    margin-bottom: 13px;
+}
+
+.vision-card p,
+.mission-card li {
+    color: #6B7890;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.mission-card ul {
+    padding-left: 19px;
+}
+
+.mission-card li {
+    padding-left: 3px;
+    margin-bottom: 9px;
+}
+
+
+/* FITUR */
+
+.about-features {
+    padding: 70px 25px;
+    background: #F4F6FB;
+}
+
+.about-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.about-feature-card {
+    background: #FFFFFF;
+    border: 1px solid #E5EAF2;
+    border-radius: 13px;
+    padding: 25px;
+    transition: 0.2s;
+}
+
+.about-feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(17, 54, 107, 0.08);
+}
+
+.about-feature-card h3 {
+    color: #11366B;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.about-feature-card p {
+    color: #6B7890;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+
+/* MANFAAT */
+
+.about-benefits {
+    background: #FFFFFF;
+    padding: 70px 25px;
+}
+
+.about-benefits-content {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 50px;
+    align-items: center;
+}
+
+.about-benefits-content h2 {
+    color: #11366B;
+    font-size: 29px;
+    line-height: 1.4;
+    margin: 13px 0;
+}
+
+.about-benefits-content > div:first-child > p {
+    color: #6B7890;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.about-benefits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.about-benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+}
+
+.about-benefit-item span {
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #E9F2FF;
+    color: #1354A5;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.about-benefit-item p {
+    color: #53627A;
+    font-size: 13px;
+    line-height: 1.7;
+    padding-top: 3px;
+}
+
+
+/* CALL TO ACTION */
+
+.about-cta {
+    padding: 65px 25px;
+    background: #11366B;
+}
+
+.about-cta-container {
+    max-width: 750px;
+    margin: auto;
+    text-align: center;
+}
+
+.about-cta h2 {
+    color: #FFFFFF;
+    font-size: 28px;
+    margin-bottom: 14px;
+}
+
+.about-cta p {
+    color: #D5E3F7;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.about-cta a {
+    display: inline-block;
+    background: #F5C329;
+    color: #11366B;
+    padding: 13px 22px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.about-cta a:hover {
+    background: #FFD957;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 992px) {
+    .about-features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .about-hero {
+        padding: 55px 22px;
+    }
+
+    .about-hero h1 {
+        font-size: 31px;
+    }
+
+    .about-introduction,
+    .about-vision-mission,
+    .about-features,
+    .about-benefits {
+        padding: 55px 20px;
+    }
+
+    .vision-mission-grid,
+    .about-benefits-content {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .about-section-heading h2 {
+        font-size: 24px;
+    }
+
+    .about-benefits-content h2 {
+        font-size: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-hero h1 {
+        font-size: 26px;
+    }
+
+    .about-intro-content h2 {
+        font-size: 24px;
+    }
+
+    .about-features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-intro-visual {
+        padding: 30px 20px;
+    }
+
+    .about-cta h2 {
+        font-size: 23px;
+    }
+}
+

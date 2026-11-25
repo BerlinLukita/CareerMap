@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <a href="../index.php" class="brand-logo">
 
             <img
-                src="../assets/images/uajy.jpeg"
+                src="../assets/images/logo-uajy.jpg"
                 alt="Logo UAJY"
             >
 
