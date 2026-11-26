@@ -1,246 +1,381 @@
+
 <?php
 session_start();
+require_once '../config/database.php';
 
-if (
-    !isset($_SESSION["user_id"]) ||
-    $_SESSION["role"] != "company"
-) {
+// ========================================
+// CEK LOGIN DAN ROLE
+// ========================================
+
+if (empty($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit;
 }
 
-require_once "../config/database.php";
+$company_id = (int) $_SESSION['user_id'];
 
-$user_id = $_SESSION["user_id"];
-$message = "";
+try {
+    $roleStmt = $pdo->prepare("
+        SELECT role
+        FROM users
+        WHERE id = :id
+        LIMIT 1
+    ");
+
+    $roleStmt->execute([':id' => $company_id]);
+
+    if ($roleStmt->fetchColumn() !== 'company') {
+        header("Location: ../auth/login.php");
+        exit;
+    }
+} catch (PDOException $e) {
+    die("Gagal memeriksa akses pengguna.");
+}
+
+
+// ========================================
+// VARIABEL
+// ========================================
+
+$error = '';
+
+$success = isset($_GET['created'])
+    ? 'Lowongan berhasil dipublikasikan.'
+    : '';
+
+$is_form_mode = (
+    isset($_GET['action']) &&
+    $_GET['action'] === 'create'
+);
+
 $edit_job = null;
 
-// Mengambil status verifikasi perusahaan
-$stmtCompany = $pdo->prepare(
-    "SELECT verification_status
-     FROM company_profiles
-     WHERE user_id = ?"
-);
-$stmtCompany->execute([$user_id]);
-$company = $stmtCompany->fetch(PDO::FETCH_ASSOC);
 
-if (!$company) {
-    die("Profil perusahaan tidak ditemukan.");
-}
+// ========================================
+// AMBIL DATA LOWONGAN UNTUK EDIT
+// ========================================
 
-$is_verified = ($company["verification_status"] == "verified");
+if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
 
-// Mengambil kategori pekerjaan
-$stmtCategories = $pdo->query(
-    "SELECT * FROM job_categories ORDER BY category_name ASC"
-);
-$categories = $stmtCategories->fetchAll(PDO::FETCH_ASSOC);
+    $edit_id = (int) $_GET['edit'];
 
-// Proses form
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    try {
+        $stmt = $pdo->prepare("
+            SELECT *
+            FROM job_vacancies
+            WHERE id = :id
+            AND company_id = :cid
+            LIMIT 1
+        ");
 
-    $action = $_POST["action"] ?? "";
+        $stmt->execute([
+            ':id' => $edit_id,
+            ':cid' => $company_id
+        ]);
 
-    // Menyimpan lowongan
-    if ($action == "save") {
+        $edit_job = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $job_id = $_POST["job_id"] ?? "";
-        $title = trim($_POST["title"]);
-        $category_id = $_POST["category_id"];
-        $department = trim($_POST["department"]);
-        $job_type = $_POST["job_type"];
-        $duration = trim($_POST["duration"]);
-        $location = trim($_POST["location"]);
-        $deadline = $_POST["deadline"];
-        $description = trim($_POST["description"]);
-        $qualifications = trim($_POST["qualifications"]);
-        $status = $_POST["status"];
-
-        if (
-            empty($title) ||
-            empty($category_id) ||
-            empty($location) ||
-            empty($description) ||
-            empty($qualifications)
-        ) {
-            $message = "Mohon lengkapi semua data wajib!";
-
-        } elseif (!in_array($job_type, ["Magang", "Full-time"])) {
-            $message = "Tipe pekerjaan tidak valid!";
-
-        } elseif (!in_array($status, ["draft", "published"])) {
-            $message = "Status lowongan tidak valid!";
-
-        } elseif (
-            $deadline != "" &&
-            $deadline < date("Y-m-d")
-        ) {
-            $message = "Deadline tidak boleh menggunakan tanggal yang sudah lewat!";
-
-        } elseif ($status == "published" && !$is_verified) {
-            $message = "Perusahaan belum terverifikasi. Simpan lowongan sebagai Draft terlebih dahulu!";
-
-        } else {
-
-            // Memastikan kategori tersedia
-            $checkCategory = $pdo->prepare(
-                "SELECT id FROM job_categories WHERE id = ?"
-            );
-            $checkCategory->execute([$category_id]);
-
-            if (!$checkCategory->fetch()) {
-                $message = "Kategori pekerjaan tidak ditemukan!";
-            } else {
-
-                try {
-
-                    if ($job_id != "") {
-
-                        // Memastikan lowongan milik perusahaan sendiri
-                        $checkJob = $pdo->prepare(
-                            "SELECT id FROM job_vacancies
-                             WHERE id = ? AND company_id = ?"
-                        );
-
-                        $checkJob->execute([$job_id, $user_id]);
-
-                        if (!$checkJob->fetch()) {
-                            throw new Exception("Lowongan tidak ditemukan.");
-                        }
-
-                        $updateJob = $pdo->prepare(
-                            "UPDATE job_vacancies
-                             SET category_id = ?,
-                                 title = ?,
-                                 department = ?,
-                                 job_type = ?,
-                                 duration = ?,
-                                 location = ?,
-                                 deadline = ?,
-                                 description = ?,
-                                 qualifications = ?,
-                                 status = ?,
-                                 published_at = CASE
-                                     WHEN ? = 'published'
-                                     THEN COALESCE(published_at, NOW())
-                                     ELSE published_at
-                                 END
-                             WHERE id = ? AND company_id = ?"
-                        );
-
-                        $updateJob->execute([
-                            $category_id,
-                            $title,
-                            $department,
-                            $job_type,
-                            $duration,
-                            $location,
-                            $deadline == "" ? null : $deadline,
-                            $description,
-                            $qualifications,
-                            $status,
-                            $status,
-                            $job_id,
-                            $user_id
-                        ]);
-
-                        $message = "Lowongan berhasil diperbarui!";
-
-                    } else {
-
-                        // Menambahkan lowongan baru
-                        $insertJob = $pdo->prepare(
-                            "INSERT INTO job_vacancies
-                             (company_id, category_id, title,
-                              department, job_type, duration,
-                              location, deadline, description,
-                              qualifications, status, published_at)
-                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                                CASE WHEN ? = 'published'
-                                THEN NOW() ELSE NULL END)"
-                        );
-
-                        $insertJob->execute([
-                            $user_id,
-                            $category_id,
-                            $title,
-                            $department,
-                            $job_type,
-                            $duration,
-                            $location,
-                            $deadline == "" ? null : $deadline,
-                            $description,
-                            $qualifications,
-                            $status,
-                            $status
-                        ]);
-
-                        $message = "Lowongan berhasil ditambahkan!";
-                    }
-
-                } catch (Exception $e) {
-                    $message = $e->getMessage();
-
-                } catch (PDOException $e) {
-                    $message = "Gagal menyimpan lowongan.";
-                }
-            }
+        if ($edit_job) {
+            $is_form_mode = true;
         }
-    }
 
-    // Menutup lowongan
-    if ($action == "close") {
-
-        $job_id = $_POST["job_id"];
-
-        $closeJob = $pdo->prepare(
-            "UPDATE job_vacancies
-             SET status = 'closed'
-             WHERE id = ? AND company_id = ?
-             AND status IN ('draft', 'published')"
-        );
-
-        $closeJob->execute([$job_id, $user_id]);
-
-        if ($closeJob->rowCount() > 0) {
-            $message = "Lowongan berhasil ditutup!";
-        } else {
-            $message = "Lowongan tidak ditemukan atau sudah ditutup.";
-        }
+    } catch (Throwable $e) {
+        $error = 'Gagal memuat data lowongan: ' . $e->getMessage();
     }
 }
 
-// Mengambil data lowongan untuk diedit
-if (isset($_GET["edit"])) {
 
-    $edit_id = $_GET["edit"];
+// ========================================
+// PROSES TAMBAH DAN EDIT LOWONGAN
+// ========================================
 
-    $stmtEdit = $pdo->prepare(
-        "SELECT * FROM job_vacancies
-         WHERE id = ? AND company_id = ?"
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $job_id = !empty($_POST['job_id'])
+        ? (int) $_POST['job_id']
+        : 0;
+
+    $title = trim($_POST['title'] ?? '');
+
+    $department = trim($_POST['department'] ?? '');
+
+    $job_type = trim($_POST['job_type'] ?? '');
+
+    $location = trim($_POST['location'] ?? '');
+
+    $deadline = trim($_POST['deadline'] ?? '');
+
+    $desc_qual = trim(
+        $_POST['description_qualifications'] ?? ''
     );
 
-    $stmtEdit->execute([$edit_id, $user_id]);
-    $edit_job = $stmtEdit->fetch(PDO::FETCH_ASSOC);
 
-    if (!$edit_job) {
-        $message = "Lowongan tidak ditemukan.";
+    // Validasi tipe pekerjaan
+    $allowed_types = ['Magang', 'Full-time'];
+
+    if (!in_array($job_type, $allowed_types, true)) {
+        $job_type = 'Magang';
+    }
+
+
+    // Konversi tanggal
+    $deadline_sql = null;
+
+    if ($deadline !== '') {
+
+        if (
+            preg_match(
+                '/^(\d{2})\/(\d{2})\/(\d{4})$/',
+                $deadline,
+                $m
+            )
+        ) {
+            $deadline_sql = $m[3] . '-' . $m[2] . '-' . $m[1];
+
+        } elseif (
+            preg_match('/^\d{4}-\d{2}-\d{2}$/', $deadline)
+        ) {
+            $deadline_sql = $deadline;
+        } else {
+            $error = 'Format tanggal harus DD/MM/YYYY.';
+            $is_form_mode = true;
+        }
+    }
+
+
+    // Validasi input
+    if ($title === '' || $location === '' || $desc_qual === '') {
+
+        $error = 'Judul lowongan, lokasi, dan deskripsi & kualifikasi wajib diisi.';
+
+        $is_form_mode = true;
+
+    } elseif ($error === '') {
+
+        try {
+
+            // Ambil kategori pertama yang tersedia
+            $catStmt = $pdo->query("
+                SELECT id
+                FROM job_categories
+                ORDER BY id ASC
+                LIMIT 1
+            ");
+
+            $catRow = $catStmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$catRow) {
+                throw new Exception(
+                    'Kategori lowongan belum tersedia. Hubungi administrator.'
+                );
+            }
+
+            $category_id = (int) $catRow['id'];
+
+
+            // ========================================
+            // UPDATE LOWONGAN
+            // ========================================
+
+            if ($job_id > 0) {
+
+                $stmt = $pdo->prepare("
+                    UPDATE job_vacancies
+                    SET
+                        title = :title,
+                        department = :department,
+                        job_type = :job_type,
+                        location = :location,
+                        deadline = :deadline,
+                        description = :description,
+                        qualifications = :qualifications
+                    WHERE id = :id
+                    AND company_id = :cid
+                ");
+
+                $stmt->execute([
+
+                    ':title' => $title,
+
+                    ':department' => $department !== ''
+                        ? $department
+                        : null,
+
+                    ':job_type' => $job_type,
+
+                    ':location' => $location,
+
+                    ':deadline' => $deadline_sql,
+
+                    ':description' => $desc_qual,
+
+                    ':qualifications' => $desc_qual,
+
+                    ':id' => $job_id,
+
+                    ':cid' => $company_id
+
+                ]);
+
+                if ($stmt->rowCount() === 0) {
+                    $check = $pdo->prepare("
+                        SELECT id
+                        FROM job_vacancies
+                        WHERE id = :id
+                        AND company_id = :cid
+                    ");
+
+                    $check->execute([
+                        ':id' => $job_id,
+                        ':cid' => $company_id
+                    ]);
+
+                    if (!$check->fetchColumn()) {
+                        throw new Exception(
+                            'Lowongan tidak ditemukan atau bukan milik perusahaan ini.'
+                        );
+                    }
+                }
+
+                header("Location: jobs.php?updated=1");
+                exit;
+
+            } else {
+
+                // ========================================
+                // INSERT LOWONGAN BARU
+                // ========================================
+
+                $stmt = $pdo->prepare("
+                    INSERT INTO job_vacancies
+                    (
+                        company_id,
+                        category_id,
+                        title,
+                        department,
+                        job_type,
+                        location,
+                        deadline,
+                        description,
+                        qualifications,
+                        status,
+                        published_at
+                    )
+                    VALUES
+                    (
+                        :company_id,
+                        :category_id,
+                        :title,
+                        :department,
+                        :job_type,
+                        :location,
+                        :deadline,
+                        :description,
+                        :qualifications,
+                        'published',
+                        NOW()
+                    )
+                ");
+
+                $stmt->execute([
+
+                    ':company_id' => $company_id,
+
+                    ':category_id' => $category_id,
+
+                    ':title' => $title,
+
+                    ':department' => $department !== ''
+                        ? $department
+                        : null,
+
+                    ':job_type' => $job_type,
+
+                    ':location' => $location,
+
+                    ':deadline' => $deadline_sql,
+
+                    ':description' => $desc_qual,
+
+                    ':qualifications' => $desc_qual
+
+                ]);
+
+                header("Location: jobs.php?created=1");
+                exit;
+            }
+
+        } catch (Throwable $e) {
+
+            $error = 'Gagal menyimpan lowongan: ' . $e->getMessage();
+
+            $is_form_mode = true;
+        }
     }
 }
 
-// Mengambil semua lowongan milik perusahaan
-$sqlJobs = "SELECT
-                job_vacancies.*,
-                job_categories.category_name
-            FROM job_vacancies
-            JOIN job_categories
-                ON job_vacancies.category_id = job_categories.id
-            WHERE job_vacancies.company_id = ?
-            ORDER BY job_vacancies.created_at DESC";
 
-$stmtJobs = $pdo->prepare($sqlJobs);
-$stmtJobs->execute([$user_id]);
-$jobs = $stmtJobs->fetchAll(PDO::FETCH_ASSOC);
+// ========================================
+// PESAN BERHASIL
+// ========================================
+
+if (isset($_GET['updated'])) {
+    $success = 'Lowongan berhasil diperbarui.';
+}
+
+
+// ========================================
+// AMBIL DAFTAR LOWONGAN
+// ========================================
+
+$jobs = [];
+
+if (!$is_form_mode) {
+
+    try {
+
+        $stmt = $pdo->prepare("
+            SELECT
+                j.*,
+                COUNT(a.id) AS total_applicants
+            FROM job_vacancies j
+            LEFT JOIN applications a
+                ON a.job_id = j.id
+            WHERE j.company_id = :cid
+            GROUP BY j.id
+            ORDER BY j.created_at DESC
+        ");
+
+        $stmt->execute([
+            ':cid' => $company_id
+        ]);
+
+        $jobs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (Throwable $e) {
+
+        $error = 'Gagal memuat daftar lowongan: ' . $e->getMessage();
+    }
+}
+
+
+// ========================================
+// FORMAT TANGGAL
+// ========================================
+
+$deadline_display = '';
+
+if (!empty($edit_job['deadline'])) {
+
+    $dt = DateTime::createFromFormat(
+        'Y-m-d',
+        $edit_job['deadline']
+    );
+
+    $deadline_display = $dt
+        ? $dt->format('d/m/Y')
+        : $edit_job['deadline'];
+}
 
 ?>
 
@@ -248,267 +383,492 @@ $jobs = $stmtJobs->fetchAll(PDO::FETCH_ASSOC);
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
-    <title>Kelola Lowongan CareerMap</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        <?= $is_form_mode
+            ? ($edit_job ? 'Edit Lowongan' : 'Tambah Lowongan')
+            : 'Kelola Lowongan'
+        ?> - CareerMap
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/kelola-lowongan.css?v=2"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/company-sidebar.css?v=1"
+    >
+
 </head>
 
 <body>
 
-    <h2>Kelola Lowongan</h2>
+    <!-- SIDEBAR PERUSAHAAN -->
 
-    <p><?php echo htmlspecialchars($message); ?></p>
+    <?php require_once '../includes/company-sidebar.php'; ?>
 
-    <p>
-        Status verifikasi:
-        <strong>
-            <?php echo htmlspecialchars($company["verification_status"]); ?>
-        </strong>
-    </p>
 
-    <?php if (!$is_verified): ?>
-        <p>
-            Perusahaan belum terverifikasi.
-            Kamu hanya dapat menyimpan lowongan sebagai Draft.
-        </p>
-    <?php endif; ?>
+    <!-- KONTEN UTAMA -->
 
-    <hr>
+    <main class="main-content">
 
-    <h3>
-        <?php echo $edit_job ? "Edit Lowongan" : "Tambah Lowongan"; ?>
-    </h3>
+        <?php if ($is_form_mode): ?>
 
-    <form method="POST">
+            <!-- ==================================
+                 FORM TAMBAH / EDIT LOWONGAN
+                 ================================== -->
 
-        <input type="hidden" name="action" value="save">
+            <div class="page-header">
 
-        <input
-            type="hidden"
-            name="job_id"
-            value="<?php echo htmlspecialchars($edit_job["id"] ?? ""); ?>"
-        >
-
-        <label>Judul Lowongan</label><br>
-        <input
-            type="text"
-            name="title"
-            value="<?php echo htmlspecialchars($edit_job["title"] ?? ""); ?>"
-            required
-        >
-        <br><br>
-
-        <label>Kategori Pekerjaan</label><br>
-        <select name="category_id" required>
-
-            <option value="">Pilih Kategori</option>
-
-            <?php foreach ($categories as $category): ?>
-
-                <option
-                    value="<?php echo $category["id"]; ?>"
-                    <?php
-                    if (
-                        isset($edit_job["category_id"]) &&
-                        $edit_job["category_id"] == $category["id"]
-                    ) {
-                        echo "selected";
-                    }
+                <h1 class="page-title">
+                    <?= $edit_job
+                        ? 'Edit Lowongan'
+                        : 'Tambah Lowongan'
                     ?>
-                >
-                    <?php echo htmlspecialchars($category["category_name"]); ?>
-                </option>
+                </h1>
 
-            <?php endforeach; ?>
+                <p class="page-subtitle">
+                    Isi informasi lowongan secara lengkap dan jelas.
+                </p>
 
-        </select>
-        <br><br>
+            </div>
 
-        <label>Departemen</label><br>
-        <input
-            type="text"
-            name="department"
-            value="<?php echo htmlspecialchars($edit_job["department"] ?? ""); ?>"
-        >
-        <br><br>
 
-        <label>Tipe Pekerjaan</label><br>
-        <select name="job_type" required>
+            <?php if ($error !== ''): ?>
 
-            <option value="Magang"
-                <?php
-                if (($edit_job["job_type"] ?? "") == "Magang") {
-                    echo "selected";
-                }
-                ?>
-            >
-                Magang
-            </option>
-
-            <option value="Full-time"
-                <?php
-                if (($edit_job["job_type"] ?? "") == "Full-time") {
-                    echo "selected";
-                }
-                ?>
-            >
-                Full-time
-            </option>
-
-        </select>
-        <br><br>
-
-        <label>Durasi</label><br>
-        <input
-            type="text"
-            name="duration"
-            placeholder="Contoh: 3 bulan"
-            value="<?php echo htmlspecialchars($edit_job["duration"] ?? ""); ?>"
-        >
-        <br><br>
-
-        <label>Lokasi</label><br>
-        <input
-            type="text"
-            name="location"
-            value="<?php echo htmlspecialchars($edit_job["location"] ?? ""); ?>"
-            required
-        >
-        <br><br>
-
-        <label>Deadline Lamaran</label><br>
-        <input
-            type="date"
-            name="deadline"
-            value="<?php echo htmlspecialchars($edit_job["deadline"] ?? ""); ?>"
-        >
-        <br><br>
-
-        <label>Deskripsi Pekerjaan</label><br>
-        <textarea name="description" rows="5" required><?php
-            echo htmlspecialchars($edit_job["description"] ?? "");
-        ?></textarea>
-        <br><br>
-
-        <label>Kualifikasi</label><br>
-        <textarea name="qualifications" rows="5" required><?php
-            echo htmlspecialchars($edit_job["qualifications"] ?? "");
-        ?></textarea>
-        <br><br>
-
-        <label>Status Lowongan</label><br>
-        <select name="status" required>
-
-            <option value="draft"
-                <?php
-                if (($edit_job["status"] ?? "draft") == "draft") {
-                    echo "selected";
-                }
-                ?>
-            >
-                Draft
-            </option>
-
-            <?php if ($is_verified): ?>
-
-                <option value="published"
-                    <?php
-                    if (($edit_job["status"] ?? "") == "published") {
-                        echo "selected";
-                    }
-                    ?>
-                >
-                    Aktif / Terbitkan
-                </option>
+                <div class="alert alert-error">
+                    <?= htmlspecialchars($error) ?>
+                </div>
 
             <?php endif; ?>
 
-        </select>
-        <br><br>
 
-        <button type="submit">
-            <?php echo $edit_job ? "Simpan Perubahan" : "Tambah Lowongan"; ?>
-        </button>
+            <section class="form-card">
 
-        <?php if ($edit_job): ?>
-            <a href="jobs.php">Batal Edit</a>
-        <?php endif; ?>
+                <h2 class="section-title">
+                    Informasi Lowongan
+                </h2>
 
-    </form>
 
-    <hr>
+                <form
+                    action="jobs.php<?= $edit_job
+                        ? '?edit=' . (int) $edit_job['id']
+                        : '?action=create'
+                    ?>"
+                    method="POST"
+                >
 
-    <h3>Daftar Lowongan Saya</h3>
-
-    <?php if (count($jobs) > 0): ?>
-
-        <?php foreach ($jobs as $job): ?>
-
-            <div>
-
-                <h4>
-                    <?php echo htmlspecialchars($job["title"]); ?>
-                </h4>
-
-                <p>
-                    Kategori:
-                    <?php echo htmlspecialchars($job["category_name"]); ?>
-                </p>
-
-                <p>
-                    Tipe:
-                    <?php echo htmlspecialchars($job["job_type"]); ?>
-                </p>
-
-                <p>
-                    Lokasi:
-                    <?php echo htmlspecialchars($job["location"]); ?>
-                </p>
-
-                <p>
-                    Status:
-                    <?php echo htmlspecialchars($job["status"]); ?>
-                </p>
-
-                <a href="jobs.php?edit=<?php echo $job["id"]; ?>">
-                    Edit
-                </a>
-
-                <?php if (in_array($job["status"], ["draft", "published"])): ?>
-
-                    <form method="POST">
-
-                        <input type="hidden" name="action" value="close">
+                    <?php if ($edit_job): ?>
 
                         <input
                             type="hidden"
                             name="job_id"
-                            value="<?php echo $job["id"]; ?>"
+                            value="<?= (int) $edit_job['id'] ?>"
                         >
 
-                        <button type="submit">
-                            Tutup Lowongan
+                    <?php endif; ?>
+
+
+                    <div class="form-grid">
+
+                        <!-- Judul Lowongan -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="title"
+                                class="form-label"
+                            >
+                                Judul Lowongan
+                            </label>
+
+                            <input
+                                type="text"
+                                id="title"
+                                name="title"
+                                class="form-control"
+                                placeholder="Contoh: UI/UX Design Intern"
+                                value="<?= htmlspecialchars(
+                                    $_POST['title']
+                                    ?? ($edit_job['title'] ?? '')
+                                ) ?>"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Departemen -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="department"
+                                class="form-label"
+                            >
+                                Departemen
+                            </label>
+
+                            <input
+                                type="text"
+                                id="department"
+                                name="department"
+                                class="form-control"
+                                placeholder="Contoh: Product &amp; Design"
+                                value="<?= htmlspecialchars(
+                                    $_POST['department']
+                                    ?? ($edit_job['department'] ?? '')
+                                ) ?>"
+                            >
+
+                        </div>
+
+
+                        <!-- Tipe Pekerjaan -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="job_type"
+                                class="form-label"
+                            >
+                                Tipe Pekerjaan
+                            </label>
+
+                            <?php
+
+                            $selectedType = $_POST['job_type']
+                                ?? ($edit_job['job_type'] ?? '');
+
+                            ?>
+
+                            <select
+                                id="job_type"
+                                name="job_type"
+                                class="form-control"
+                                required
+                            >
+
+                                <option
+                                    value=""
+                                    disabled
+                                    <?= $selectedType === ''
+                                        ? 'selected'
+                                        : ''
+                                    ?>
+                                >
+                                    Pilih tipe pekerjaan
+                                </option>
+
+                                <option
+                                    value="Magang"
+                                    <?= $selectedType === 'Magang'
+                                        ? 'selected'
+                                        : ''
+                                    ?>
+                                >
+                                    Magang
+                                </option>
+
+                                <option
+                                    value="Full-time"
+                                    <?= $selectedType === 'Full-time'
+                                        ? 'selected'
+                                        : ''
+                                    ?>
+                                >
+                                    Full-time
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Lokasi -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="location"
+                                class="form-label"
+                            >
+                                Lokasi
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                class="form-control"
+                                placeholder="Kota / Remote"
+                                value="<?= htmlspecialchars(
+                                    $_POST['location']
+                                    ?? ($edit_job['location'] ?? '')
+                                ) ?>"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Deadline -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="deadline"
+                                class="form-label"
+                            >
+                                Batas Akhir Lamaran
+                            </label>
+
+                            <input
+                                type="text"
+                                id="deadline"
+                                name="deadline"
+                                class="form-control"
+                                placeholder="DD/MM/YYYY"
+                                value="<?= htmlspecialchars(
+                                    $_POST['deadline']
+                                    ?? $deadline_display
+                                ) ?>"
+                            >
+
+                        </div>
+
+
+                        <!-- Deskripsi dan Kualifikasi -->
+
+                        <div class="form-group full">
+
+                            <label
+                                for="description_qualifications"
+                                class="form-label"
+                            >
+                                Deskripsi &amp; Kualifikasi
+                            </label>
+
+                            <textarea
+                                id="description_qualifications"
+                                name="description_qualifications"
+                                class="form-control"
+                                placeholder="Jelaskan tanggung jawab, persyaratan, dan benefit..."
+                                required
+                            ><?= htmlspecialchars(
+                                $_POST['description_qualifications']
+                                ?? ($edit_job['description'] ?? '')
+                            ) ?></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Tombol Form -->
+
+                    <div class="form-footer">
+
+                        <a
+                            href="jobs.php"
+                            class="btn-secondary"
+                        >
+                            Batal
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn-publish"
+                        >
+                            <?= $edit_job
+                                ? 'Simpan Perubahan'
+                                : 'Publikasikan'
+                            ?>
                         </button>
 
-                    </form>
+                    </div>
 
-                <?php endif; ?>
+                </form>
 
-                <hr>
+            </section>
+
+
+        <?php else: ?>
+
+
+            <!-- ==================================
+                 DAFTAR LOWONGAN
+                 ================================== -->
+
+            <div class="top-bar">
+
+                <div>
+
+                    <h1 class="page-title">
+                        Kelola Lowongan
+                    </h1>
+
+                    <p class="page-subtitle">
+                        Buat, edit, dan pantau lowongan perusahaan.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="jobs.php?action=create"
+                    class="btn-primary"
+                >
+                    + Tambah Lowongan
+                </a>
 
             </div>
 
-        <?php endforeach; ?>
 
-    <?php else: ?>
+            <?php if ($error !== ''): ?>
 
-        <p>Belum ada lowongan pekerjaan.</p>
+                <div class="alert alert-error">
+                    <?= htmlspecialchars($error) ?>
+                </div>
 
-    <?php endif; ?>
+            <?php endif; ?>
 
-    <br>
 
-    <a href="dashboard.php">Kembali ke Dashboard</a>
+            <?php if ($success !== ''): ?>
+
+                <div class="alert alert-success">
+                    <?= htmlspecialchars($success) ?>
+                </div>
+
+            <?php endif; ?>
+
+
+            <section class="jobs-card">
+
+                <h2 class="jobs-card-title">
+                    Lowongan Saya
+                </h2>
+
+
+                <?php if (empty($jobs)): ?>
+
+                    <div class="empty-state">
+
+                        Belum ada lowongan yang dibuat.
+                        Klik
+                        <strong>+ Tambah Lowongan</strong>
+                        untuk membuat lowongan pertama Anda.
+
+                    </div>
+
+                <?php else: ?>
+
+
+                    <ul class="jobs-list">
+
+                        <?php foreach ($jobs as $job): ?>
+
+                            <?php
+
+                            $st = $job['status'] ?? 'draft';
+
+                            if ($st === 'published') {
+
+                                $badgeClass = 'badge-aktif';
+                                $badgeLabel = 'Aktif';
+
+                            } elseif (
+                                $st === 'closed' ||
+                                $st === 'disabled'
+                            ) {
+
+                                $badgeClass = 'badge-ditutup';
+                                $badgeLabel = 'Ditutup';
+
+                            } else {
+
+                                $badgeClass = 'badge-draft';
+                                $badgeLabel = 'Draft';
+                            }
+
+                            ?>
+
+
+                            <li class="job-row">
+
+                                <div>
+
+                                    <div class="job-title">
+
+                                        <?= htmlspecialchars($job['title']) ?>
+
+                                    </div>
+
+                                    <div class="job-meta">
+
+                                        <?= htmlspecialchars($job['job_type']) ?>
+
+                                        &bull;
+
+                                        <?= htmlspecialchars($job['location']) ?>
+
+                                    </div>
+
+                                </div>
+
+
+                                <span class="job-badge <?= $badgeClass ?>">
+
+                                    <?= htmlspecialchars($badgeLabel) ?>
+
+                                </span>
+
+
+                                <div class="applicant-count">
+
+                                    <?= (int) ($job['total_applicants'] ?? 0) ?>
+
+                                    pelamar
+
+                                </div>
+
+
+                                <div>
+
+                                    <a
+                                        href="jobs.php?edit=<?= (int) $job['id'] ?>"
+                                        class="btn-edit"
+                                    >
+                                        Edit &#9998;
+                                    </a>
+
+                                </div>
+
+                            </li>
+
+
+                        <?php endforeach; ?>
+
+                    </ul>
+
+
+                <?php endif; ?>
+
+            </section>
+
+
+        <?php endif; ?>
+
+    </main>
 
 </body>
 </html>
-

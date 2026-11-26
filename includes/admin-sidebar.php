@@ -5,6 +5,8 @@ $halaman_aktif = basename($_SERVER['PHP_SELF']);
 
 <aside class="sidebar">
 
+    <!-- LOGO DAN IDENTITAS -->
+
     <div class="sidebar-logo">
         <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
 
@@ -14,7 +16,13 @@ $halaman_aktif = basename($_SERVER['PHP_SELF']);
         </div>
     </div>
 
+
+    <!-- LABEL MENU -->
+
     <div class="sidebar-label">ADMIN</div>
+
+
+    <!-- MENU NAVIGASI -->
 
     <nav class="sidebar-menu">
 
@@ -50,8 +58,14 @@ $halaman_aktif = basename($_SERVER['PHP_SELF']);
 
     </nav>
 
-    <div class="sidebar-bottom">
-        <a href="../auth/logout.php">Keluar</a>
-    </div>
+
+    <!-- BAGIAN BAWAH SIDEBAR -->
+
+   <div class="sidebar-bottom">
+    <a href="../auth/logout.php" class="company-logout-link">
+        <span class="company-menu-icon">⇥</span>
+        <span>Keluar</span>
+    </a>
+</div>
 
 </aside>
