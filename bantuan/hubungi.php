@@ -2,21 +2,25 @@
 <?php
 session_start();
 
-require_once "../config/database.php";
-
-// CEK LOGIN MAHASISWA
-if (
-    !isset($_SESSION["user_id"]) ||
-    ($_SESSION["role"] ?? "") !== "student"
-) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: ../auth/login.php");
     exit;
 }
 
-$userName = $_SESSION["name"] ?? "Mahasiswa";
+$pesan = "";
 
-function e($value) {
-    return htmlspecialchars((string)($value ?? ""), ENT_QUOTES, "UTF-8");
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $topik     = trim($_POST["topik"] ?? "");
+    $judul     = trim($_POST["judul"] ?? "");
+    $deskripsi = trim($_POST["deskripsi"] ?? "");
+    $email     = trim($_POST["email"] ?? "");
+    $whatsapp  = trim($_POST["whatsapp"] ?? "");
+
+    if ($topik && $judul && $deskripsi && $email) {
+        $pesan = "Permintaan bantuan berhasil dikirim.";
+    } else {
+        $pesan = "Mohon lengkapi seluruh kolom wajib.";
+    }
 }
 ?>
 
@@ -26,157 +30,119 @@ function e($value) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Formulir Bantuan | CareerMap</title>
+    <title>Formulir Bantuan - CareerMap</title>
 
-    <!-- CSS SIDEBAR DAN LAYOUT YANG SUDAH ADA -->
-    <link rel="stylesheet" href="../assets/css/bantuan.css">
-
-    <!-- CSS KHUSUS FORMULIR -->
-    <link rel="stylesheet" href="../assets/css/hubungi.css">
+    <link rel="stylesheet" href="../assets/CSS/form%20bantuan.css?v=107">
 </head>
 
 <body>
 
-<div class="dashboard-layout">
+<div class="cm-layout">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="cm-sidebar">
 
-        <div class="sidebar-logo">
-            <img src="../assets/images/logo-uajy.png"
-                 alt="Logo CareerMap">
+        <!-- LOGO ATMA JAYA DAN CAREERMAP -->
+        <div class="cm-brand">
+
+            <img
+                src="../assets/images/logo-uajy-transparan.png"
+                alt="Logo Atma Jaya"
+                class="cm-logo"
+            >
+
             <span>CareerMap</span>
+
         </div>
 
-        <div class="sidebar-label">MAHASISWA</div>
+        <div class="cm-role">MAHASISWA</div>
 
-        <nav class="sidebar-menu">
-
-            <a href="../mahasiswa/dashboard.php" class="menu-item">
-                Dashboard
-            </a>
-
-            <a href="../mahasiswa/cari_lowongan.php" class="menu-item">
-                Cari Lowongan
-            </a>
-
-            <a href="../mahasiswa/lamaran_saya.php" class="menu-item">
-                Lamaran Saya
-            </a>
-
-            <a href="../mahasiswa/lowongan_disimpan.php" class="menu-item">
-                Lowongan Disimpan
-            </a>
-
-            <a href="../mahasiswa/profile.php" class="menu-item">
-                Profil Saya
-            </a>
-
+        <!-- MENU SIDEBAR -->
+        <nav class="cm-menu">
+            <a href="../mahasiswa/dashboard.php">Dashboard</a>
+            <a href="../mahasiswa/cari_lowongan.php">Cari Lowongan</a>
+            <a href="../mahasiswa/lamaran_saya.php">Lamaran Saya</a>
+            <a href="../mahasiswa/lowongan_disimpan.php">Lowongan Disimpan</a>
+            <a href="../mahasiswa/profile.php">Profil Saya</a>
         </nav>
 
-        <div class="sidebar-bottom">
-
-            <a href="index.php" class="menu-item active">
-                Bantuan & Pusat Dukungan
-            </a>
-
-            <a href="../auth/logout.php" class="menu-item logout">
-                Keluar
-            </a>
-
+        <!-- MENU BAWAH -->
+        <div class="cm-sidebar-bottom">
+            <a href="index.php">Bantuan &amp; Pusat Dukungan</a>
+            <a href="../auth/logout.php">Keluar</a>
         </div>
 
     </aside>
 
 
     <!-- KONTEN UTAMA -->
-    <main class="main-content">
+    <main class="cm-main">
 
         <!-- BREADCRUMB -->
-        <div class="contact-breadcrumb">
-            <a href="index.php">Bantuan & Pusat Dukungan</a>
-            <span>›</span>
+        <div class="cm-breadcrumb">
+            <span>Bantuan &amp; Pusat Dukungan</span>
+            <span class="cm-chevron">›</span>
             <strong>Formulir Bantuan</strong>
         </div>
 
-
         <!-- HEADER -->
-        <header class="contact-header">
-
+        <header class="cm-page-header">
             <h1>Formulir Bantuan</h1>
 
             <p>
                 Kirimkan pertanyaan, kendala, atau permintaan bantuan.
                 Tim dukungan CareerMap akan menindaklanjuti secepatnya.
             </p>
-
         </header>
 
+        <!-- NOTIFIKASI -->
+        <?php if ($pesan): ?>
+            <div class="cm-alert">
+                <?= htmlspecialchars($pesan, ENT_QUOTES, "UTF-8") ?>
+            </div>
+        <?php endif; ?>
 
-        <!-- FORM CONTAINER -->
-        <section class="contact-wrapper">
 
-            <form class="support-form"
-                  action=""
-                  method="POST"
-                  enctype="multipart/form-data">
+        <!-- KARTU FORMULIR -->
+        <section class="cm-form-card">
+
+            <form method="POST" enctype="multipart/form-data">
 
                 <h2>Informasi Permintaan Bantuan</h2>
 
-
                 <!-- TOPIK BANTUAN -->
-                <div class="support-group">
+                <div class="cm-field cm-topic-field">
 
-                    <label for="topic">
+                    <label for="topik">
                         Topik Bantuan <span>*</span>
                     </label>
 
-                    <select name="topic" id="topic" required>
-
-                        <option value="">Pilih topik bantuan</option>
-
-                        <option value="Akun & Autentikasi">
-                            Akun & Autentikasi
-                        </option>
-
-                        <option value="Profil & Dokumen">
-                            Profil & Dokumen
-                        </option>
-
-                        <option value="Lowongan & Lamaran">
-                            Lowongan & Lamaran
-                        </option>
-
-                        <option value="Perusahaan">
-                            Perusahaan
-                        </option>
-
-                        <option value="Pelaporan & Keamanan">
-                            Pelaporan & Keamanan
-                        </option>
-
-                        <option value="Lainnya">
-                            Lainnya
-                        </option>
-
-                    </select>
+                    <div class="cm-select-wrap">
+                        <select name="topik" id="topik" required>
+                            <option value="">Pilih topik bantuan</option>
+                            <option value="Akun dan Profil">Akun dan Profil</option>
+                            <option value="Lowongan Pekerjaan">Lowongan Pekerjaan</option>
+                            <option value="Lamaran Pekerjaan">Lamaran Pekerjaan</option>
+                            <option value="Kendala Teknis">Kendala Teknis</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
 
                 </div>
 
 
                 <!-- JUDUL PERMOHONAN -->
-                <div class="support-group">
+                <div class="cm-field">
 
-                    <label for="subject">
+                    <label for="judul">
                         Judul Permohonan <span>*</span>
                     </label>
 
                     <input
                         type="text"
-                        id="subject"
-                        name="subject"
+                        name="judul"
+                        id="judul"
                         placeholder="Tuliskan ringkasan masalah atau kebutuhan bantuan..."
-                        maxlength="150"
                         required
                     >
 
@@ -184,125 +150,112 @@ function e($value) {
 
 
                 <!-- DESKRIPSI -->
-                <div class="support-group">
+                <div class="cm-field cm-description-field">
 
-                    <label for="description">
+                    <label for="deskripsi">
                         Deskripsi Permasalahan <span>*</span>
                     </label>
 
                     <textarea
-                        id="description"
-                        name="description"
+                        name="deskripsi"
+                        id="deskripsi"
                         maxlength="500"
                         placeholder="Jelaskan secara rinci kendala yang Anda alami..."
                         required
                     ></textarea>
 
-                    <div class="support-counter">
-                        <span id="currentCount">0</span>/500
+                    <div class="cm-counter">
+                        <span id="cm-count">0</span>/500
                     </div>
 
                 </div>
 
 
                 <!-- LAMPIRAN -->
-                <div class="support-group">
+                <div class="cm-field cm-upload-field">
 
                     <label>Lampiran (Opsional)</label>
 
+                    <label for="lampiran" class="cm-upload-box">
+
+                        <span class="cm-upload-icon">
+                            <span class="cm-upload-arrow"></span>
+                            <span class="cm-upload-base"></span>
+                        </span>
+
+                        <span class="cm-upload-title" id="cm-file-label">
+                            Unggah file pendukung (screenshot, dokumen, dll.)
+                        </span>
+
+                        <span class="cm-upload-info">
+                            Format: JPG, PNG, PDF (Maks. 5 MB)
+                        </span>
+
+                    </label>
+
                     <input
                         type="file"
-                        name="attachment"
-                        id="attachment"
+                        name="lampiran"
+                        id="lampiran"
                         accept=".jpg,.jpeg,.png,.pdf"
                         hidden
                     >
-
-                    <label for="attachment" class="support-upload">
-
-                        <div class="upload-icon">
-                            <svg viewBox="0 0 24 24"
-                                 width="25"
-                                 height="25"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="2"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-                                <path d="M12 16V4"/>
-                                <path d="m7 9 5-5 5 5"/>
-                                <path d="M20 16.5v2A2.5 2.5 0 0 1 17.5 21h-11A2.5 2.5 0 0 1 4 18.5v-2"/>
-                            </svg>
-                        </div>
-
-                        <strong>Unggah file pendukung</strong>
-
-                        <small>
-                            (screenshot, dokumen, dll.)
-                        </small>
-
-                        <small>
-                            Format: JPG, PNG, PDF (Maks. 5 MB)
-                        </small>
-
-                        <span id="selectedFile"></span>
-
-                    </label>
 
                 </div>
 
 
                 <!-- KONTAK -->
-                <div class="support-contact-title">
-                    Kontak yang Dapat Dihubungi
-                </div>
+                <div class="cm-contact-section">
+
+                    <h3>Kontak yang Dapat Dihubungi</h3>
+
+                    <div class="cm-contact-grid">
+
+                        <div class="cm-field">
+
+                            <label for="email">
+                                Email <span>*</span>
+                            </label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                placeholder="nama@contoh.com"
+                                required
+                            >
+
+                        </div>
 
 
-                <div class="support-contact-grid">
+                        <div class="cm-field">
 
-                    <div class="support-group">
+                            <label for="whatsapp">
+                                Nomor WhatsApp (Opsional)
+                            </label>
 
-                        <label for="email">
-                            Email <span>*</span>
-                        </label>
+                            <input
+                                type="tel"
+                                name="whatsapp"
+                                id="whatsapp"
+                                placeholder="08xxxxxxxxxx"
+                            >
 
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="nama@contoh.com"
-                            required
-                        >
+                        </div>
 
                     </div>
 
-
-                    <div class="support-group">
-
-                        <label for="whatsapp">
-                            Nomor WhatsApp (Opsional)
-                        </label>
-
-                        <input
-                            type="tel"
-                            id="whatsapp"
-                            name="whatsapp"
-                            placeholder="08xxxxxxxxxx"
-                        >
-
-                    </div>
-
                 </div>
 
 
-                <!-- BUTTON -->
-                <div class="support-actions">
+                <!-- TOMBOL -->
+                <div class="cm-actions">
 
-                    <a href="index.php" class="support-cancel">
+                    <a href="index.php" class="cm-btn cm-btn-cancel">
                         Batal
                     </a>
 
-                    <button type="submit" class="support-submit">
+                    <button type="submit" class="cm-btn cm-btn-submit">
                         Kirim Permintaan
                     </button>
 
@@ -320,22 +273,22 @@ function e($value) {
 <!-- JAVASCRIPT -->
 <script>
 
-// HITUNG KARAKTER DESKRIPSI
-const description = document.getElementById("description");
-const currentCount = document.getElementById("currentCount");
+    // Penghitung karakter
+    const description = document.getElementById("deskripsi");
+    const counter = document.getElementById("cm-count");
 
-description.addEventListener("input", function() {
-    currentCount.textContent = this.value.length;
-});
+    description.addEventListener("input", function () {
+        counter.textContent = this.value.length;
+    });
 
 
-// NAMA FILE LAMPIRAN
-const attachment = document.getElementById("attachment");
-const selectedFile = document.getElementById("selectedFile");
+    // Validasi lampiran
+    const fileInput = document.getElementById("lampiran");
+    const fileLabel = document.getElementById("cm-file-label");
 
-attachment.addEventListener("change", function() {
+    fileInput.addEventListener("change", function () {
 
-    if (this.files.length > 0) {
+        if (!this.files.length) return;
 
         const file = this.files[0];
 
@@ -345,27 +298,23 @@ attachment.addEventListener("change", function() {
             "application/pdf"
         ];
 
-        if (!allowedTypes.includes(file.type)) {
-            alert("Format file harus JPG, PNG, atau PDF.");
+        const maxSize = 5 * 1024 * 1024;
+
+        if (!allowedTypes.includes(file.type) || file.size > maxSize) {
+
+            alert("File harus JPG, PNG, atau PDF dengan ukuran maksimal 5 MB.");
+
             this.value = "";
-            selectedFile.textContent = "";
+
+            fileLabel.textContent =
+                "Unggah file pendukung (screenshot, dokumen, dll.)";
+
             return;
         }
 
-        if (file.size > 5 * 1024 * 1024) {
-            alert("Ukuran file maksimal 5 MB.");
-            this.value = "";
-            selectedFile.textContent = "";
-            return;
-        }
+        fileLabel.textContent = file.name;
 
-        selectedFile.textContent = "File dipilih: " + file.name;
-
-    } else {
-        selectedFile.textContent = "";
-    }
-
-});
+    });
 
 </script>
 
