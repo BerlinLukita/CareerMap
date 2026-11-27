@@ -1,0 +1,963 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
+
+/* =========================================
+   1. VARIABLES
+========================================= */
+
+:root {
+    --navy: #173D70;
+    --navy-light: #28588D;
+    --blue: #1557AB;
+    --background: #F3F5FB;
+    --white: #FFFFFF;
+    --text: #192F53;
+    --muted: #607394;
+    --border: #DCE5F2;
+    --light-blue: #E8F1FF;
+}
+
+/* =========================================
+   2. RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background: #333333;
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+}
+
+/* =========================================
+   3. MAIN LAYOUT
+========================================= */
+
+.layout {
+    display: flex;
+    width: 100%;
+    max-width: 1600px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--background);
+}
+
+/* =========================================
+   4. SIDEBAR
+========================================= */
+
+.sidebar {
+    width: clamp(190px, 18vw, 250px);
+    min-width: clamp(190px, 18vw, 250px);
+
+    height: 100vh;
+    min-height: 100vh;
+
+    position: sticky;
+    top: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 17px 14px 20px;
+
+    background: var(--navy);
+    color: white;
+}
+
+/* BRAND */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 0 9px;
+    margin-bottom: 32px;
+}
+
+.brand img {
+    width: 33px;
+    height: 39px;
+    object-fit: contain;
+}
+
+.brand span {
+    font-size: clamp(16px, 1.5vw, 19px);
+    font-weight: 700;
+    color: white;
+    white-space: nowrap;
+}
+
+/* ROLE */
+
+.role-label {
+    padding: 0 9px;
+    margin-bottom: 12px;
+
+    color: #B9CBE3;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* NAVIGATION */
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.nav-link {
+    min-height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    color: #E0E9F6;
+    font-size: 13px;
+
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.10);
+    color: white;
+}
+
+.nav-link.active {
+    background: var(--navy-light);
+    color: white;
+    font-weight: 700;
+}
+
+/* SIDEBAR FOOTER */
+
+.sidebar-footer {
+    margin-top: auto;
+
+    border-top: 1px solid rgba(255,255,255,0.20);
+
+    padding: 24px 9px 5px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.sidebar-footer a {
+    color: #E0E9F6;
+    font-size: 11px;
+}
+
+.sidebar-footer a:hover {
+    color: white;
+}
+
+.sidebar-footer .logout {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+}
+
+/* =========================================
+   5. MAIN CONTENT
+========================================= */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+
+    padding: clamp(22px, 2.5vw, 40px);
+}
+
+/* =========================================
+   6. PAGE HEADER
+========================================= */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.page-header h1 {
+    font-size: clamp(23px, 2vw, 29px);
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 7px;
+}
+
+.page-header p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    background: var(--light-blue);
+    color: var(--blue);
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* =========================================
+   7. DETAIL GRID
+========================================= */
+
+.detail-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.75fr)
+        minmax(250px, 0.95fr);
+
+    gap: 23px;
+
+    align-items: start;
+}
+
+/* =========================================
+   8. LEFT JOB INFORMATION CARD
+========================================= */
+
+.job-information-card {
+    min-width: 0;
+    min-height: 615px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    padding: 25px 26px;
+}
+
+/* JOB HEADER */
+
+.job-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin-bottom: 32px;
+}
+
+.company-logo {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #E8F1FF;
+    color: var(--blue);
+
+    border-radius: 11px;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.job-title {
+    flex: 1;
+    min-width: 0;
+}
+
+.job-title h2 {
+    font-size: clamp(16px, 1.5vw, 20px);
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 7px;
+}
+
+.job-title p {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* REPORT BUTTON */
+
+.report-button {
+    min-width: 145px;
+    min-height: 36px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--blue);
+    border-radius: 8px;
+
+    background: white;
+    color: var(--blue);
+
+    font-size: 10px;
+    font-weight: 500;
+
+    transition: 0.2s;
+}
+
+.report-button:hover {
+    background: var(--blue);
+    color: white;
+}
+
+/* =========================================
+   9. INFORMATION SECTIONS
+========================================= */
+
+.information-section {
+    margin-bottom: 28px;
+}
+
+.information-section h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 16px;
+}
+
+.description {
+    max-width: 600px;
+
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+/* QUALIFICATION LIST */
+
+.qualification-list {
+    padding-left: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.qualification-list li {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   10. JOB META INFORMATION
+========================================= */
+
+.job-meta-section {
+    margin-top: 33px;
+}
+
+.job-meta-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    column-gap: 20px;
+    row-gap: 18px;
+}
+
+.job-meta-grid p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.job-meta-grid span {
+    color: var(--muted);
+}
+
+/* =========================================
+   11. RIGHT COLUMN
+========================================= */
+
+.right-column {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+}
+
+/* =========================================
+   12. COMPANY LOCATION CARD
+========================================= */
+
+.company-location-card {
+    width: 100%;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    padding: 20px 18px 25px;
+}
+
+.company-location-card > h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 16px;
+}
+
+/* MINI MAP */
+
+.mini-map {
+    position: relative;
+
+    width: 100%;
+    height: 175px;
+
+    overflow: hidden;
+
+    background: #E5EEE7;
+    border-radius: 10px;
+
+    margin-bottom: 17px;
+}
+
+/* MAP BLOCKS */
+
+.mini-map-block {
+    position: absolute;
+    background: #D3E3D4;
+    border-radius: 8px;
+}
+
+.block-a {
+    width: 35%;
+    height: 35%;
+    left: 5%;
+    top: 8%;
+}
+
+.block-b {
+    width: 35%;
+    height: 32%;
+    right: 5%;
+    top: 10%;
+}
+
+.block-c {
+    width: 30%;
+    height: 35%;
+    left: 10%;
+    bottom: 7%;
+}
+
+.block-d {
+    width: 35%;
+    height: 33%;
+    right: 10%;
+    bottom: 7%;
+}
+
+/* ROADS */
+
+.mini-road {
+    position: absolute;
+    background: white;
+    z-index: 2;
+}
+
+.road-a {
+    width: 120%;
+    height: 12px;
+    top: 45%;
+    left: -10%;
+    transform: rotate(-8deg);
+    border-radius: 50%;
+}
+
+.road-b {
+    width: 12px;
+    height: 120%;
+    left: 45%;
+    top: -10%;
+    transform: rotate(10deg);
+    border-radius: 50%;
+}
+
+.road-c {
+    width: 80%;
+    height: 10px;
+    left: 10%;
+    bottom: 15%;
+    transform: rotate(5deg);
+    border-radius: 50%;
+}
+
+/* LOCATION MARKER */
+
+.mini-map-marker {
+    position: absolute;
+    z-index: 4;
+
+    width: 25px;
+    height: 25px;
+
+    left: 50%;
+    top: 48%;
+
+    transform: translate(-50%, -50%);
+
+    background: var(--blue);
+    border: 3px solid white;
+    border-radius: 50%;
+}
+
+/* COMPANY INFORMATION */
+
+.company-location-info {
+    padding: 0 4px;
+}
+
+.company-location-info h4 {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 700;
+
+    margin-bottom: 6px;
+}
+
+.company-location-info p {
+    color: var(--muted);
+    font-size: 11px;
+
+    margin-bottom: 13px;
+}
+
+.direction-link {
+    display: inline-block;
+
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.direction-link:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   13. APPLY BUTTON
+========================================= */
+
+.apply-button {
+    width: calc(100% - 10px);
+    min-height: 43px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 auto;
+
+    background: var(--blue);
+    color: white;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.apply-button:hover {
+    background: var(--navy);
+}
+
+/* =========================================
+   14. NOT FOUND
+========================================= */
+
+.not-found {
+    width: 100%;
+
+    padding: 70px 25px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    text-align: center;
+}
+
+.not-found h1 {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.not-found p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 22px;
+}
+
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 20px;
+
+    background: var(--blue);
+    color: white;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* =========================================
+   15. LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1400px) {
+
+    .sidebar {
+        width: 250px;
+        min-width: 250px;
+    }
+
+    .main-content {
+        padding: 38px 45px;
+    }
+
+    .job-information-card {
+        min-height: 650px;
+        padding: 30px;
+    }
+
+    .mini-map {
+        height: 190px;
+    }
+
+}
+
+/* =========================================
+   16. LAPTOP
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .sidebar {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .main-content {
+        padding: 24px;
+    }
+
+    .detail-layout {
+        grid-template-columns:
+            minmax(0, 1.5fr)
+            minmax(220px, 0.9fr);
+
+        gap: 15px;
+    }
+
+    .job-information-card {
+        padding: 20px;
+    }
+
+    .job-header {
+        flex-wrap: wrap;
+    }
+
+    .report-button {
+        margin-left: 63px;
+    }
+
+}
+
+/* =========================================
+   17. TABLET
+========================================= */
+
+@media (max-width: 760px) {
+
+    .layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: relative;
+        top: auto;
+
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: auto;
+
+        padding: 15px;
+    }
+
+    .brand {
+        margin-bottom: 15px;
+    }
+
+    .role-label {
+        display: none;
+    }
+
+    .navigation {
+        display: flex;
+        flex-direction: row;
+        gap: 7px;
+
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .nav-link {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 10px 13px;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 24px 20px;
+    }
+
+    .detail-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .job-information-card {
+        min-height: auto;
+    }
+
+    .right-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+
+    .apply-button {
+        width: 100%;
+        margin: 0;
+    }
+
+}
+
+/* =========================================
+   18. SMARTPHONE
+========================================= */
+
+@media (max-width: 480px) {
+
+    .main-content {
+        padding: 20px 14px;
+    }
+
+    .page-header h1 {
+        font-size: 22px;
+    }
+
+    .page-header p {
+        font-size: 11px;
+    }
+
+    .job-information-card {
+        padding: 17px;
+    }
+
+    .job-header {
+        align-items: flex-start;
+        gap: 11px;
+    }
+
+    .company-logo {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+    }
+
+    .job-title {
+        width: calc(100% - 55px);
+    }
+
+    .job-title h2 {
+        font-size: 16px;
+    }
+
+    .report-button {
+        width: 100%;
+        margin: 5px 0 0;
+    }
+
+    .information-section {
+        margin-bottom: 25px;
+    }
+
+    .information-section h3 {
+        font-size: 14px;
+    }
+
+    .description,
+    .qualification-list li,
+    .job-meta-grid p {
+        font-size: 11px;
+    }
+
+    .job-meta-grid {
+        grid-template-columns: 1fr;
+        row-gap: 12px;
+    }
+
+    .right-column {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .company-location-card {
+        padding: 17px;
+    }
+
+    .mini-map {
+        height: 190px;
+    }
+
+    .apply-button {
+        width: 100%;
+        min-height: 44px;
+    }
+
+}
+
+/* =========================================
+   19. SMALL SMARTPHONE
+========================================= */
+
+@media (max-width: 350px) {
+
+    .page-header h1 {
+        font-size: 20px;
+    }
+
+    .job-title h2 {
+        font-size: 14px;
+    }
+
+    .company-location-card {
+        padding: 14px;
+    }
+
+}
+
+
+/* =========================================
+   TOMBOL SIMPAN DI HALAMAN DETAIL
+========================================= */
+.saved-notice {
+    margin-bottom: 16px;
+    padding: 11px 14px;
+    border: 1px solid #C9E6D2;
+    border-radius: 8px;
+    background: #EFF9F1;
+    color: #267443;
+    font-size: 12px;
+}
+.job-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+.job-header-actions form { margin: 0; }
+.detail-save-button {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 12px;
+    border: 1px solid var(--blue);
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: var(--blue);
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+.detail-save-button svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linejoin: round;
+}
+.detail-save-button:hover, .detail-save-button.is-saved {
+    background: #EAF2FF;
+}
+.detail-save-button.is-saved svg { fill: var(--blue); }
+@media (max-width: 900px) {
+    .job-header-actions { margin-left: 63px; }
+}
+@media (max-width: 760px) {
+    .job-header-actions { width: 100%; margin: 5px 0 0; flex-wrap: wrap; }
+    .job-header-actions form { flex: 1; }
+    .detail-save-button, .job-header-actions .report-button { width: 100%; }
+}

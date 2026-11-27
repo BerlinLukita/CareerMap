@@ -2,354 +2,415 @@
 <?php
 session_start();
 
-if (
-    !isset($_SESSION["user_id"]) ||
-    $_SESSION["role"] != "student"
-) {
+if (!isset($_SESSION["user_id"]) || ($_SESSION["role"] ?? "") !== "student") {
     header("Location: ../auth/login.php");
     exit;
 }
 
 require_once "../config/database.php";
+$userId = (int) $_SESSION["user_id"];
 
-$user_id = $_SESSION["user_id"];
-$message = "";
+function e($v): string {
+    return htmlspecialchars((string)($v ?? ""), ENT_QUOTES, "UTF-8");
+}
 
-$sql = "SELECT users.name, users.email,
-               student_profiles.nim,
-               student_profiles.study_program,
-               student_profiles.photo_path,
-               student_profiles.cv_path,
-               student_profiles.portfolio_url
-        FROM users
-        JOIN student_profiles
-        ON users.id = student_profiles.user_id
-        WHERE users.id = ?";
+function loadProfile(PDO $pdo, int $id): array {
+    $q = $pdo->prepare("SELECT
+        u.name, u.email,
+        sp.nim, sp.study_program,
+        sp.photo_path, sp.cv_path, sp.portfolio_url
+        FROM users u
+        JOIN student_profiles sp ON sp.user_id = u.id
+        WHERE u.id = ?");
 
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$user_id]);
-$profile = $stmt->fetch(PDO::FETCH_ASSOC);
+    $q->execute([$id]);
+    $row = $q->fetch(PDO::FETCH_ASSOC);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (!$row) {
+        http_response_code(404);
+        exit("Data profil mahasiswa tidak ditemukan.");
+    }
 
-    $name = trim($_POST["name"]);
-    $nim = trim($_POST["nim"]);
-    $study_program = trim($_POST["study_program"]);
-    $portfolio_url = trim($_POST["portfolio_url"]);
+    return $row;
+}
 
-    $photo_path = $profile["photo_path"];
-    $cv_path = $profile["cv_path"];
+$profile = loadProfile($pdo, $userId);
+$error = "";
 
-    $new_photo = "";
-    $new_cv = "";
+$success = isset($_GET["cv"]) && $_GET["cv"] === "success"
+    ? "CV berhasil diunggah atau diperbarui."
+    : "";
 
-    if (empty($name) || empty($nim) || empty($study_program)) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["upload_cv"])) {
 
-        $message = "Nama, NIM, dan program studi wajib diisi!";
+    if (!isset($_FILES["cv"]) || $_FILES["cv"]["error"] === UPLOAD_ERR_NO_FILE) {
+        $error = "Pilih file CV terlebih dahulu.";
+
+    } elseif ($_FILES["cv"]["error"] !== UPLOAD_ERR_OK) {
+        $error = "Terjadi kesalahan saat mengunggah CV.";
+
+    } elseif ($_FILES["cv"]["size"] > 5 * 1024 * 1024) {
+        $error = "Ukuran CV maksimal 5 MB.";
 
     } else {
+        $tmp = $_FILES["cv"]["tmp_name"];
+        $mime = (new finfo(FILEINFO_MIME_TYPE))->file($tmp);
+        $ext = strtolower(pathinfo($_FILES["cv"]["name"], PATHINFO_EXTENSION));
 
-        // Validasi upload foto profil
-        if (isset($_FILES["photo"]) &&
-            $_FILES["photo"]["error"] != UPLOAD_ERR_NO_FILE) {
+        if ($mime !== "application/pdf" || $ext !== "pdf") {
+            $error = "CV harus berupa file PDF.";
 
-            if ($_FILES["photo"]["error"] != UPLOAD_ERR_OK) {
-                $message = "Terjadi kesalahan saat mengupload foto.";
+        } else {
+            $dir = dirname(__DIR__) . "/uploads/cvs/";
 
-            } elseif ($_FILES["photo"]["size"] > 2 * 1024 * 1024) {
-                $message = "Ukuran foto maksimal 2 MB.";
+            if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
+                $error = "Folder penyimpanan CV tidak dapat dibuat.";
 
             } else {
+                $filename = bin2hex(random_bytes(16)) . ".pdf";
+                $destination = $dir . $filename;
 
-                $photo_mime = mime_content_type($_FILES["photo"]["tmp_name"]);
+                if (!move_uploaded_file($tmp, $destination)) {
+                    $error = "Gagal menyimpan file CV.";
 
-                if ($photo_mime == "image/jpeg") {
-                    $photo_extension = "jpg";
-                } elseif ($photo_mime == "image/png") {
-                    $photo_extension = "png";
                 } else {
-                    $message = "Foto harus berformat JPG atau PNG.";
-                }
+                    $newPath = "uploads/cvs/" . $filename;
 
-                if ($message == "") {
+                    try {
+                        $up = $pdo->prepare(
+                            "UPDATE student_profiles
+                             SET cv_path = ?
+                             WHERE user_id = ?"
+                        );
 
-                    if (getimagesize($_FILES["photo"]["tmp_name"]) === false) {
-                        $message = "File foto tidak valid.";
-                    } else {
+                        $up->execute([$newPath, $userId]);
 
-                        $photo_filename = bin2hex(random_bytes(16))
-                                        . "." . $photo_extension;
+                        if (
+                            !empty($profile["cv_path"]) &&
+                            strpos($profile["cv_path"], "uploads/cvs/") === 0
+                        ) {
+                            $old = dirname(__DIR__) . "/" . $profile["cv_path"];
 
-                        $photo_destination = "../uploads/profiles/"
-                                           . $photo_filename;
-
-                        if (move_uploaded_file(
-                            $_FILES["photo"]["tmp_name"],
-                            $photo_destination
-                        )) {
-                            $new_photo = "uploads/profiles/" . $photo_filename;
-                            $photo_path = $new_photo;
-                        } else {
-                            $message = "Gagal menyimpan foto profil.";
+                            if (is_file($old)) {
+                                unlink($old);
+                            }
                         }
+
+                        header("Location: profile.php?cv=success");
+                        exit;
+
+                    } catch (PDOException $ex) {
+                        if (is_file($destination)) {
+                            unlink($destination);
+                        }
+
+                        $error = "CV gagal disimpan ke database.";
                     }
                 }
-            }
-        }
-
-        // Validasi upload CV
-        if ($message == "" &&
-            isset($_FILES["cv"]) &&
-            $_FILES["cv"]["error"] != UPLOAD_ERR_NO_FILE) {
-
-            if ($_FILES["cv"]["error"] != UPLOAD_ERR_OK) {
-                $message = "Terjadi kesalahan saat mengupload CV.";
-
-            } elseif ($_FILES["cv"]["size"] > 5 * 1024 * 1024) {
-                $message = "Ukuran CV maksimal 5 MB.";
-
-            } else {
-
-                $cv_mime = mime_content_type($_FILES["cv"]["tmp_name"]);
-
-                if (
-                    $cv_mime != "application/pdf" ||
-                    strtolower(pathinfo(
-                        $_FILES["cv"]["name"],
-                        PATHINFO_EXTENSION
-                    )) != "pdf"
-                ) {
-                    $message = "CV harus berformat PDF.";
-
-                } else {
-
-                    $cv_filename = bin2hex(random_bytes(16)) . ".pdf";
-
-                    $cv_destination = "../uploads/cvs/" . $cv_filename;
-
-                    if (move_uploaded_file(
-                        $_FILES["cv"]["tmp_name"],
-                        $cv_destination
-                    )) {
-                        $new_cv = "uploads/cvs/" . $cv_filename;
-                        $cv_path = $new_cv;
-                    } else {
-                        $message = "Gagal menyimpan CV.";
-                    }
-                }
-            }
-        }
-
-        // Simpan perubahan ke database
-        if ($message == "") {
-
-            try {
-
-                $pdo->beginTransaction();
-
-                $updateUser = $pdo->prepare(
-                    "UPDATE users
-                     SET name = ?
-                     WHERE id = ?"
-                );
-
-                $updateUser->execute([
-                    $name,
-                    $user_id
-                ]);
-
-                $updateProfile = $pdo->prepare(
-                    "UPDATE student_profiles
-                     SET nim = ?,
-                         study_program = ?,
-                         portfolio_url = ?,
-                         photo_path = ?,
-                         cv_path = ?
-                     WHERE user_id = ?"
-                );
-
-                $updateProfile->execute([
-                    $nim,
-                    $study_program,
-                    $portfolio_url,
-                    $photo_path,
-                    $cv_path,
-                    $user_id
-                ]);
-
-                $pdo->commit();
-
-                // Hapus file lama jika file baru berhasil disimpan
-                if ($new_photo != "" &&
-                    !empty($profile["photo_path"]) &&
-                    strpos($profile["photo_path"], "uploads/profiles/") === 0) {
-
-                    $old_photo = "../" . $profile["photo_path"];
-
-                    if (is_file($old_photo)) {
-                        unlink($old_photo);
-                    }
-                }
-
-                if ($new_cv != "" &&
-                    !empty($profile["cv_path"]) &&
-                    strpos($profile["cv_path"], "uploads/cvs/") === 0) {
-
-                    $old_cv = "../" . $profile["cv_path"];
-
-                    if (is_file($old_cv)) {
-                        unlink($old_cv);
-                    }
-                }
-
-                $_SESSION["name"] = $name;
-
-                $message = "Profil berhasil diperbarui!";
-
-                $stmt->execute([$user_id]);
-                $profile = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            } catch (PDOException $e) {
-
-                if ($pdo->inTransaction()) {
-                    $pdo->rollBack();
-                }
-
-                // Hapus file baru jika penyimpanan database gagal
-                if ($new_photo != "" && is_file("../" . $new_photo)) {
-                    unlink("../" . $new_photo);
-                }
-
-                if ($new_cv != "" && is_file("../" . $new_cv)) {
-                    unlink("../" . $new_cv);
-                }
-
-                if ($e->getCode() == "23000") {
-                    $message = "NIM sudah digunakan akun lain!";
-                } else {
-                    $message = "Gagal memperbarui profil.";
-                }
-            }
-        }
-
-        // Jika validasi upload gagal, hapus file baru yang sudah terlanjur dipindahkan
-        if ($message != "Profil berhasil diperbarui!") {
-
-            if ($new_photo != "" && is_file("../" . $new_photo)) {
-                unlink("../" . $new_photo);
-            }
-
-            if ($new_cv != "" && is_file("../" . $new_cv)) {
-                unlink("../" . $new_cv);
             }
         }
     }
+
+    $profile = loadProfile($pdo, $userId);
 }
+
+$name = $profile["name"] ?: "Mahasiswa";
+
+$initials = mb_strtoupper(
+    mb_substr(trim($name), 0, 2, "UTF-8"),
+    "UTF-8"
+);
+
+$fields = [
+    $profile["name"],
+    $profile["email"],
+    $profile["nim"],
+    $profile["study_program"],
+    $profile["portfolio_url"],
+    $profile["cv_path"]
+];
+
+$percent = (int) round(
+    count(array_filter($fields, fn($v) => trim((string)$v) !== ""))
+    / count($fields) * 100
+);
+
+$photo = !empty($profile["photo_path"])
+    ? "../" . e($profile["photo_path"])
+    : "";
+
+$cv = !empty($profile["cv_path"])
+    ? "../" . e($profile["cv_path"])
+    : "";
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Profil Mahasiswa CareerMap</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Profil Saya | CareerMap</title>
+
+<link rel="stylesheet" href="../assets/css/profile_mahasiswa.css">
 </head>
 
 <body>
 
-    <h2>Profil Saya</h2>
+<div class="cm-layout">
 
-    <p><?php echo htmlspecialchars($message); ?></p>
+    <!-- SIDEBAR -->
+    <aside class="cm-sidebar">
 
-    <form method="POST" enctype="multipart/form-data">
+        <a href="dashboard.php" class="cm-brand">
+            <img src="../assets/images/logo-uajy-transparan.png" alt="Logo Atma Jaya">
+            <span>CareerMap</span>
+        </a>
 
-        <label>Nama Lengkap</label><br>
-        <input
-            type="text"
-            name="name"
-            value="<?php echo htmlspecialchars($profile["name"] ?? ""); ?>"
-            required
-        >
-        <br><br>
+        <div class="cm-role">MAHASISWA</div>
 
-        <label>Email</label><br>
-        <input
-            type="email"
-            value="<?php echo htmlspecialchars($profile["email"] ?? ""); ?>"
-            disabled
-        >
-        <br><br>
+        <nav class="cm-menu">
+            <a href="dashboard.php">Dashboard</a>
+            <a href="cari_lowongan.php">Cari Lowongan</a>
+            <a href="lamaran_saya.php">Lamaran Saya</a>
+            <a href="lowongan_disimpan.php">Lowongan Disimpan</a>
+            <a href="profile.php" class="active">Profil Saya</a>
+        </nav>
 
-        <label>NIM</label><br>
-        <input
-            type="text"
-            name="nim"
-            value="<?php echo htmlspecialchars($profile["nim"] ?? ""); ?>"
-            required
-        >
-        <br><br>
+        <div class="cm-sidebar-bottom">
+           
+           <a href="index.php" class="menu-item">
+    Bantuan & Pusat Dukungan
+</a>
+            <a href="../auth/logout.php">Keluar</a>
+        </div>
 
-        <label>Program Studi</label><br>
-        <input
-            type="text"
-            name="study_program"
-            value="<?php echo htmlspecialchars($profile["study_program"] ?? ""); ?>"
-            required
-        >
-        <br><br>
+    </aside>
 
-        <label>LinkedIn / Portofolio</label><br>
-        <input
-            type="url"
-            name="portfolio_url"
-            value="<?php echo htmlspecialchars($profile["portfolio_url"] ?? ""); ?>"
-        >
-        <br><br>
 
-        <label>Foto Profil (JPG/PNG, maksimal 2 MB)</label><br>
+    <!-- KONTEN UTAMA -->
+    <main class="cm-main">
 
-        <?php if (!empty($profile["photo_path"])): ?>
-            <img
-                src="../<?php echo htmlspecialchars($profile["photo_path"]); ?>"
-                width="120"
-                alt="Foto Profil"
-            >
-            <br>
+        <header class="cm-page-header">
+            <h1>Profil Saya</h1>
+            <p>Kelola informasi pribadi, foto profil, dan dokumen kariermu.</p>
+        </header>
+
+        <?php if ($success): ?>
+            <div class="cm-alert success">
+                <?= e($success) ?>
+            </div>
         <?php endif; ?>
 
-        <input
-            type="file"
-            name="photo"
-            accept=".jpg,.jpeg,.png"
-        >
-        <br><br>
-
-        <label>Curriculum Vitae (PDF, maksimal 5 MB)</label><br>
-
-        <?php if (!empty($profile["cv_path"])): ?>
-            <a
-                href="../<?php echo htmlspecialchars($profile["cv_path"]); ?>"
-                target="_blank"
-            >
-                Lihat CV saat ini
-            </a>
-            <br>
+        <?php if ($error): ?>
+            <div class="cm-alert error">
+                <?= e($error) ?>
+            </div>
         <?php endif; ?>
 
-        <input
-            type="file"
-            name="cv"
-            accept=".pdf"
-        >
-        <br><br>
 
-        <button type="submit">Simpan Perubahan</button>
+        <section class="cm-profile-panel">
 
-    </form>
+            <div class="cm-profile-grid">
 
-    <br>
+                <!-- KARTU PROFIL KIRI -->
+                <section class="cm-card cm-summary-card">
 
-    <a href="dashboard.php">Kembali ke Dashboard</a>
+                    <div class="cm-avatar">
+
+                        <?php if ($photo): ?>
+                            <img src="<?= $photo ?>" alt="Foto profil">
+                        <?php else: ?>
+                            <span><?= e($initials) ?></span>
+                        <?php endif; ?>
+
+                    </div>
+
+                    <h2><?= e($profile["name"]) ?></h2>
+
+                    <p class="cm-study">
+                        <?= e($profile["study_program"]) ?> • Mahasiswa UAJY
+                    </p>
+
+
+                    <div class="cm-progress-wrap">
+
+                        <div class="cm-progress-label">
+                            Profil <?= $percent ?>% Lengkap
+                        </div>
+
+                        <div class="cm-progress">
+                            <span style="width:<?= $percent ?>%"></span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="cm-cv-heading">
+                        Curriculum Vitae (CV)
+                    </div>
+
+
+                    <div class="cm-cv-file">
+
+                        <?php if ($cv): ?>
+
+                            <a href="<?= $cv ?>" target="_blank" rel="noopener">
+                                <?= e(basename($profile["cv_path"])) ?>
+                            </a>
+
+                            <small>PDF • Maks. 5 MB</small>
+
+                        <?php else: ?>
+
+                            <strong>CV belum diunggah</strong>
+                            <small>Unggah CV dalam format PDF</small>
+
+                        <?php endif; ?>
+
+                    </div>
+
+
+                    <form method="POST" enctype="multipart/form-data" class="cm-cv-form">
+
+                        <label for="cv" class="cm-outline-button">
+                            <?= $cv ? "Ganti CV" : "Unggah CV" ?>
+                        </label>
+
+                        <input
+                            type="file"
+                            name="cv"
+                            id="cv"
+                            accept=".pdf,application/pdf"
+                            hidden
+                        >
+
+                        <button
+                            type="submit"
+                            name="upload_cv"
+                            class="cm-cv-submit"
+                            id="cv-submit"
+                            hidden
+                        >
+                            Simpan CV
+                        </button>
+
+                    </form>
+
+                </section>
+
+
+                <!-- KARTU INFORMASI KANAN -->
+                <section class="cm-card cm-info-card">
+
+                    <div class="cm-info-heading">
+                        <h2>Informasi Pribadi</h2>
+
+                        <a href="edit_profile.php" class="cm-outline-button">
+                            Edit Profil
+                        </a>
+                    </div>
+
+
+                    <div class="cm-info-list">
+
+                        <div class="cm-info-item">
+                            <span>Nama Lengkap</span>
+                            <div><?= e($profile["name"]) ?></div>
+                        </div>
+
+                        <div class="cm-info-item">
+                            <span>Email</span>
+                            <div><?= e($profile["email"]) ?></div>
+                        </div>
+
+                        <div class="cm-info-item">
+                            <span>NIM</span>
+                            <div><?= e($profile["nim"]) ?></div>
+                        </div>
+
+                        <div class="cm-info-item">
+                            <span>Program Studi</span>
+                            <div><?= e($profile["study_program"]) ?></div>
+                        </div>
+
+                        <div class="cm-info-item">
+
+                            <span>LinkedIn / Portofolio</span>
+
+                            <div>
+
+                                <?php if (!empty($profile["portfolio_url"])): ?>
+
+                                    <a
+                                        href="<?= e($profile["portfolio_url"]) ?>"
+                                        target="_blank"
+                                        rel="noopener"
+                                    >
+                                        <?= e($profile["portfolio_url"]) ?>
+                                    </a>
+
+                                <?php else: ?>
+
+                                    <span class="cm-empty">Belum diisi</span>
+
+                                <?php endif; ?>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="cm-photo-row">
+                        <span>Foto Profil</span>
+                        <small>JPG / PNG • Maks. 2 MB</small>
+
+                        <a href="edit_profile.php#foto" class="cm-outline-button">
+                            Ganti Foto
+                        </a>
+                    </div>
+
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+const cvInput = document.getElementById("cv");
+const cvSubmit = document.getElementById("cv-submit");
+
+cvInput.addEventListener("change", function () {
+
+    if (!this.files.length) {
+        cvSubmit.hidden = true;
+        return;
+    }
+
+    const file = this.files[0];
+
+    if (
+        file.type !== "application/pdf" ||
+        file.size > 5 * 1024 * 1024
+    ) {
+        alert("Pilih file PDF dengan ukuran maksimal 5 MB.");
+
+        this.value = "";
+        cvSubmit.hidden = true;
+        return;
+    }
+
+    cvSubmit.hidden = false;
+
+});
+</script>
 
 </body>
 </html>

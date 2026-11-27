@@ -1,0 +1,977 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
+
+/* =========================================
+   1. GLOBAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --navy: #173D70;
+    --navy-hover: #28588D;
+    --blue: #1959A8;
+    --background: #F3F6FC;
+    --white: #FFFFFF;
+    --text: #203D67;
+    --muted: #7589A7;
+    --border: #DCE6F5;
+    --light-blue: #EAF2FF;
+    --green: #21834C;
+    --red: #D94343;
+}
+
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+/* =========================================
+   2. LAYOUT
+========================================= */
+
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* =========================================
+   3. SIDEBAR
+   DISESUAIKAN DENGAN HALAMAN CARI LOWONGAN
+========================================= */
+
+.sidebar {
+    width: clamp(190px, 18vw, 250px);
+    min-width: clamp(190px, 18vw, 250px);
+
+    height: 100vh;
+    min-height: 100vh;
+
+    position: sticky;
+    top: 0;
+
+    padding: 17px 14px 20px;
+
+    background: var(--navy);
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* LOGO */
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 9px;
+    margin-bottom: 32px;
+    white-space: nowrap;
+}
+
+.sidebar-logo img {
+    width: 33px;
+    height: 39px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.sidebar-logo span {
+    color: white;
+    font-size: clamp(16px, 1.5vw, 19px);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* LABEL */
+
+.sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #B9CBE3;
+    padding: 0 9px;
+    margin-bottom: 12px;
+}
+
+/* MENU */
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 16px;
+    border-radius: 9px;
+    color: #E0E9F6;
+    font-size: 13px;
+    font-weight: 400;
+    transition: 0.2s ease;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.10);
+    color: white;
+}
+
+.menu-item.active {
+    background: #28588D;
+    color: white;
+    font-weight: 700;
+}
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.20);
+    padding: 24px 9px 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.sidebar-bottom .menu-item {
+    padding: 0;
+    min-height: auto;
+    font-size: 11px;
+}
+
+.sidebar-bottom .menu-item:hover {
+    background: transparent;
+    color: white;
+}
+
+.sidebar-bottom .logout {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* =========================================
+   4. MAIN CONTENT
+========================================= */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    margin-left: 0;
+    width: auto;
+    padding: clamp(22px, 2.5vw, 40px);
+    background: var(--background);
+}
+
+/* =========================================
+   5. PAGE HEADER
+========================================= */
+
+.page-header {
+    margin-bottom: 27px;
+}
+
+.page-header h1 {
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 7px;
+}
+
+.page-header p {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* =========================================
+   6. HELP CONTAINER
+========================================= */
+
+.help-container {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 17px;
+}
+
+.help-inner {
+    width: 100%;
+    min-height: 500px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 36px 26px 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   7. HELP INTRO
+========================================= */
+
+.help-intro {
+    margin-bottom: 20px;
+}
+
+.help-intro h2 {
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.help-intro p {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* =========================================
+   8. SEARCH FORM
+========================================= */
+
+.help-search {
+    width: 100%;
+    min-height: 41px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px;
+    margin-bottom: 33px;
+    background: white;
+}
+
+.help-search input {
+    flex: 1;
+    min-width: 0;
+    height: 34px;
+    border: none;
+    outline: none;
+    padding: 0 15px;
+    color: var(--text);
+    font-size: 11px;
+    background: transparent;
+}
+
+.help-search input::placeholder {
+    color: #8999B0;
+}
+
+.help-search button {
+    height: 34px;
+    min-width: 110px;
+    border: none;
+    border-radius: 7px;
+    background: var(--blue);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.help-search button:hover {
+    background: #104781;
+}
+
+/* =========================================
+   9. TOPIC HEADING
+========================================= */
+
+.topic-heading {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 20px;
+}
+
+/* =========================================
+   10. TOPIC GRID
+========================================= */
+
+.topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 18px;
+}
+
+/* TOPIC CARD */
+
+.topic-card {
+    min-height: 71px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 15px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.topic-card:hover {
+    border-color: #9DBCE2;
+    background: #FAFCFF;
+    transform: translateY(-1px);
+}
+
+.topic-card h3 {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 9px;
+}
+
+.topic-card p {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+.topic-arrow {
+    color: #526D91;
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+/* =========================================
+   11. HELP FOOTER
+========================================= */
+
+.help-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: auto;
+    padding-top: 30px;
+}
+
+.help-footer h3 {
+    color: var(--text);
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.help-footer p {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* CONTACT BUTTON */
+
+.contact-button {
+    min-width: 150px;
+    height: 35px;
+    padding: 0 18px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--blue);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    transition: 0.2s;
+    flex-shrink: 0;
+}
+
+.contact-button:hover {
+    background: #104781;
+}
+
+/* =========================================
+   12. CATEGORY DETAIL PAGE
+========================================= */
+
+.breadcrumb {
+    margin-bottom: 10px;
+}
+
+.breadcrumb a {
+    color: #8295B0;
+    font-size: 9px;
+}
+
+.breadcrumb a:hover {
+    color: var(--blue);
+}
+
+.category-heading {
+    margin-bottom: 12px;
+}
+
+.category-heading h2 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 7px;
+}
+
+.category-heading p {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* =========================================
+   13. FAQ LIST
+========================================= */
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+/* FAQ ITEM */
+
+.faq-item {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.faq-item:hover {
+    border-color: #B8CDE9;
+}
+
+.faq-item[open] {
+    border-color: #2196F3;
+}
+
+/* FAQ SUMMARY */
+
+.faq-item summary {
+    list-style: none;
+    min-height: 59px;
+    padding: 11px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-question {
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.faq-short-answer {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 400;
+    margin-top: 6px;
+}
+
+/* FAQ ARROW */
+
+.faq-arrow {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    background: #F0F5FC;
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    transition: transform 0.2s;
+}
+
+.faq-item[open] .faq-arrow {
+    transform: rotate(90deg);
+}
+
+/* FAQ ANSWER */
+
+.faq-answer {
+    padding: 0 15px 16px;
+    color: #667D9D;
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.answer-category {
+    margin-top: 10px;
+    font-size: 9px;
+}
+
+.answer-category a {
+    color: var(--blue);
+    font-weight: 700;
+}
+
+/* =========================================
+   14. CATEGORY FOOTER
+========================================= */
+
+.category-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.category-footer h3 {
+    color: var(--text);
+    font-size: 10px;
+    margin-bottom: 4px;
+}
+
+.category-footer p {
+    color: var(--muted);
+    font-size: 9px;
+}
+
+/* =========================================
+   15. SEARCH RESULTS
+========================================= */
+
+.search-result-heading {
+    margin-bottom: 18px;
+}
+
+.search-result-heading h2 {
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 7px;
+}
+
+.search-result-heading p {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.search-result-heading strong {
+    color: var(--blue);
+}
+
+.search-results {
+    margin-bottom: 20px;
+}
+
+.empty-search {
+    text-align: center;
+    padding: 50px 15px;
+}
+
+.empty-search h3 {
+    color: var(--text);
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.empty-search p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 18px;
+}
+
+/* =========================================
+   16. CONTACT FORM PAGE
+========================================= */
+
+.contact-container {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 20px;
+}
+
+.contact-card {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 28px;
+}
+
+.contact-heading {
+    margin-bottom: 25px;
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--blue);
+    font-size: 10px;
+    margin-bottom: 18px;
+}
+
+.contact-heading h2 {
+    color: var(--text);
+    font-size: 19px;
+    margin-bottom: 8px;
+}
+
+.contact-heading p {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* FORM GRID */
+
+.contact-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.contact-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact-form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.contact-form-group label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.contact-form-group input,
+.contact-form-group select,
+.contact-form-group textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 11px 12px;
+    background: white;
+    color: var(--text);
+    font-size: 11px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.contact-form-group input,
+.contact-form-group select {
+    height: 40px;
+}
+
+.contact-form-group textarea {
+    resize: vertical;
+    min-height: 125px;
+    line-height: 1.6;
+}
+
+.contact-form-group input:focus,
+.contact-form-group select:focus,
+.contact-form-group textarea:focus {
+    border-color: var(--blue);
+}
+
+.contact-form-group input::placeholder,
+.contact-form-group textarea::placeholder {
+    color: #96A5BA;
+}
+
+.contact-form-group small {
+    font-size: 9px;
+    color: var(--muted);
+}
+
+/* PRIVACY */
+
+.contact-privacy {
+    background: #F5F8FD;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 13px;
+    margin-top: 22px;
+    color: #647A98;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+/* ACTIONS */
+
+.contact-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.contact-cancel,
+.contact-submit {
+    min-width: 125px;
+    height: 38px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.contact-cancel {
+    background: #F0F4FA;
+    border: 1px solid var(--border);
+    color: #435B7B;
+}
+
+.contact-submit {
+    border: none;
+    background: var(--blue);
+    color: white;
+    padding: 0 18px;
+}
+
+.contact-submit:hover {
+    background: #104781;
+}
+
+/* =========================================
+   17. FORM ALERT
+========================================= */
+
+.form-alert {
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.form-alert p + p {
+    margin-top: 5px;
+}
+
+.error-alert {
+    background: #FFF0F0;
+    border: 1px solid #F4CCCC;
+    color: #C63838;
+}
+
+.success-alert {
+    background: #EAF7EF;
+    border: 1px solid #C5E8D0;
+    color: #237A45;
+}
+
+.success-alert h3 {
+    margin-bottom: 7px;
+    font-size: 14px;
+}
+
+/* =========================================
+   18. DESKTOP DAN LAPTOP
+========================================= */
+
+@media (min-width: 1400px) {
+    .sidebar {
+        width: 250px;
+        min-width: 250px;
+    }
+
+    .main-content {
+        padding: 38px 45px;
+    }
+}
+
+@media (max-width: 1100px) and (min-width: 601px) {
+    .sidebar {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .main-content {
+        padding: 24px;
+    }
+}
+
+/* =========================================
+   19. RESPONSIVE TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+    .main-content {
+        padding: 27px 22px;
+    }
+
+    .help-inner {
+        padding: 27px 20px 15px;
+    }
+
+    .topic-grid {
+        gap: 12px;
+    }
+
+}
+
+/* =========================================
+   19. RESPONSIVE MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .dashboard-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: relative;
+        top: auto;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: auto;
+        padding: 15px;
+    }
+
+    .sidebar-logo {
+        margin-bottom: 15px;
+    }
+
+    .sidebar-label {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .sidebar-menu .menu-item {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 0 13px;
+    }
+
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .main-content {
+        flex: 1;
+        width: 100%;
+        margin-left: 0;
+        padding: 22px 14px;
+    }
+
+    .page-header h1 {
+        font-size: 20px;
+    }
+
+    .help-container {
+        padding: 10px;
+    }
+
+    .help-inner {
+        min-height: auto;
+        padding: 22px 14px 14px;
+    }
+
+    .help-search {
+        margin-bottom: 25px;
+    }
+
+    .help-search button {
+        min-width: 75px;
+    }
+
+    .topic-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .topic-card {
+        min-height: 68px;
+    }
+
+    .help-footer,
+    .category-footer {
+        align-items: flex-start;
+        flex-direction: column;
+        padding-top: 23px;
+    }
+
+    .contact-button {
+        width: 100%;
+    }
+
+    .category-heading h2 {
+        font-size: 17px;
+    }
+
+    .faq-item summary {
+        min-height: 62px;
+    }
+
+    .contact-container {
+        padding: 10px;
+    }
+
+    .contact-card {
+        padding: 18px 14px;
+    }
+
+    .contact-form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .contact-form-group.full-width {
+        grid-column: auto;
+    }
+
+    .contact-actions {
+        flex-direction: column-reverse;
+    }
+
+    .contact-cancel,
+    .contact-submit {
+        width: 100%;
+    }
+
+}

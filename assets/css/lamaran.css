@@ -1,0 +1,543 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background: #F3F5FB;
+    color: #192F53;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+/* =========================================
+   1. MAIN LAYOUT
+========================================= */
+
+.dashboard-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1600px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: #F3F5FB;
+}
+
+/* =========================================
+   2. SIDEBAR
+   DISESUAIKAN DENGAN HALAMAN CARI LOWONGAN
+========================================= */
+
+.sidebar {
+    width: clamp(190px, 18vw, 250px);
+    min-width: clamp(190px, 18vw, 250px);
+
+    height: 100vh;
+    min-height: 100vh;
+
+    position: sticky;
+    top: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 17px 14px 20px;
+
+    background: #173D70;
+    color: white;
+}
+
+/* LOGO */
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 0 9px;
+    margin-bottom: 32px;
+
+    font-size: clamp(16px, 1.5vw, 19px);
+    font-weight: 700;
+    color: white;
+}
+
+.sidebar-logo img {
+    width: 33px;
+    height: 39px;
+    object-fit: contain;
+}
+
+/* LABEL MAHASISWA */
+
+.sidebar-label {
+    padding: 0 9px;
+    margin-bottom: 12px;
+
+    color: #B9CBE3;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* MENU SIDEBAR */
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sidebar-menu .menu-item span,
+.sidebar-bottom .menu-item span {
+    display: none;
+}
+
+.menu-item {
+    min-height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    color: #E0E9F6;
+    font-size: 13px;
+    font-weight: 400;
+
+    transition: 0.2s;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.10);
+    color: white;
+}
+
+.menu-item.active {
+    background: #28588D;
+    color: white;
+    font-weight: 700;
+}
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom {
+    margin-top: auto;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.20);
+
+    padding: 24px 9px 5px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.sidebar-bottom .menu-item {
+    min-height: auto;
+    padding: 0;
+
+    color: #E0E9F6;
+    font-size: 11px;
+}
+
+.sidebar-bottom .menu-item:hover {
+    background: transparent;
+    color: white;
+}
+
+.sidebar-bottom .logout {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+}
+
+/* =========================================
+   3. MAIN CONTENT
+========================================= */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+
+    background: #F3F5FB;
+
+    padding: clamp(22px, 2.5vw, 40px);
+}
+
+/* =========================================
+   4. HEADER
+========================================= */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    font-size: clamp(23px, 2vw, 29px);
+    font-weight: 700;
+    color: #192F53;
+
+    margin-bottom: 7px;
+}
+
+.page-header p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #607394;
+}
+
+/* =========================================
+   5. KARTU LAMARAN
+========================================= */
+
+.application-container {
+    width: 100%;
+    min-height: 490px;
+
+    background: #FFFFFF;
+    border: 1px solid #DCE5F2;
+    border-radius: 12px;
+
+    padding: 18px 20px;
+}
+
+.application-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+    padding: 0 3px;
+}
+
+.application-heading h2 {
+    font-size: 16px;
+    color: #192F53;
+}
+
+.total-badge {
+    background: #EAF2FF;
+    color: #1558A6;
+
+    padding: 6px 13px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* =========================================
+   6. TABEL LAMARAN
+========================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.application-table {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: collapse;
+}
+
+.application-table thead {
+    border-bottom: 1px solid #E5EBF3;
+}
+
+.application-table th {
+    text-align: left;
+
+    padding: 10px 3px;
+
+    color: #70819D;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.application-table td {
+    padding: 23px 3px;
+
+    border-bottom: 1px solid #E7EDF4;
+
+    color: #7585A0;
+    font-size: 11px;
+}
+
+.application-table .position-cell {
+    color: #19365D;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+/* =========================================
+   7. TOMBOL DETAIL
+========================================= */
+
+.detail-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #E6F0FF;
+    color: #1558A6;
+
+    border-radius: 7px;
+
+    padding: 8px 14px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+.detail-button:hover {
+    background: #D3E4FF;
+}
+
+/* =========================================
+   8. STATUS LAMARAN
+========================================= */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 80px;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.status-submitted {
+    background: #EAF2FF;
+    color: #1558A6;
+}
+
+.status-under_review {
+    background: #FFF2CF;
+    color: #A66B00;
+}
+
+.status-interview {
+    background: #E5F7F0;
+    color: #00966B;
+}
+
+.status-accepted {
+    background: #E4F5E9;
+    color: #21834B;
+}
+
+.status-rejected {
+    background: #FDECEC;
+    color: #DF4C4C;
+}
+
+/* =========================================
+   9. DATA KOSONG
+========================================= */
+
+.empty-state {
+    text-align: center;
+    padding: 90px 20px;
+}
+
+.empty-state h3 {
+    font-size: 17px;
+    color: #263F61;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    font-size: 12px;
+    color: #8190A8;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* =========================================
+   10. LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1400px) {
+
+    .sidebar {
+        width: 250px;
+        min-width: 250px;
+    }
+
+    .main-content {
+        padding: 38px 45px;
+    }
+
+}
+
+/* =========================================
+   11. LAPTOP
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .sidebar {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .main-content {
+        padding: 24px;
+    }
+
+}
+
+/* =========================================
+   12. TABLET
+========================================= */
+
+@media (max-width: 760px) {
+
+    .dashboard-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: relative;
+        top: auto;
+
+        width: 100%;
+        min-width: 0;
+
+        height: auto;
+        min-height: auto;
+
+        padding: 15px;
+    }
+
+    .sidebar-logo {
+        margin-bottom: 15px;
+    }
+
+    .sidebar-label {
+        display: none;
+    }
+
+    .sidebar-menu {
+        display: flex;
+        flex-direction: row;
+        gap: 7px;
+
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .menu-item {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 10px 13px;
+    }
+
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 24px 20px;
+    }
+
+}
+
+/* =========================================
+   13. SMARTPHONE
+========================================= */
+
+@media (max-width: 480px) {
+
+    .main-content {
+        padding: 20px 14px;
+    }
+
+    .page-header {
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .page-header h1 {
+        font-size: 22px;
+    }
+
+    .page-header p {
+        font-size: 11px;
+    }
+
+    .application-container {
+        padding: 15px;
+        min-height: 350px;
+    }
+
+    .application-heading h2 {
+        font-size: 14px;
+    }
+
+    .application-table {
+        min-width: 620px;
+    }
+
+    .empty-state {
+        padding: 60px 15px;
+    }
+
+}
+
+/* =========================================
+   14. SMALL SMARTPHONE
+========================================= */
+
+@media (max-width: 350px) {
+
+    .page-header h1 {
+        font-size: 19px;
+    }
+
+    .application-heading {
+        gap: 8px;
+    }
+
+    .total-badge {
+        padding: 5px 9px;
+    }
+
+}

@@ -1,0 +1,869 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
+
+/* =========================================
+   1. VARIABLES
+========================================= */
+
+:root {
+    --navy: #173D70;
+    --navy-light: #28588D;
+    --blue: #1557AB;
+    --background: #F3F5FB;
+    --white: #FFFFFF;
+    --text: #192F53;
+    --muted: #607394;
+    --border: #DCE5F2;
+    --light-blue: #E5F0FF;
+    --green: #168044;
+}
+
+/* =========================================
+   2. RESET & GLOBAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+/* =========================================
+   3. MAIN LAYOUT
+========================================= */
+
+.layout {
+    display: flex;
+    width: 100%;
+    max-width: 1600px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--background);
+}
+
+/* =========================================
+   4. SIDEBAR
+========================================= */
+
+.sidebar {
+    width: clamp(190px, 18vw, 250px);
+    min-width: clamp(190px, 18vw, 250px);
+
+    min-height: 100vh;
+
+    background: var(--navy);
+    color: var(--white);
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 17px 14px 20px;
+
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+/* BRAND */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 0 9px;
+    margin-bottom: 32px;
+}
+
+.brand img {
+    width: 33px;
+    height: 39px;
+    object-fit: contain;
+}
+
+.brand span {
+    color: white;
+    font-size: clamp(16px, 1.5vw, 19px);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ROLE */
+
+.role-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #B9CBE3;
+
+    padding: 0 9px;
+    margin-bottom: 12px;
+}
+
+/* NAVIGATION */
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+
+    min-height: 38px;
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    color: #E0E9F6;
+    font-size: 13px;
+    font-weight: 400;
+
+    transition: background 0.2s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.10);
+    color: white;
+}
+
+.nav-link.active {
+    background: var(--navy-light);
+    color: white;
+    font-weight: 700;
+}
+
+/* SIDEBAR FOOTER */
+
+.sidebar-footer {
+    margin-top: auto;
+
+    border-top: 1px solid rgba(255,255,255,0.20);
+
+    padding: 24px 9px 5px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.sidebar-footer a {
+    color: #E0E9F6;
+    font-size: 11px;
+    transition: 0.2s;
+}
+
+.sidebar-footer a:hover {
+    color: white;
+}
+
+.sidebar-footer .logout {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+}
+
+/* =========================================
+   5. MAIN CONTENT
+========================================= */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+
+    padding: clamp(22px, 2.5vw, 40px);
+}
+
+/* =========================================
+   6. PAGE HEADER
+========================================= */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 27px;
+}
+
+.page-header h1 {
+    font-size: clamp(21px, 2vw, 29px);
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 6px;
+}
+
+.page-header p {
+    font-size: clamp(11px, 1vw, 14px);
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--light-blue);
+    color: var(--blue);
+
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* =========================================
+   7. SEARCH BOX
+========================================= */
+
+.search-box {
+    width: 100%;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    padding: 16px 18px 17px;
+
+    margin-bottom: 18px;
+}
+
+.search-box h3 {
+    font-size: 11px;
+    color: var(--navy);
+    font-weight: 700;
+
+    margin-bottom: 9px;
+}
+
+.search-form {
+    display: grid;
+
+    grid-template-columns:
+        minmax(180px, 2fr)
+        minmax(110px, 1fr)
+        minmax(110px, 1fr)
+        minmax(115px, 0.9fr);
+
+    gap: 11px;
+}
+
+.search-form input,
+.search-form select {
+    width: 100%;
+    min-width: 0;
+    height: 46px;
+
+    padding: 0 14px;
+
+    border: 1px solid #E0E7F1;
+    border-radius: 9px;
+
+    background: #F3F5FB;
+
+    color: var(--muted);
+    font-size: 12px;
+
+    outline: none;
+}
+
+.search-form input::placeholder {
+    color: #8799B4;
+}
+
+.search-form input:focus,
+.search-form select:focus {
+    border-color: var(--blue);
+}
+
+.search-form button {
+    height: 46px;
+    padding: 0 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: var(--blue);
+    color: white;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.search-form button:hover {
+    background: var(--navy);
+}
+
+/* =========================================
+   8. STATISTICS
+========================================= */
+
+.statistics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: clamp(10px, 1.5vw, 20px);
+
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    min-width: 0;
+    min-height: 84px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    padding: 14px 16px;
+
+    transition: 0.2s;
+}
+
+.stat-card:hover {
+    border-color: #B5CBE7;
+}
+
+.stat-card h2 {
+    font-size: clamp(21px, 2vw, 25px);
+    font-weight: 700;
+    color: var(--blue);
+
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    font-size: clamp(10px, 0.9vw, 11px);
+    color: var(--muted);
+}
+
+/* =========================================
+   9. CONTENT GRID
+========================================= */
+
+.content-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 2.15fr)
+        minmax(210px, 0.9fr);
+
+    gap: clamp(12px, 1.5vw, 22px);
+
+    align-items: start;
+}
+
+.recommendations,
+.profile-panel {
+    min-width: 0;
+}
+
+/* =========================================
+   10. SECTION HEADER
+========================================= */
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+    margin-bottom: 21px;
+}
+
+.section-header h2 {
+    font-size: clamp(16px, 1.5vw, 18px);
+    font-weight: 700;
+    color: var(--text);
+}
+
+.section-header a {
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* =========================================
+   11. JOB CARDS
+========================================= */
+
+.job-card {
+    min-width: 0;
+    min-height: 97px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    padding: 14px 16px;
+
+    margin-bottom: 17px;
+
+    transition: 0.2s;
+}
+
+.job-card:hover {
+    border-color: #B5CBE7;
+}
+
+/* COMPANY LOGO */
+
+.company-logo {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 11px;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.blue-logo {
+    background: #E8F1FF;
+    color: #1557AB;
+}
+
+/* JOB INFORMATION */
+
+.job-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.job-info h3 {
+    font-size: clamp(12px, 1.1vw, 15px);
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 7px;
+}
+
+.job-info p {
+    font-size: clamp(10px, 0.9vw, 12px);
+    color: var(--muted);
+
+    margin-bottom: 6px;
+}
+
+/* BADGES */
+
+.badge {
+    display: inline-block;
+
+    padding: 5px 13px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.internship {
+    background: #E8F1FF;
+    color: #1557AB;
+}
+
+.fulltime {
+    background: #DDF5E6;
+    color: #168044;
+}
+
+/* DETAIL BUTTON */
+
+.detail-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    white-space: nowrap;
+
+    background: #E4EFFF;
+    color: var(--blue);
+
+    border-radius: 10px;
+
+    padding: 10px 14px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.detail-button:hover {
+    background: var(--blue);
+    color: white;
+}
+
+/* =========================================
+   12. PROFILE PANEL
+========================================= */
+
+.profile-panel {
+    min-width: 0;
+}
+
+.profile-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    padding: clamp(16px, 1.7vw, 22px);
+}
+
+.profile-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 17px;
+}
+
+.percentage {
+    font-size: 11px;
+    color: var(--muted);
+
+    margin-bottom: 13px;
+}
+
+/* PROGRESS BAR */
+
+.progress {
+    width: 100%;
+    height: 9px;
+
+    background: #E7ECF4;
+    border-radius: 20px;
+
+    overflow: hidden;
+    margin-bottom: 27px;
+}
+
+.progress-value {
+    width: 80%;
+    height: 100%;
+
+    background: var(--blue);
+    border-radius: 20px;
+}
+
+/* PROFILE TEXT */
+
+.profile-card h4 {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 13px;
+}
+
+.profile-description {
+    font-size: 11px;
+    color: var(--muted);
+
+    margin-bottom: 22px;
+}
+
+.profile-card .document-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+/* DOCUMENT */
+
+.document {
+    width: 100%;
+    min-height: 47px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 12px;
+
+    background: #F3F5FB;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    color: var(--muted);
+    font-size: 10px;
+
+    margin-bottom: 16px;
+    overflow-wrap: anywhere;
+}
+
+/* EDIT PROFILE */
+
+.edit-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    min-height: 38px;
+
+    background: var(--blue);
+    color: white;
+
+    border-radius: 9px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.edit-button:hover {
+    background: var(--navy);
+}
+
+/* =========================================
+   13. LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1400px) {
+
+    .sidebar {
+        width: 250px;
+        min-width: 250px;
+    }
+
+    .main-content {
+        padding: 40px 45px;
+    }
+
+    .job-card {
+        min-height: 105px;
+    }
+
+}
+
+/* =========================================
+   14. LAPTOP
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .sidebar {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .main-content {
+        padding: 24px;
+    }
+
+    .search-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .statistics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-panel {
+        width: 100%;
+    }
+
+}
+
+/* =========================================
+   15. TABLET
+========================================= */
+
+@media (max-width: 760px) {
+
+    .layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: relative;
+        top: auto;
+
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: auto;
+
+        padding: 15px;
+    }
+
+    .brand {
+        margin-bottom: 15px;
+    }
+
+    .role-label {
+        display: none;
+    }
+
+    .navigation {
+        display: flex;
+        flex-direction: row;
+
+        gap: 7px;
+
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .nav-link {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 10px 13px;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 24px 20px;
+    }
+
+    .search-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =========================================
+   16. SMARTPHONE
+========================================= */
+
+@media (max-width: 480px) {
+
+    .main-content {
+        padding: 20px 14px;
+    }
+
+    .page-header {
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .page-header h1 {
+        font-size: 21px;
+    }
+
+    .page-header p {
+        line-height: 1.5;
+    }
+
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+        min-width: 35px;
+    }
+
+    .search-form {
+        grid-template-columns: 1fr;
+    }
+
+    .statistics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .stat-card {
+        min-height: 82px;
+        padding: 13px;
+    }
+
+    .job-card {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .job-info {
+        flex: 1;
+    }
+
+    .detail-button {
+        margin-left: auto;
+    }
+
+    .profile-card {
+        padding: 18px;
+    }
+
+    .section-header h2 {
+        font-size: 16px;
+    }
+
+}
+
+/* =========================================
+   17. SMALL SMARTPHONE
+========================================= */
+
+@media (max-width: 350px) {
+
+    .statistics {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header h1 {
+        font-size: 19px;
+    }
+
+    .brand span {
+        font-size: 16px;
+    }
+
+    .job-card {
+        padding: 12px;
+    }
+
+}

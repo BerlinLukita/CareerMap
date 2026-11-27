@@ -1,0 +1,493 @@
+
+/* =====================================
+   RESET DAN GLOBAL
+===================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Roboto Condensed", sans-serif;
+    background: #f4f6fb;
+    color: #162a4d;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* =====================================
+   LAYOUT UTAMA
+===================================== */
+
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =====================================
+   SIDEBAR
+===================================== */
+
+.sidebar {
+    width: 220px;
+    min-width: 220px;
+    background: #11366b;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 23px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 29px;
+    padding-left: 2px;
+}
+
+.sidebar-logo img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+}
+
+.sidebar-label {
+    font-size: 10px;
+    color: #c2d0e2;
+    margin: 0 0 26px 2px;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sidebar-menu .menu-item span,
+.sidebar-bottom .menu-item span {
+    display: none;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 13px;
+    color: #dce6f3;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 400;
+    transition: .2s;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,.08);
+    color: #ffffff;
+}
+
+.menu-item.active {
+    background: #28578e;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.25);
+}
+
+.sidebar-bottom .menu-item {
+    font-size: 10px;
+    padding: 9px 2px;
+}
+
+.sidebar-bottom .logout {
+    color: #ffffff;
+}
+
+/* =====================================
+   KONTEN UTAMA
+===================================== */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    background: #f4f6fb;
+    padding: 46px 35px;
+}
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    font-size: 12px;
+    font-weight: 500;
+    color: #162a4d;
+    margin-bottom: 13px;
+}
+
+.page-header p {
+    font-size: 10px;
+    color: #71819e;
+}
+
+/* =====================================
+   KOTAK LUAR
+===================================== */
+
+.form-container {
+    width: 100%;
+    max-width: 842px;
+    background: #ffffff;
+    border: 1px solid #dce5f2;
+    border-radius: 11px;
+    padding: 26px 30px;
+}
+
+/* =====================================
+   KOTAK FORM DALAM
+===================================== */
+
+.form-card {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #dce5f2;
+    border-radius: 11px;
+    padding: 30px 30px 11px;
+}
+
+/* =====================================
+   HEADER FORM
+===================================== */
+
+.form-card-header {
+    margin-bottom: 34px;
+}
+
+.form-card-header h2 {
+    font-size: 11px;
+    font-weight: 500;
+    color: #203b60;
+    margin-bottom: 15px;
+}
+
+.form-card-header p {
+    font-size: 10px;
+    color: #7b8ba7;
+    line-height: 1.5;
+}
+
+/* =====================================
+   FORM GROUP
+===================================== */
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    color: #203b60;
+    font-size: 10px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+/* INPUT POSISI */
+
+.form-group input[type="text"] {
+    width: 100%;
+    height: 39px;
+    border: 1px solid #dce5f2;
+    border-radius: 7px;
+    padding: 0 15px;
+    background: #f2f4f9;
+    color: #344a6b;
+    font-family: inherit;
+    font-size: 10px;
+    outline: none;
+}
+
+/* =====================================
+   UPLOAD CV
+===================================== */
+
+.cv-upload-box {
+    width: 100%;
+    min-height: 52px;
+    border: 1px solid #dce5f2;
+    border-radius: 7px;
+    padding: 8px 18px 8px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #ffffff;
+}
+
+.cv-file-name {
+    font-size: 10px;
+    color: #344a6b;
+    overflow-wrap: anywhere;
+}
+
+.change-file-button {
+    min-width: 118px;
+    height: 33px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #1354a5;
+    border-radius: 7px;
+    color: #1354a5 !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.change-file-button:hover {
+    background: #e9f2ff;
+}
+
+.file-note {
+    display: block;
+    font-size: 9px;
+    color: #8492a9;
+    margin-top: 7px;
+}
+
+/* =====================================
+   TEXTAREA
+===================================== */
+
+.form-group textarea {
+    width: 100%;
+    min-height: 87px;
+    border: 1px solid #dce5f2;
+    border-radius: 7px;
+    padding: 15px;
+    font-family: inherit;
+    font-size: 10px;
+    color: #344a6b;
+    background: #ffffff;
+    outline: none;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.form-group textarea:focus,
+.form-group input:focus {
+    border-color: #1354a5;
+}
+
+.form-group textarea::placeholder {
+    color: #8492a9;
+}
+
+/* =====================================
+   CATATAN FORM
+===================================== */
+
+.form-note {
+    font-size: 10px;
+    color: #8290a9;
+    margin-top: -7px;
+    margin-bottom: 7px;
+    line-height: 1.5;
+}
+
+/* =====================================
+   TOMBOL FORM
+===================================== */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 11px;
+}
+
+.cancel-button,
+.submit-button {
+    min-width: 80px;
+    height: 33px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: .2s;
+}
+
+/* BATAL */
+
+.cancel-button {
+    background: #ffffff;
+    color: #1354a5;
+    border: 1px solid #1354a5;
+}
+
+.cancel-button:hover {
+    background: #e9f2ff;
+}
+
+/* KIRIM LAMARAN */
+
+.submit-button {
+    background: #1354a5;
+    color: #ffffff;
+    border: 1px solid #1354a5;
+}
+
+.submit-button:hover {
+    background: #113f7a;
+}
+
+/* =====================================
+   PESAN ERROR
+===================================== */
+
+.error-message {
+    background: #fff0f0;
+    color: #b83e3e;
+    border: 1px solid #f1d0d0;
+    border-radius: 7px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* =====================================
+   RESPONSIVE TABLET
+===================================== */
+
+@media (max-width: 900px) {
+    .sidebar {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .main-content {
+        padding: 30px 22px;
+    }
+
+    .form-container {
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .form-card {
+        padding: 25px 22px 15px;
+    }
+}
+
+/* =====================================
+   RESPONSIVE MOBILE
+===================================== */
+
+@media (max-width: 650px) {
+    .dashboard-layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        padding: 13px 16px;
+    }
+
+    .sidebar-logo {
+        margin-bottom: 15px;
+        font-size: 19px;
+    }
+
+    .sidebar-logo img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .sidebar-label {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 5px;
+    }
+
+    .menu-item {
+        white-space: nowrap;
+        padding: 9px;
+        font-size: 11px;
+    }
+
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .main-content {
+        padding: 24px 14px;
+    }
+
+    .page-header {
+        margin-bottom: 22px;
+    }
+
+    .page-header h1 {
+        font-size: 20px;
+    }
+
+    .form-container {
+        padding: 13px;
+    }
+
+    .form-card {
+        padding: 22px 15px 15px;
+    }
+
+    .form-card-header {
+        margin-bottom: 28px;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .cv-upload-box {
+        padding: 9px;
+        flex-wrap: wrap;
+    }
+
+    .change-file-button {
+        min-width: 95px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        margin-top: 17px;
+    }
+
+    .cancel-button,
+    .submit-button {
+        width: 100%;
+        height: 39px;
+    }
+}
