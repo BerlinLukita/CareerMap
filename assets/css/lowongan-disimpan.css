@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* =========================================
    1. GLOBAL
@@ -12,20 +12,22 @@
 }
 
 :root {
-    --navy: #173D70;
-    --navy-hover: #28588D;
+    --navy: #133863;
+    --sidebar-active: #234d7d;
+    --sidebar-hover: rgba(255, 255, 255, 0.08);
+    --navy-hover: #234d7d;
     --blue: #1959A8;
-    --background: #F3F6FC;
+    --background: #f6f8fb;
     --white: #FFFFFF;
-    --text: #203D67;
-    --muted: #7186A6;
-    --border: #DCE6F5;
+    --text: #162a45;
+    --muted: #7a8899;
+    --border: #e8eef5;
     --light-blue: #EAF2FF;
     --red: #DD4447;
 }
 
 body {
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Inter', sans-serif;
     background: var(--background);
     color: var(--text);
     min-height: 100vh;
@@ -52,120 +54,125 @@ button {
 }
 
 /* =========================================
-   3. SIDEBAR
-   DISESUAIKAN DENGAN CARI LOWONGAN
+   3. SIDEBAR - SAMA DENGAN DASHBOARD PERUSAHAAN
 ========================================= */
 
-.sidebar {
-    width: clamp(190px, 18vw, 250px);
-    min-width: clamp(190px, 18vw, 250px);
-
-    height: 100vh;
-    min-height: 100vh;
-
-    position: sticky;
-    top: 0;
-
+ .sidebar {
+    width: 225px;
+    min-width: 225px;
+    background-color: #133863;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
-
-    padding: 17px 14px 20px;
-
-    background: var(--navy);
-    color: white;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    padding: 20px 14px;
+    z-index: 100;
+    overflow-y: auto;
 }
 
-/* LOGO */
-
+/* BRAND / LOGO */
 .sidebar-logo {
     display: flex;
     align-items: center;
-    gap: 9px;
-
-    padding: 0 9px;
-    margin-bottom: 32px;
+    gap: 10px;
+    padding: 4px 8px 24px;
+    margin-bottom: 0;
 }
 
 .sidebar-logo img {
-    width: 33px;
-    height: 39px;
-    object-fit: contain;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #ffffff;
+    padding: 1px;
+    flex-shrink: 0;
+    display: block;
 }
 
 .sidebar-logo span {
-    font-size: clamp(16px, 1.5vw, 19px);
+    color: #ffffff;
+    font-size: 15px;
     font-weight: 700;
-    color: white;
+    white-space: nowrap;
 }
 
-/* LABEL */
-
+/* ROLE LABEL */
 .sidebar-label {
     font-size: 10px;
     font-weight: 700;
-    color: #B9CBE3;
-    padding: 0 9px;
-    margin-bottom: 12px;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.55);
+    padding: 0 12px 10px;
+    margin: 0;
+    text-transform: uppercase;
 }
 
-/* MENU */
-
+/* NAVIGATION */
 .sidebar-menu {
+    list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 4px;
 }
 
 .menu-item {
     display: flex;
     align-items: center;
-
-    min-height: 38px;
-    padding: 0 16px;
-
-    border-radius: 9px;
-
+    min-height: 40px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
     font-size: 13px;
-    font-weight: 400;
-
-    color: #E0E9F6;
-    transition: 0.2s ease;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .menu-item:hover {
-    background: rgba(255,255,255,0.10);
-    color: white;
+    background-color: var(--sidebar-hover);
+    color: #ffffff;
 }
 
 .menu-item.active {
-    background: var(--navy-hover);
-    color: white;
-    font-weight: 700;
+    background-color: var(--sidebar-active);
+    color: #ffffff;
+    font-weight: 600;
 }
 
-/* SIDEBAR BOTTOM */
-
+/* SIDEBAR FOOTER */
 .sidebar-bottom {
     margin-top: auto;
-
-    border-top: 1px solid rgba(255,255,255,0.20);
-
-    padding: 24px 9px 5px;
-
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 17px;
+    gap: 10px;
+    border-top: 0;
 }
 
 .bottom-link {
-    color: #E0E9F6;
+    color: rgba(255, 255, 255, 0.65);
     font-size: 11px;
+    line-height: 1.4;
+    transition: color 0.2s ease;
+}
+
+.bottom-link:hover {
+    color: #ffffff;
 }
 
 .logout-link {
-    color: white;
+    color: #ffffff;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 /* =========================================
@@ -177,8 +184,9 @@ button {
     min-width: 0;
     min-height: 100vh;
 
-    margin-left: 0;
-    padding: clamp(22px, 2.5vw, 40px);
+    margin-left: 225px;
+    width: calc(100% - 225px);
+    padding: 28px 36px;
 
     background: var(--background);
 }
@@ -192,7 +200,7 @@ button {
 }
 
 .page-header h1 {
-    font-size: 26px;
+    font-size: clamp(23px, 2vw, 29px);
     font-weight: 700;
     color: var(--text);
     margin-bottom: 6px;
@@ -201,6 +209,7 @@ button {
 .page-header p {
     color: var(--muted);
     font-size: 12px;
+    line-height: 1.5;
 }
 
 /* =========================================
@@ -233,8 +242,8 @@ button {
 .saved-jobs-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px 30px;
-    max-width: 780px;
+    gap: 20px 22px;
+    max-width: 900px;
 }
 
 /* =========================================
@@ -243,13 +252,13 @@ button {
 
 .saved-job-card {
     min-width: 0;
-    min-height: 142px;
+    min-height: 120px;
 
     background: white;
     border: 1px solid var(--border);
     border-radius: 12px;
 
-    padding: 18px;
+    padding: 14px 16px;
 
     display: flex;
     flex-direction: column;
@@ -267,16 +276,16 @@ button {
 .job-card-top {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 15px;
     min-width: 0;
 }
 
 /* COMPANY INITIAL */
 
 .company-initial {
-    width: 43px;
-    height: 43px;
-    min-width: 43px;
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
 
     border-radius: 10px;
     background: var(--light-blue);
@@ -307,7 +316,7 @@ button {
 
 .job-information p {
     color: var(--muted);
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1.5;
 }
 
@@ -342,7 +351,7 @@ button {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    margin-top: 17px;
+    margin-top: 14px;
 }
 
 /* SAVED BADGE */
@@ -356,17 +365,18 @@ button {
     color: var(--blue);
 
     border-radius: 20px;
-    padding: 6px 13px;
+    padding: 5px 13px;
 
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
 }
 
 /* DETAIL BUTTON */
 
 .detail-button {
-    width: 113px;
-    height: 34px;
+    min-width: 110px;
+    height: 36px;
+    padding: 0 14px;
 
     border-radius: 7px;
     background: var(--blue);
@@ -376,7 +386,7 @@ button {
     align-items: center;
     justify-content: center;
 
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
 
     transition: 0.2s;
@@ -424,7 +434,7 @@ button {
 }
 
 .empty-state h2 {
-    font-size: 17px;
+    font-size: 16px;
     margin-bottom: 8px;
 }
 
@@ -521,7 +531,7 @@ body.modal-open {
 /* MODAL TEXT */
 
 .delete-modal h2 {
-    font-size: 21px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 12px;
@@ -589,87 +599,78 @@ body.modal-open {
 }
 
 /* =========================================
-   12. LARGE DESKTOP
+   12. RESPONSIVE - mengikuti Dashboard Perusahaan
 ========================================= */
 
-@media (min-width: 1400px) {
-
-    .sidebar {
-        width: 250px;
-        min-width: 250px;
-    }
-
-    .main-content {
-        padding: 38px 45px;
-    }
-
-}
-
-/* =========================================
-   13. LAPTOP
-========================================= */
-
+/* Laptop / tablet landscape */
 @media (max-width: 1100px) {
-
-    .sidebar {
-        width: 190px;
-        min-width: 190px;
-    }
-
     .main-content {
         padding: 24px;
     }
 
+    .saved-jobs-grid {
+        gap: 20px;
+        max-width: 100%;
+    }
 }
 
-/* =========================================
-   14. TABLET
-========================================= */
-
-@media (max-width: 760px) {
-
+/* Tablet and mobile */
+@media (max-width: 768px) {
     .dashboard-layout {
         display: flex;
         flex-direction: column;
+        width: 100%;
     }
 
     .sidebar {
         position: relative;
         top: auto;
-
+        left: auto;
+        right: auto;
+        bottom: auto;
         width: 100%;
         min-width: 0;
-
         height: auto;
-        min-height: auto;
-
-        padding: 15px;
+        min-height: 0;
+        padding: 15px 16px 12px;
+        overflow: visible;
+        gap: 10px;
     }
 
     .sidebar-logo {
-        margin-bottom: 15px;
+        padding: 4px 8px 8px;
+        margin: 0;
     }
 
     .sidebar-label {
-        display: none;
+        padding: 0 8px 5px;
     }
 
     .sidebar-menu {
+        width: 100%;
         flex-direction: row;
-        gap: 7px;
-
+        gap: 6px;
         overflow-x: auto;
-        padding-bottom: 5px;
+        overflow-y: hidden;
+        padding: 2px 0 7px;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
     }
 
     .menu-item {
-        flex-shrink: 0;
+        flex: 0 0 auto;
+        min-height: 38px;
+        padding: 9px 13px;
         white-space: nowrap;
-        padding: 10px 13px;
     }
 
     .sidebar-bottom {
-        display: none;
+        width: 100%;
+        margin-top: 0;
+        padding: 8px 8px 2px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 14px;
     }
 
     .main-content {
@@ -679,46 +680,234 @@ body.modal-open {
     }
 
     .saved-jobs-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         max-width: 100%;
+        gap: 16px;
     }
-
 }
 
-/* =========================================
-   15. SMARTPHONE
-========================================= */
-
-@media (max-width: 480px) {
-
+/* Smartphone */
+@media (max-width: 560px) {
     .main-content {
         padding: 20px 14px;
     }
 
+    .page-header {
+        gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 22px;
+    }
+
     .page-header h1 {
-        font-size: 22px;
+        font-size: 21px;
+        line-height: 1.35;
+    }
+
+    .page-header p {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .saved-jobs-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
     }
 
     .saved-job-card {
-        min-height: 140px;
+        min-height: 132px;
         padding: 15px;
     }
 
-    .delete-modal {
-        padding: 25px 18px;
+    .company-initial {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        font-size: 18px;
     }
 
-    .delete-modal h2 {
-        font-size: 19px;
+    .job-information h2 {
+        font-size: 13px;
+    }
+
+    .job-information p {
+        font-size: 10px;
+    }
+
+    .job-card-bottom {
+        margin-top: 14px;
+    }
+
+    .saved-badge {
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+
+    .detail-button {
+        min-width: 105px;
+        height: 34px;
+        font-size: 11px;
+    }
+
+    .empty-state {
+        min-height: 300px;
+        padding: 28px 16px;
+    }
+
+    .delete-modal {
+        max-width: 400px;
+        padding: 25px 20px;
+    }
+}
+
+/* Very small phone */
+@media (max-width: 360px) {
+    .main-content {
+        padding: 17px 11px;
+    }
+
+    .sidebar {
+        padding: 13px 11px 10px;
+    }
+
+    .sidebar-logo span {
+        font-size: 16px;
+    }
+
+    .menu-item {
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+
+    .saved-job-card {
+        padding: 13px;
+    }
+
+    .job-card-top {
+        gap: 9px;
+    }
+
+    .job-information h2 {
+        font-size: 12px;
+    }
+
+    .job-information p {
+        font-size: 10px;
+    }
+
+    .job-card-bottom {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .detail-button {
+        min-width: 100px;
+        font-size: 10px;
     }
 
     .modal-actions {
-        gap: 9px;
+        gap: 8px;
     }
 
     .cancel-button,
     .confirm-delete-button {
-        width: 110px;
+        width: 108px;
+    }
+}
+
+
+/* =========================================
+   TYPOGRAPHY HIERARCHY - konsisten dengan Profil Mahasiswa
+   ========================================= */
+body,
+.main-content {
+    font-family: 'Inter', sans-serif;
+}
+
+.page-header h1 {
+    font-size: clamp(23px, 2vw, 29px);
+    line-height: 1.25;
+    font-weight: 700;
+}
+
+.page-header p {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.alert {
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.job-information h2 {
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 700;
+}
+
+.job-information p {
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.saved-badge {
+    font-size: 10px;
+    line-height: 1.3;
+}
+
+.detail-button,
+.browse-button,
+.cancel-button,
+.confirm-delete-button {
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+.empty-state h2 {
+    font-size: 16px;
+    line-height: 1.35;
+}
+
+.empty-state p,
+.delete-modal p {
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.delete-modal h2 {
+    font-size: 18px;
+    line-height: 1.35;
+}
+
+/* HP: judul dan informasi tetap punya tingkatan ukuran */
+@media (max-width: 560px) {
+    .page-header h1 {
+        font-size: 23px;
     }
 
+    .page-header p {
+        font-size: 11px;
+    }
+
+    .job-information h2 {
+        font-size: 14px;
+    }
+
+    .job-information p {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 360px) {
+    .page-header h1 {
+        font-size: 21px;
+    }
+
+    .job-information h2 {
+        font-size: 13px;
+    }
+
+    .job-information p {
+        font-size: 10px;
+    }
 }

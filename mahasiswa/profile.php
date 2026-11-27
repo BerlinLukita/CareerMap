@@ -163,7 +163,7 @@ $cv = !empty($profile["cv_path"])
     <aside class="cm-sidebar">
 
         <a href="dashboard.php" class="cm-brand">
-            <img src="../assets/images/logo-uajy-transparan.png" alt="Logo Atma Jaya">
+            <img src="../assets/images/logo-uajy.jpg" alt="Logo Atma Jaya">
             <span>CareerMap</span>
         </a>
 

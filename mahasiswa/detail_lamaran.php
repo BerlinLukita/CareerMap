@@ -148,7 +148,7 @@ $cvUrl = "../" . ltrim($cvPath, "/\\");
 
     <title>Detail Lamaran - CareerMap</title>
 
-    <link rel="stylesheet" href="../assets/css/lamaran.css">
+    <link rel="stylesheet" href="../assets/css/detail-lamaran.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -250,21 +250,34 @@ $cvUrl = "../" . ltrim($cvPath, "/\\");
                         <strong><?php echo e($application["location"]); ?></strong>
                     </div>
 
-                    <div class="information-row">
+                    <div class="information-row document-row">
                         <span>Dokumen CV</span>
-                        <strong>
-                            <?php if (!empty($cvPath)): ?>
-                                <a
-                                    href="<?php echo e($cvUrl); ?>"
-                                    target="_blank"
-                                    class="document-link"
-                                >
-                                    <?php echo e(basename($cvPath)); ?>
-                                </a>
+                        <div class="document-actions">
+                            <?php if ($cvUrl !== ""): ?>
+                                <div class="document-file">
+                                    <span class="document-icon">PDF</span>
+                                    <div class="document-meta">
+                                        <strong><?php echo e($cvFileName); ?></strong>
+                                        <small>CV yang dikirim saat melamar</small>
+                                    </div>
+                                </div>
+                                <div class="document-buttons">
+                                    <a href="<?php echo e($cvUrl); ?>" target="_blank" rel="noopener" class="document-button preview-button">
+                                        Lihat CV
+                                    </a>
+                                    <a href="<?php echo e($cvUrl); ?>" download="<?php echo e($cvFileName); ?>" class="document-button download-button">
+                                        Unduh CV
+                                    </a>
+                                </div>
+                            <?php elseif ($cvPath !== ""): ?>
+                                <div class="document-unavailable">
+                                    File tercatat di database, tetapi tidak ditemukan di folder penyimpanan.
+                                    <small>Periksa kembali nilai cv_path dan lokasi folder upload.</small>
+                                </div>
                             <?php else: ?>
-                                Belum tersedia
+                                <span class="document-empty">Belum ada CV yang dilampirkan.</span>
                             <?php endif; ?>
-                        </strong>
+                        </div>
                     </div>
 
                     <div class="information-row">

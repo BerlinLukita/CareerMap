@@ -6,19 +6,26 @@ session_start();
 // 1. CEK LOGIN MAHASISWA
 // ==========================================
 
-if (
-    !isset($_SESSION["user_id"]) ||
-    ($_SESSION["role"] ?? "") !== "student"
-) {
+// Pastikan pengguna sudah login dan memiliki hak akses mahasiswa.
+// Beberapa bagian aplikasi mungkin menyimpan role sebagai "student"
+// atau "mahasiswa", sehingga keduanya diterima di halaman ini.
+$loggedInUserId = $_SESSION["user_id"] ?? null;
+$userRole = strtolower(trim((string) ($_SESSION["role"] ?? "")));
+
+$allowedStudentRoles = ["student", "mahasiswa"];
+
+if (empty($loggedInUserId) || !in_array($userRole, $allowedStudentRoles, true)) {
     header("Location: ../auth/login.php");
     exit;
 }
 
 require_once "../config/database.php";
 
-$userId = (int) $_SESSION["user_id"];
+$userId = (int) $loggedInUserId;
 $userName = $_SESSION["name"] ?? "Mahasiswa";
-$initial = strtoupper(mb_substr($userName, 0, 1));
+$initial = function_exists("mb_substr")
+    ? strtoupper(mb_substr($userName, 0, 1, "UTF-8"))
+    : strtoupper(substr($userName, 0, 1));
 
 function e($value): string
 {
@@ -182,21 +189,22 @@ if ($keyword !== "") {
 
         foreach ($category["faqs"] as $faq) {
 
-            $searchText = mb_strtolower(
-                $faq["question"] . " " .
+            $rawSearchText = $faq["question"] . " " .
                 $faq["answer"] . " " .
-                $category["title"],
-                "UTF-8"
-            );
+                $category["title"];
 
-            if (
-                mb_stripos(
-                    $searchText,
+            if (function_exists("mb_stripos")) {
+                $isMatch = mb_stripos(
+                    $rawSearchText,
                     $keyword,
                     0,
                     "UTF-8"
-                ) !== false
-            ) {
+                ) !== false;
+            } else {
+                $isMatch = stripos($rawSearchText, $keyword) !== false;
+            }
+
+            if ($isMatch) {
 
                 $searchResults[] = [
                     "category_key" => $key,
@@ -246,7 +254,7 @@ $currentPage = "bantuan";
         <div class="sidebar-logo">
 
             <img
-                src="../assets/images/logo-uajy.png"
+                src="../assets/images/logo-uajy.jpg"
                 alt="Logo CareerMap"
             >
 
@@ -358,10 +366,6 @@ $currentPage = "bantuan";
                                     <div class="faq-question">
 
                                         <?php echo e($faq["question"]); ?>
-
-                                        <span class="faq-short-answer">
-                                            <?php echo e($faq["answer"]); ?>
-                                        </span>
 
                                     </div>
 

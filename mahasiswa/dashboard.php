@@ -98,7 +98,7 @@ $cvFileName = !empty($student["cv_path"]) ? basename($student["cv_path"]) : "";
     <aside class="sidebar">
 
         <div class="brand">
-            <img src="../assets/images/logo-uajy.png" alt="Logo UAJY">
+            <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
             <span>CareerMap</span>
         </div>
 

@@ -912,3 +912,1550 @@ input {
     }
 
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* =========================================
+   1. GLOBAL
+========================================= */
+
+:root {
+    --navy: #173D70;
+    --navy-hover: #28588D;
+    --blue: #1959A8;
+    --page: #F3F5FB;
+    --white: #FFFFFF;
+    --text: #203D67;
+    --muted: #7186A6;
+    --border: #DCE6F5;
+    --soft: #EAF2FF;
+    --red: #DD4447;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--page);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+/* =========================================
+   2. MAIN LAYOUT
+========================================= */
+
+.dashboard-layout,
+.cm-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* =========================================
+   3. SIDEBAR
+   DISESUAIKAN DENGAN CARI LOWONGAN
+========================================= */
+
+.sidebar,
+.cm-sidebar {
+    width: clamp(190px, 18vw, 250px);
+    min-width: clamp(190px, 18vw, 250px);
+
+    height: 100vh;
+    min-height: 100vh;
+
+    position: sticky;
+    top: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 17px 14px 20px;
+
+    background: var(--navy);
+    color: white;
+
+    z-index: 5;
+}
+
+/* LOGO */
+
+.sidebar-logo,
+.cm-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 0 9px;
+    margin-bottom: 32px;
+
+    white-space: nowrap;
+}
+
+.sidebar-logo img,
+.cm-brand img {
+    width: 33px;
+    height: 39px;
+    object-fit: contain;
+}
+
+.sidebar-logo span,
+.cm-brand span {
+    font-size: clamp(16px, 1.5vw, 19px);
+    font-weight: 700;
+    color: white;
+}
+
+/* LABEL MAHASISWA */
+
+.sidebar-label,
+.cm-role {
+    padding: 0 9px;
+    margin-bottom: 12px;
+
+    color: #B9CBE3;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* MENU */
+
+.sidebar-menu,
+.cm-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sidebar-menu .menu-item span,
+.sidebar-bottom .menu-item span {
+    display: none;
+}
+
+.menu-item,
+.cm-menu a {
+    min-height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    color: #E0E9F6;
+    font-size: 13px;
+    font-weight: 400;
+
+    transition: 0.2s;
+}
+
+.menu-item:hover,
+.cm-menu a:hover {
+    background: rgba(255,255,255,0.10);
+    color: white;
+}
+
+.menu-item.active,
+.cm-menu a.active {
+    background: var(--navy-hover);
+    color: white;
+    font-weight: 700;
+}
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom,
+.cm-sidebar-bottom {
+    margin-top: auto;
+
+    border-top: 1px solid rgba(255,255,255,0.20);
+
+    padding: 24px 9px 5px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.sidebar-bottom .menu-item {
+    min-height: auto;
+    padding: 0;
+
+    color: #E0E9F6;
+    font-size: 11px;
+}
+
+.sidebar-bottom .menu-item:hover {
+    background: transparent;
+    color: white;
+}
+
+.sidebar-bottom .logout {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+}
+
+/* Jika HTML menggunakan class lama cm-sidebar-bottom */
+
+.cm-sidebar-bottom {
+    padding: 24px 9px 5px;
+    gap: 17px;
+}
+
+.cm-sidebar-bottom a {
+    display: block;
+    padding: 0;
+
+    color: #E0E9F6;
+    font-size: 11px;
+}
+
+.cm-sidebar-bottom a:hover {
+    background: transparent;
+    color: white;
+}
+
+.cm-sidebar-bottom a:last-child {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+}
+
+/* =========================================
+   4. MAIN CONTENT
+========================================= */
+
+.main-content,
+.cm-main {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+
+    margin-left: 0;
+
+    padding: clamp(22px, 2.5vw, 40px);
+
+    background: var(--page);
+}
+
+/* =========================================
+   5. PAGE HEADER
+========================================= */
+
+.page-header,
+.cm-page-header {
+    margin-bottom: 26px;
+}
+
+.page-header h1,
+.cm-page-header h1 {
+    font-size: clamp(23px, 2vw, 29px);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 7px;
+}
+
+.page-header p,
+.cm-page-header p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   6. PROFILE PANEL
+========================================= */
+
+.cm-profile-panel,
+.cm-edit-panel {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 17px;
+    max-width: 1120px;
+}
+
+.cm-profile-grid {
+    display: grid;
+    grid-template-columns: minmax(210px, .75fr) minmax(360px, 1.35fr);
+    gap: 12px;
+}
+
+.cm-card {
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 17px;
+    min-width: 0;
+}
+
+.cm-summary-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 21px 16px;
+}
+
+/* =========================================
+   7. PROFILE AVATAR
+========================================= */
+
+.cm-avatar {
+    width: 100px;
+    height: 100px;
+
+    border-radius: 50%;
+
+    background: var(--soft);
+    color: var(--blue);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    margin: 0 auto 15px;
+}
+
+.cm-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cm-summary-card h2 {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.cm-study {
+    color: var(--muted);
+    font-size: 9px;
+    margin-bottom: 14px;
+}
+
+/* =========================================
+   8. PROFILE PROGRESS
+========================================= */
+
+.cm-progress-wrap {
+    width: 100%;
+    max-width: 190px;
+    margin-bottom: 19px;
+}
+
+.cm-progress-label {
+    color: var(--blue);
+    background: var(--soft);
+
+    border-radius: 20px;
+
+    font-size: 9px;
+    padding: 5px 9px;
+    margin-bottom: 6px;
+}
+
+.cm-progress {
+    height: 4px;
+    background: #E8EDF5;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cm-progress span {
+    display: block;
+    height: 100%;
+    background: var(--blue);
+    border-radius: inherit;
+}
+
+/* =========================================
+   9. CV DOCUMENT
+========================================= */
+
+.cm-cv-heading {
+    align-self: flex-start;
+    font-size: 10px;
+    margin-bottom: 8px;
+}
+
+.cm-cv-file {
+    width: 100%;
+    min-height: 54px;
+
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    padding: 9px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    gap: 5px;
+    text-align: left;
+
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+}
+
+.cm-cv-file a,
+.cm-cv-file strong {
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.cm-cv-file small {
+    font-size: 8px;
+    color: var(--muted);
+}
+
+.cm-cv-form {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+
+    flex-wrap: wrap;
+}
+
+/* =========================================
+   10. BUTTONS
+========================================= */
+
+.cm-outline-button {
+    min-height: 31px;
+    padding: 0 18px;
+
+    border: 1px solid #2C68B7;
+    color: var(--blue);
+
+    border-radius: 6px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: inherit;
+    font-size: 9px;
+
+    background: #fff;
+    cursor: pointer;
+
+    transition: .2s;
+    white-space: nowrap;
+}
+
+.cm-outline-button:hover {
+    background: #F1F6FF;
+}
+
+.cm-cv-submit {
+    min-height: 31px;
+    padding: 0 13px;
+
+    border: 0;
+    background: var(--blue);
+    color: #fff;
+
+    border-radius: 6px;
+
+    font-family: inherit;
+    font-size: 9px;
+
+    cursor: pointer;
+}
+
+.cm-cv-submit[hidden] {
+    display: none;
+}
+
+/* =========================================
+   11. PROFILE INFORMATION
+========================================= */
+
+.cm-info-card {
+    padding: 10px 18px 17px;
+}
+
+.cm-info-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.cm-info-heading h2 {
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.cm-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cm-info-item {
+    min-width: 0;
+}
+
+.cm-info-item > span {
+    display: block;
+    font-size: 9px;
+    margin-bottom: 5px;
+}
+
+.cm-info-item > div {
+    min-height: 31px;
+
+    border-radius: 6px;
+    background: #F3F5FA;
+    border: 1px solid #E8EDF5;
+
+    padding: 8px 10px;
+
+    font-size: 9px;
+    overflow-wrap: anywhere;
+}
+
+.cm-info-item > div a {
+    color: var(--text);
+}
+
+.cm-empty {
+    color: #9AA8BC;
+}
+
+/* =========================================
+   12. PHOTO INFORMATION
+========================================= */
+
+.cm-photo-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    align-items: center;
+    gap: 8px;
+    margin-top: 9px;
+    font-size: 9px;
+}
+
+.cm-photo-row small {
+    color: var(--muted);
+    font-size: 8px;
+}
+
+/* =========================================
+   13. ALERT
+========================================= */
+
+.cm-alert {
+    max-width: 1120px;
+    padding: 10px 13px;
+    margin: 0 0 13px;
+    border-radius: 7px;
+    font-size: 11px;
+}
+
+.cm-alert.success {
+    color: #217447;
+    background: #EAF7EF;
+    border: 1px solid #C9E8D3;
+}
+
+.cm-alert.error {
+    color: #B52E36;
+    background: #FFF0F0;
+    border: 1px solid #F1CACA;
+}
+
+/* =========================================
+   14. EDIT PROFILE
+========================================= */
+
+.cm-edit-panel {
+    padding: 17px;
+}
+
+.cm-edit-card {
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 19px;
+}
+
+.cm-edit-heading {
+    margin-bottom: 19px;
+}
+
+.cm-edit-heading h2 {
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.cm-edit-heading p {
+    color: var(--muted);
+    font-size: 9px;
+}
+
+.cm-edit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px 18px;
+}
+
+.cm-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.cm-field.full {
+    grid-column: 1 / -1;
+}
+
+.cm-field label,
+.cm-photo-edit > label {
+    font-size: 9px;
+    font-weight: 500;
+}
+
+.cm-field input {
+    width: 100%;
+    height: 32px;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    padding: 0 10px;
+
+    font-family: inherit;
+    font-size: 9px;
+
+    color: var(--text);
+    outline: none;
+    background: #fff;
+}
+
+.cm-field input:focus {
+    border-color: #6D9BD7;
+    box-shadow: 0 0 0 2px #EAF2FF;
+}
+
+.cm-field input:disabled {
+    background: #F7F8FB;
+    color: #788BA7;
+}
+
+/* =========================================
+   15. EDIT PHOTO
+========================================= */
+
+.cm-photo-edit {
+    margin-top: 23px;
+}
+
+.cm-photo-edit-row {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    margin-top: 10px;
+}
+
+.cm-avatar-small {
+    width: 60px;
+    height: 60px;
+
+    border-radius: 7px;
+    margin: 0;
+
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.cm-photo-control {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-wrap: wrap;
+}
+
+.cm-photo-control small,
+.cm-photo-control #photo-name {
+    color: var(--muted);
+    font-size: 8px;
+}
+
+/* =========================================
+   16. EDIT ACTIONS
+========================================= */
+
+.cm-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 23px;
+}
+
+.cm-button {
+    min-width: 63px;
+    height: 32px;
+
+    border-radius: 6px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 16px;
+
+    font-family: inherit;
+    font-size: 9px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.cm-button-cancel {
+    color: var(--blue);
+    border: 1px solid #2C68B7;
+    background: #fff;
+}
+
+.cm-button-primary {
+    color: #fff;
+    background: var(--blue);
+    border: 1px solid var(--blue);
+}
+
+.cm-button-primary:hover {
+    background: #104B91;
+}
+
+/* =========================================
+   17. LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1400px) {
+
+    .sidebar,
+    .cm-sidebar {
+        width: 250px;
+        min-width: 250px;
+    }
+
+    .main-content,
+    .cm-main {
+        padding: 38px 45px;
+    }
+
+}
+
+/* =========================================
+   18. LAPTOP
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .sidebar,
+    .cm-sidebar {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .main-content,
+    .cm-main {
+        padding: 24px;
+    }
+
+}
+
+/* =========================================
+   19. TABLET
+========================================= */
+
+@media (max-width: 760px) {
+
+    .dashboard-layout,
+    .cm-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar,
+    .cm-sidebar {
+        position: relative;
+        top: auto;
+
+        width: 100%;
+        min-width: 0;
+
+        height: auto;
+        min-height: auto;
+
+        padding: 15px;
+    }
+
+    .sidebar-logo,
+    .cm-brand {
+        margin-bottom: 15px;
+    }
+
+    .sidebar-label,
+    .cm-role {
+        display: none;
+    }
+
+    .sidebar-menu,
+    .cm-menu {
+        display: flex;
+        flex-direction: row;
+        gap: 7px;
+
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .menu-item,
+    .cm-menu a {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 10px 13px;
+    }
+
+    .sidebar-bottom,
+    .cm-sidebar-bottom {
+        display: none;
+    }
+
+    .main-content,
+    .cm-main {
+        width: 100%;
+        margin-left: 0;
+        padding: 24px 20px;
+    }
+
+    .cm-profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cm-summary-card {
+        padding: 20px;
+    }
+
+}
+
+/* =========================================
+   20. SMARTPHONE
+========================================= */
+
+@media (max-width: 480px) {
+
+    .main-content,
+    .cm-main {
+        padding: 20px 14px;
+    }
+
+    .page-header h1,
+    .cm-page-header h1 {
+        font-size: 22px;
+    }
+
+    .page-header p,
+    .cm-page-header p {
+        font-size: 11px;
+    }
+
+    .cm-profile-panel,
+    .cm-edit-panel {
+        padding: 10px;
+    }
+
+    .cm-edit-card {
+        padding: 14px;
+    }
+
+    .cm-edit-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cm-field.full {
+        grid-column: auto;
+    }
+
+    .cm-photo-row {
+        grid-template-columns: 1fr auto;
+    }
+
+    .cm-photo-row small {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .cm-photo-edit-row {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   FINAL OVERRIDES
+   RESPONSIVE + TYPOGRAPHY DISELARASKAN DENGAN DASHBOARD PERUSAHAAN
+   Struktur HTML dan nama class asli tetap dipertahankan.
+========================================================= */
+
+:root {
+    --sidebar-bg: #133863;
+    --sidebar-active: #234d7d;
+    --sidebar-hover: rgba(255, 255, 255, 0.08);
+    --page: #f6f8fb;
+    --text: #162a45;
+    --muted: #7a8899;
+    --border: #e8eef5;
+    --soft: #e7eef9;
+    --blue: #184e8e;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--page);
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+/* Layout dan sidebar desktop: ukuran sama dengan Dashboard Perusahaan */
+.dashboard-layout,
+.cm-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.sidebar,
+.cm-sidebar {
+    width: 225px;
+    min-width: 225px;
+    height: 100vh;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 14px;
+    background: var(--sidebar-bg);
+    color: #fff;
+    z-index: 100;
+    overflow-y: auto;
+}
+
+.sidebar-logo,
+.cm-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 8px 24px;
+    margin: 0;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.sidebar-logo img,
+.cm-brand img {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #fff;
+    padding: 1px;
+    flex-shrink: 0;
+}
+
+.sidebar-logo span,
+.cm-brand span {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.sidebar-label,
+.cm-role {
+    padding: 0 12px 10px;
+    margin: 0;
+    color: rgba(255,255,255,.55);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.sidebar-menu,
+.cm-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    list-style: none;
+}
+
+.menu-item,
+.cm-menu a {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    color: rgba(255,255,255,.85);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.menu-item:hover,
+.cm-menu a:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
+}
+
+.menu-item.active,
+.cm-menu a.active {
+    background: var(--sidebar-active);
+    color: #fff;
+    font-weight: 600;
+}
+
+.sidebar-bottom,
+.cm-sidebar-bottom {
+    margin-top: auto;
+    padding: 12px;
+    border-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-bottom .menu-item,
+.cm-sidebar-bottom a {
+    min-height: 0;
+    padding: 0;
+    color: rgba(255,255,255,.65);
+    font-size: 11px;
+    line-height: 1.4;
+    background: transparent;
+}
+
+.sidebar-bottom .logout,
+.cm-sidebar-bottom a:last-child {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Konten utama dan header */
+.main-content,
+.cm-main {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    width: calc(100% - 225px);
+    margin-left: 225px;
+    padding: 28px 36px;
+    background: var(--page);
+}
+
+.page-header,
+.cm-page-header {
+    margin-bottom: 27px;
+}
+
+.page-header h1,
+.cm-page-header h1 {
+    margin-bottom: 6px;
+    color: var(--text);
+    font-size: clamp(21px, 2vw, 29px);
+    line-height: 1.25;
+    font-weight: 700;
+}
+
+.page-header p,
+.cm-page-header p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Panel dan kartu profil */
+.cm-profile-panel,
+.cm-edit-panel {
+    width: 100%;
+    max-width: 1120px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+}
+
+.cm-profile-grid {
+    display: grid;
+    grid-template-columns: minmax(220px, .75fr) minmax(0, 1.35fr);
+    gap: 16px;
+}
+
+.cm-card {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.cm-summary-card {
+    padding: 24px 18px;
+}
+
+.cm-avatar {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 16px;
+    font-size: 26px;
+}
+
+.cm-summary-card h2 {
+    margin-bottom: 7px;
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.cm-study {
+    margin-bottom: 16px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.cm-progress-wrap {
+    max-width: 210px;
+    margin-bottom: 22px;
+}
+
+.cm-progress-label {
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    font-size: 11px;
+}
+
+.cm-progress {
+    height: 6px;
+}
+
+.cm-cv-heading {
+    margin-bottom: 9px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.cm-cv-file {
+    min-height: 58px;
+    padding: 11px;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.cm-cv-file a,
+.cm-cv-file strong {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.cm-cv-file small {
+    font-size: 10px;
+}
+
+.cm-outline-button,
+.cm-cv-submit {
+    min-height: 36px;
+    padding: 0 15px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Informasi profil */
+.cm-info-card {
+    padding: 16px 20px 20px;
+}
+
+.cm-info-heading {
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.cm-info-heading h2 {
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.cm-info-list {
+    gap: 13px;
+}
+
+.cm-info-item > span {
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+.cm-info-item > div {
+    min-height: 38px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    font-size: 12px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.cm-photo-row {
+    gap: 10px;
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.cm-photo-row small {
+    font-size: 10px;
+}
+
+/* Alert */
+.cm-alert {
+    padding: 12px 15px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Form edit profil */
+.cm-edit-panel {
+    padding: 20px;
+}
+
+.cm-edit-card {
+    padding: 22px;
+    border-radius: 12px;
+}
+
+.cm-edit-heading {
+    margin-bottom: 22px;
+}
+
+.cm-edit-heading h2 {
+    margin-bottom: 8px;
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.cm-edit-heading p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.cm-edit-grid {
+    gap: 18px 20px;
+}
+
+.cm-field {
+    gap: 7px;
+}
+
+.cm-field label,
+.cm-photo-edit > label {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.cm-field input {
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 7px;
+    font-size: 12px;
+}
+
+.cm-photo-edit {
+    margin-top: 24px;
+}
+
+.cm-photo-edit-row {
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.cm-avatar-small {
+    width: 64px;
+    height: 64px;
+    font-size: 12px;
+}
+
+.cm-photo-control {
+    gap: 10px;
+}
+
+.cm-photo-control small,
+.cm-photo-control #photo-name {
+    font-size: 10px;
+}
+
+.cm-edit-actions {
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.cm-button {
+    min-width: 80px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 7px;
+    font-size: 11px;
+}
+
+/* Laptop */
+@media (max-width: 1100px) {
+    .main-content,
+    .cm-main {
+        padding: 24px;
+    }
+
+    .cm-profile-grid {
+        grid-template-columns: minmax(190px, .8fr) minmax(0, 1.2fr);
+        gap: 13px;
+    }
+}
+
+/* Tablet dan mobile: sidebar mengikuti pola Dashboard Perusahaan */
+@media (max-width: 768px) {
+    .dashboard-layout,
+    .cm-layout {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .sidebar,
+    .cm-sidebar {
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        padding: 15px 16px 12px;
+        gap: 10px;
+        overflow: visible;
+    }
+
+    .sidebar-logo,
+    .cm-brand {
+        padding: 4px 8px 8px;
+        margin: 0;
+    }
+
+    .sidebar-label,
+    .cm-role {
+        display: block;
+        padding: 0 8px 5px;
+    }
+
+    .sidebar-menu,
+    .cm-menu {
+        width: 100%;
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2px 0 7px;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .menu-item,
+    .cm-menu a {
+        flex: 0 0 auto;
+        min-height: 38px;
+        padding: 9px 13px;
+        white-space: nowrap;
+    }
+
+    .sidebar-bottom,
+    .cm-sidebar-bottom {
+        display: none;
+    }
+
+    .main-content,
+    .cm-main {
+        width: 100%;
+        margin-left: 0;
+        padding: 24px 20px;
+    }
+
+    .cm-profile-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Smartphone */
+@media (max-width: 560px) {
+    .main-content,
+    .cm-main {
+        padding: 20px 14px;
+    }
+
+    .page-header,
+    .cm-page-header {
+        margin-bottom: 22px;
+    }
+
+    .page-header h1,
+    .cm-page-header h1 {
+        font-size: 21px;
+    }
+
+    .page-header p,
+    .cm-page-header p {
+        font-size: 12px;
+    }
+
+    .cm-profile-panel,
+    .cm-edit-panel {
+        padding: 12px;
+    }
+
+    .cm-card,
+    .cm-edit-card {
+        padding: 16px;
+    }
+
+    .cm-summary-card {
+        padding: 20px 15px;
+    }
+
+    .cm-info-card {
+        padding: 15px;
+    }
+
+    .cm-edit-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 15px;
+    }
+
+    .cm-field.full {
+        grid-column: auto;
+    }
+
+    .cm-photo-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+    }
+
+    .cm-photo-row small {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .cm-photo-edit-row {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .cm-edit-actions {
+        justify-content: stretch;
+    }
+
+    .cm-edit-actions .cm-button {
+        flex: 1;
+    }
+}
+
+/* Ponsel sangat kecil */
+@media (max-width: 360px) {
+    .main-content,
+    .cm-main {
+        padding: 17px 11px;
+    }
+
+    .sidebar,
+    .cm-sidebar {
+        padding: 13px 11px 10px;
+    }
+
+    .sidebar-logo span,
+    .cm-brand span {
+        font-size: 16px;
+    }
+
+    .menu-item,
+    .cm-menu a {
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+
+    .cm-profile-panel,
+    .cm-edit-panel {
+        padding: 9px;
+    }
+
+    .cm-card,
+    .cm-edit-card {
+        padding: 13px;
+    }
+
+    .cm-info-item > div {
+        font-size: 11px;
+    }
+}

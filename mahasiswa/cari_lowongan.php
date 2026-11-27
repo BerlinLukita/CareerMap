@@ -118,7 +118,8 @@ if ($category !== "") {
 
 $sql = "
     SELECT j.id, j.title AS position, cp.company_name AS company,
-           j.location, j.job_type AS type, jc.category_name AS category,
+           j.location, j.latitude, j.longitude,
+           j.job_type AS type, jc.category_name AS category,
            cp.logo_path
     FROM job_vacancies j
     INNER JOIN company_profiles cp ON cp.user_id = j.company_id
@@ -152,6 +153,13 @@ function distanceUrl($value, $keyword, $type, $category) {
     <title>Cari Lowongan | CareerMap</title>
 
     <link rel="stylesheet" href="../assets/css/cari-lowongan.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <style>
+        #career-map { width:100%; height:380px; min-height:300px; border-radius:12px; z-index:1; }
+        .map-container { min-width:0; }
+        .map-help { padding:10px 12px; font-size:12px; color:#7589A7; background:#fff; }
+    </style>
 
 </head>
 
@@ -168,7 +176,7 @@ function distanceUrl($value, $keyword, $type, $category) {
         <div class="brand">
 
             <img
-                src="../assets/images/logo-uajy.png"
+                src="../assets/images/logo-uajy.jpg"
                 alt="Logo UAJY"
             >
 
@@ -206,9 +214,9 @@ function distanceUrl($value, $keyword, $type, $category) {
 
         <div class="sidebar-footer">
 
-            <a href="index.php" class="menu-item">
-    Bantuan & Pusat Dukungan
-</a>
+            <a href="../bantuan/index.php">
+                Bantuan & Pusat Dukungan
+            </a>
 
             <a href="../auth/logout.php" class="logout">
                 Keluar
@@ -440,33 +448,10 @@ function distanceUrl($value, $keyword, $type, $category) {
                 <!-- MAP -->
 
                 <div class="map-container" id="map-container">
-
-                    <div class="map-area">
-
-                        <div class="map-block block-one"></div>
-                        <div class="map-block block-two"></div>
-                        <div class="map-block block-three"></div>
-                        <div class="map-block block-four"></div>
-                        <div class="map-block block-five"></div>
-                        <div class="map-block block-six"></div>
-
-                        <div class="road road-one"></div>
-                        <div class="road road-two"></div>
-                        <div class="road road-three"></div>
-                        <div class="road road-four"></div>
-
-                        <div class="map-marker marker-one">1</div>
-                        <div class="map-marker marker-two">2</div>
-                        <div class="map-marker marker-three">3</div>
-
-                        <div class="current-location"></div>
-
-                        <div class="map-caption">
-                            Peta ilustrasi • Lokasi lowongan ditampilkan berdasarkan data perusahaan.
-                        </div>
-
-                    </div>
-
+                    <div id="career-map" role="application" aria-label="Peta lokasi mahasiswa dan lowongan"></div>
+                    <div class="map-help">Peta OpenStreetMap. Tekan “Gunakan Lokasi Saya” untuk menampilkan posisi perangkat dan lowongan terdekat.</div>
+                    <p id="map-message" class="map-caption" style="position:static; padding:10px 12px;">Peta siap. Izinkan akses lokasi untuk melihat posisi kamu.</p>
+                    <p id="coordinate-display" style="font-size:12px; padding:0 12px;"></p>
                 </div>
 
 
@@ -493,7 +478,10 @@ function distanceUrl($value, $keyword, $type, $category) {
 
                             <?php foreach ($filteredJobs as $job): ?>
 
-                                <article class="job-item">
+                                <article class="job-item"
+                                    data-job-id="<?php echo (int)$job["id"]; ?>"
+                                    data-lat="<?php echo e($job["latitude"]); ?>"
+                                    data-lng="<?php echo e($job["longitude"]); ?>">
 
                                     <div class="job-detail">
 
@@ -511,6 +499,7 @@ function distanceUrl($value, $keyword, $type, $category) {
                                         <span class="job-type <?php echo $job["type"] === "Full-time" ? "fulltime" : "internship"; ?>">
                                             <?php echo htmlspecialchars($job["type"]); ?>
                                         </span>
+                                        <small class="distance-result" style="display:block; margin-top:7px; color:#21834c;"></small>
 
                                     </div>
 
@@ -568,81 +557,146 @@ function distanceUrl($value, $keyword, $type, $category) {
      JAVASCRIPT
 ================================== -->
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
-
-// =====================================
-// TOGGLE MAP
-// =====================================
-
 const mapToggle = document.getElementById("map-toggle");
 const mapContainer = document.getElementById("map-container");
 const resultsLayout = document.getElementById("results-layout");
-
-mapToggle.addEventListener("click", function () {
-
-    mapContainer.classList.toggle("hidden");
-
-    if (mapContainer.classList.contains("hidden")) {
-
-        mapToggle.textContent = "Tampilkan Peta";
-        resultsLayout.classList.add("list-only");
-
-    } else {
-
-        mapToggle.textContent = "Sembunyikan Peta";
-        resultsLayout.classList.remove("list-only");
-
-    }
-
-});
-
-
-// =====================================
-// LOCATION PERMISSION
-// =====================================
-
 const locationButton = document.getElementById("location-button");
 const locationStatus = document.getElementById("location-status");
+const mapMessage = document.getElementById("map-message");
+const coordinateDisplay = document.getElementById("coordinate-display");
 
-locationButton.addEventListener("click", function () {
+let userPosition = null;
+let userMarker = null;
+let accuracyCircle = null;
+let jobMarkers = [];
 
-    if (!navigator.geolocation) {
+// Peta langsung terlihat sebelum izin lokasi diberikan.
+const map = L.map("career-map").setView([-2.5, 118], 5);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
 
-        locationStatus.textContent =
-            "Browser tidak mendukung fitur lokasi.";
-
-        return;
-    }
-
-    locationButton.disabled = true;
-    locationButton.textContent = "Memeriksa lokasi...";
-
-    navigator.geolocation.getCurrentPosition(
-
-        function (position) {
-
-            locationStatus.textContent =
-                "Lokasi perangkat berhasil dibaca. Jarak aktual belum tersedia karena data koordinat lowongan belum diisi.";
-
-            locationButton.textContent = "Lokasi Ditemukan";
-            locationButton.disabled = false;
-
-        },
-
-        function () {
-
-            locationStatus.textContent =
-                "Lokasi belum dapat diakses. Periksa izin lokasi browser.";
-
-            locationButton.textContent = "Coba Lagi";
-            locationButton.disabled = false;
-
-        }
-
-    );
-
+mapToggle.addEventListener("click", function () {
+    mapContainer.classList.toggle("hidden");
+    const hidden = mapContainer.classList.contains("hidden");
+    mapToggle.textContent = hidden ? "Tampilkan Peta" : "Sembunyikan Peta";
+    resultsLayout.classList.toggle("list-only", hidden);
+    if (!hidden) setTimeout(() => map.invalidateSize(), 150);
 });
 
+function distanceKm(a, b) {
+    const rad = value => value * Math.PI / 180;
+    const dLat = rad(b.lat - a.lat);
+    const dLng = rad(b.lng - a.lng);
+    const h = Math.sin(dLat / 2) ** 2 +
+        Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
+    return 6371 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+}
+
+function clearJobMarkers() {
+    jobMarkers.forEach(marker => map.removeLayer(marker));
+    jobMarkers = [];
+}
+
+function showJobsNearUser() {
+    if (!userPosition) return;
+    const activeRadius = document.querySelector(".distance-button.active");
+    const radius = activeRadius ? parseFloat(activeRadius.textContent) : 10;
+    const list = document.querySelector(".job-list");
+    const cards = Array.from(list.querySelectorAll(".job-item"));
+    const results = [];
+    let missingCoordinates = 0;
+    clearJobMarkers();
+
+    cards.forEach(card => {
+        const lat = parseFloat(card.dataset.lat);
+        const lng = parseFloat(card.dataset.lng);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+            card.style.display = "none";
+            missingCoordinates++;
+            return;
+        }
+        const distance = distanceKm(userPosition, {lat, lng});
+        card.dataset.distance = String(distance);
+        const label = card.querySelector(".distance-result");
+        if (label) label.textContent = distance.toFixed(2) + " km dari lokasimu";
+        card.style.display = distance <= radius ? "" : "none";
+        if (distance <= radius) {
+            results.push({card, distance, lat, lng});
+            const marker = L.marker([lat, lng]).addTo(map);
+            const title = card.querySelector("h3")?.textContent || "Lowongan";
+            const company = card.querySelector(".job-detail p")?.textContent || "";
+            marker.bindPopup("<strong>" + escapeHtml(title) + "</strong><br>" + escapeHtml(company) + "<br>" + distance.toFixed(2) + " km");
+            jobMarkers.push(marker);
+        }
+    });
+
+    results.sort((a, b) => a.distance - b.distance);
+    results.forEach(item => list.appendChild(item.card));
+    const countText = document.querySelector(".nearby-header p");
+    if (countText) countText.textContent = results.length + " lowongan ditemukan dalam radius " + radius + " km" +
+        (missingCoordinates ? " • " + missingCoordinates + " lowongan belum memiliki koordinat" : "");
+    mapMessage.textContent = results.length
+        ? results.length + " lowongan ditemukan. Pin perusahaan ditampilkan pada peta."
+        : "Belum ada lowongan berkoordinat dalam radius " + radius + " km. Pastikan latitude dan longitude lowongan sudah diisi.";
+}
+
+function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"})[char]);
+}
+
+// Permintaan izin dipanggil langsung dari klik tombol agar browser dapat menampilkan prompt.
+locationButton.addEventListener("click", function () {
+    if (!navigator.geolocation) {
+        locationStatus.textContent = "Browser tidak mendukung fitur lokasi.";
+        return;
+    }
+    if (!window.isSecureContext) {
+        locationStatus.textContent = "Akses lokasi memerlukan HTTPS atau localhost. Buka melalui http://localhost/CareerMap/.";
+        return;
+    }
+    locationButton.disabled = true;
+    locationButton.textContent = "Meminta izin lokasi...";
+    locationStatus.textContent = "Pilih Izinkan pada dialog browser jika diminta.";
+
+    navigator.geolocation.getCurrentPosition(function (position) {
+        userPosition = {lat: position.coords.latitude, lng: position.coords.longitude};
+        locationStatus.textContent = "Lokasi berhasil ditemukan.";
+        coordinateDisplay.textContent = "Latitude: " + userPosition.lat.toFixed(6) + " | Longitude: " + userPosition.lng.toFixed(6) + " | Akurasi: ±" + Math.round(position.coords.accuracy) + " m";
+        locationButton.disabled = false;
+        locationButton.textContent = "Lokasi Ditemukan";
+
+        if (userMarker) map.removeLayer(userMarker);
+        if (accuracyCircle) map.removeLayer(accuracyCircle);
+        userMarker = L.marker([userPosition.lat, userPosition.lng]).addTo(map).bindPopup("<strong>Lokasi kamu</strong>").openPopup();
+        accuracyCircle = L.circle([userPosition.lat, userPosition.lng], {radius: position.coords.accuracy, color: "#2878d0", fillOpacity: 0.10}).addTo(map);
+        map.setView([userPosition.lat, userPosition.lng], 13);
+        showJobsNearUser();
+    }, function (error) {
+        const messages = {
+            1: "Izin lokasi ditolak. Klik ikon pengaturan di samping alamat website, buka Setelan situs, lalu ubah Lokasi menjadi Izinkan atau Tanyakan.",
+            2: "Lokasi perangkat tidak tersedia. Periksa layanan lokasi Windows/perangkat.",
+            3: "Permintaan lokasi terlalu lama. Tekan Coba Lagi."
+        };
+        locationStatus.textContent = messages[error.code] || "Gagal mendapatkan lokasi perangkat.";
+        locationButton.disabled = false;
+        locationButton.textContent = "Coba Lagi";
+    }, {enableHighAccuracy: true, timeout: 20000, maximumAge: 0});
+});
+
+document.querySelectorAll(".distance-button").forEach(link => {
+    link.addEventListener("click", function (event) {
+        if (!userPosition) return;
+        event.preventDefault();
+        document.querySelectorAll(".distance-button").forEach(item => item.classList.remove("active"));
+        this.classList.add("active");
+        showJobsNearUser();
+    });
+});
 </script>
 
 </body>

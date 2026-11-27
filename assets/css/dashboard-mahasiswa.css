@@ -5,6 +5,8 @@
 ========================================= */
 
 :root {
+    --sidebar-bg: #133863;
+    --sidebar-active: #234D7D;
     --navy: #173D70;
     --navy-light: #28588D;
     --blue: #1557AB;
@@ -68,22 +70,21 @@ select {
 ========================================= */
 
 .sidebar {
-    width: clamp(190px, 18vw, 250px);
-    min-width: clamp(190px, 18vw, 250px);
-
-    min-height: 100vh;
-
-    background: var(--navy);
-    color: var(--white);
-
-    display: flex;
-    flex-direction: column;
-
-    padding: 17px 14px 20px;
-
-    position: sticky;
-    top: 0;
-    height: 100vh;
+  width: 225px;
+  min-width: 225px;
+  background-color: var(--sidebar-bg);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100vh;
+  padding: 20px 14px;
+  z-index: 100;
+  overflow-y: auto;
 }
 
 /* BRAND */
@@ -105,7 +106,7 @@ select {
 
 .brand span {
     color: white;
-    font-size: clamp(16px, 1.5vw, 19px);
+    font-size: clamp(1px, 1.5vw, 19px);
     font-weight: 700;
     white-space: nowrap;
 }
@@ -151,7 +152,7 @@ select {
 }
 
 .nav-link.active {
-    background: var(--navy-light);
+    background: var(--sidebar-active);
     color: white;
     font-weight: 700;
 }
@@ -191,10 +192,11 @@ select {
 ========================================= */
 
 .main-content {
-    flex: 1;
-    min-width: 0;
-
-    padding: clamp(22px, 2.5vw, 40px);
+  margin-left: 225px;
+  flex: 1;
+  min-width: 0;
+  width: calc(100% - 225px);
+  padding: 28px 36px;
 }
 
 /* =========================================
@@ -659,43 +661,13 @@ select {
 }
 
 /* =========================================
-   13. LARGE DESKTOP
+   13. RESPONSIVE - TABLET & MOBILE
 ========================================= */
 
-@media (min-width: 1400px) {
-
-    .sidebar {
-        width: 250px;
-        min-width: 250px;
-    }
-
-    .main-content {
-        padding: 40px 45px;
-    }
-
-    .job-card {
-        min-height: 105px;
-    }
-
-}
-
-/* =========================================
-   14. LAPTOP
-========================================= */
-
+/* Laptop / smaller desktop */
 @media (max-width: 1100px) {
-
-    .sidebar {
-        width: 190px;
-        min-width: 190px;
-    }
-
     .main-content {
         padding: 24px;
-    }
-
-    .search-form {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .statistics {
@@ -703,60 +675,61 @@ select {
     }
 
     .content-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1.5fr) minmax(200px, 1fr);
     }
 
-    .profile-panel {
-        width: 100%;
+    .search-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
 }
 
-/* =========================================
-   15. TABLET
-========================================= */
-
-@media (max-width: 760px) {
-
+/* Tablet and mobile: sidebar moves above the content */
+@media (max-width: 768px) {
     .layout {
         display: flex;
         flex-direction: column;
+        max-width: 100%;
     }
 
     .sidebar {
         position: relative;
         top: auto;
-
+        left: auto;
+        bottom: auto;
         width: 100%;
         min-width: 0;
         height: auto;
-        min-height: auto;
-
-        padding: 15px;
+        min-height: 0;
+        padding: 15px 16px 12px;
+        overflow: visible;
+        gap: 12px;
     }
 
     .brand {
-        margin-bottom: 15px;
+        padding: 4px 8px 8px;
+        margin-bottom: 4px;
     }
 
     .role-label {
-        display: none;
+        padding: 0 8px;
+        margin: 0 0 5px;
     }
 
     .navigation {
-        display: flex;
         flex-direction: row;
-
-        gap: 7px;
-
+        gap: 6px;
         overflow-x: auto;
-        padding-bottom: 5px;
+        overflow-y: hidden;
+        padding: 2px 0 7px;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
     }
 
     .nav-link {
-        flex-shrink: 0;
+        flex: 0 0 auto;
+        min-height: 38px;
         white-space: nowrap;
-        padding: 10px 13px;
+        padding: 9px 13px;
     }
 
     .sidebar-footer {
@@ -765,31 +738,23 @@ select {
 
     .main-content {
         width: 100%;
+        margin-left: 0;
         padding: 24px 20px;
     }
 
-    .search-form {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .content-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
-
 }
 
-/* =========================================
-   16. SMARTPHONE
-========================================= */
-
-@media (max-width: 480px) {
-
+/* Smartphone */
+@media (max-width: 560px) {
     .main-content {
         padding: 20px 14px;
     }
 
     .page-header {
-        gap: 10px;
+        gap: 12px;
         align-items: flex-start;
     }
 
@@ -798,17 +763,8 @@ select {
     }
 
     .page-header p {
+        font-size: 12px;
         line-height: 1.5;
-    }
-
-    .user-avatar {
-        width: 35px;
-        height: 35px;
-        min-width: 35px;
-    }
-
-    .search-form {
-        grid-template-columns: 1fr;
     }
 
     .statistics {
@@ -817,53 +773,925 @@ select {
     }
 
     .stat-card {
-        min-height: 82px;
         padding: 13px;
+    }
+
+    .search-form {
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .job-card {
         flex-wrap: wrap;
-        gap: 10px;
+        align-items: flex-start;
+        gap: 11px;
+        padding: 13px;
     }
 
     .job-info {
-        flex: 1;
+        flex: 1 1 calc(100% - 60px);
     }
 
     .detail-button {
-        margin-left: auto;
+        margin-left: 57px;
     }
 
     .profile-card {
         padding: 18px;
     }
-
-    .section-header h2 {
-        font-size: 16px;
-    }
-
 }
 
-/* =========================================
-   17. SMALL SMARTPHONE
-========================================= */
-
-@media (max-width: 350px) {
-
-    .statistics {
-        grid-template-columns: 1fr;
+/* Very small phone */
+@media (max-width: 360px) {
+    .main-content {
+        padding: 17px 11px;
     }
 
-    .page-header h1 {
-        font-size: 19px;
+    .sidebar {
+        padding: 13px 11px 10px;
     }
 
     .brand span {
         font-size: 16px;
     }
 
-    .job-card {
-        padding: 12px;
+    .nav-link {
+        padding: 9px 10px;
+        font-size: 12px;
     }
 
+    .statistics {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        flex-wrap: wrap;
+    }
+}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* =========================================
+   1. VARIABLES
+========================================= */
+
+:root {
+    --sidebar-bg: #133863;
+    --sidebar-active: #234d7d;
+    --sidebar-hover: rgba(255, 255, 255, 0.08);
+    --main-bg: #f6f8fb;
+    --card-bg: #ffffff;
+    --primary-blue: #184e8e;
+    --primary-blue-hover: #123c6e;
+    --text-dark: #162a45;
+    --text-muted: #7a8899;
+    --border-color: #e8eef5;
+    --avatar-bg: #e7eef9;
+
+    /* Alias warna untuk mempertahankan komponen Dashboard Mahasiswa */
+    --navy: #173D70;
+    --navy-light: #28588D;
+    --blue: #1557AB;
+    --background: var(--main-bg);
+    --white: #FFFFFF;
+    --text: var(--text-dark);
+    --muted: var(--text-muted);
+    --border: var(--border-color);
+    --light-blue: #E5F0FF;
+    --green: #168044;
+}
+
+/* =========================================
+   2. RESET & GLOBAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+/* =========================================
+   3. MAIN LAYOUT
+========================================= */
+
+.layout {
+    display: flex;
+    width: 100%;
+    max-width: 1600px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--background);
+}
+
+/* =========================================
+   4. SIDEBAR - diselaraskan dengan Dashboard Perusahaan
+========================================= */
+
+.sidebar {
+    width: 225px;
+    min-width: 225px;
+    background-color: var(--sidebar-bg);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    padding: 20px 14px;
+    z-index: 100;
+    overflow-y: auto;
+}
+
+/* BRAND - menggunakan struktur HTML Dashboard Mahasiswa */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 8px 24px;
+    margin-bottom: 0;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.brand img {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #ffffff;
+    padding: 1px;
+    flex-shrink: 0;
+    display: block;
+}
+
+.brand span {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ROLE LABEL */
+.role-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.55);
+    padding: 0 12px 10px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+/* NAVIGATION */
+.navigation {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.navigation .nav-link {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navigation .nav-link:hover {
+    background-color: var(--sidebar-hover);
+    color: #ffffff;
+}
+
+.navigation .nav-link.active {
+    background-color: var(--sidebar-active);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* SIDEBAR FOOTER */
+.sidebar-footer {
+    margin-top: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 0;
+}
+
+.sidebar-footer a {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 11px;
+    text-decoration: none;
+    line-height: 1.4;
+    transition: color 0.2s ease;
+}
+
+.sidebar-footer a:hover {
+    color: #ffffff;
+}
+
+.sidebar-footer .logout,
+.sidebar-footer .logout-link {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.sidebar-footer .logout:hover,
+.sidebar-footer .logout-link:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   5. MAIN CONTENT
+========================================= */
+
+.main-content {
+  margin-left: 225px;
+  flex: 1;
+  min-width: 0;
+  width: calc(100% - 225px);
+  padding: 28px 36px;
+}
+
+/* =========================================
+   6. PAGE HEADER
+========================================= */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 27px;
+}
+
+.page-header h1 {
+    font-size: clamp(21px, 2vw, 29px);
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 6px;
+}
+
+.page-header p {
+    font-size: clamp(11px, 1vw, 14px);
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--light-blue);
+    color: var(--blue);
+
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* =========================================
+   7. SEARCH BOX
+========================================= */
+
+.search-box {
+    width: 100%;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    padding: 16px 18px 17px;
+
+    margin-bottom: 18px;
+}
+
+.search-box h3 {
+    font-size: 11px;
+    color: var(--navy);
+    font-weight: 700;
+
+    margin-bottom: 9px;
+}
+
+.search-form {
+    display: grid;
+
+    grid-template-columns:
+        minmax(180px, 2fr)
+        minmax(110px, 1fr)
+        minmax(110px, 1fr)
+        minmax(115px, 0.9fr);
+
+    gap: 11px;
+}
+
+.search-form input,
+.search-form select {
+    width: 100%;
+    min-width: 0;
+    height: 46px;
+
+    padding: 0 14px;
+
+    border: 1px solid #E0E7F1;
+    border-radius: 9px;
+
+    background: #F3F5FB;
+
+    color: var(--muted);
+    font-size: 12px;
+
+    outline: none;
+}
+
+.search-form input::placeholder {
+    color: #8799B4;
+}
+
+.search-form input:focus,
+.search-form select:focus {
+    border-color: var(--blue);
+}
+
+.search-form button {
+    height: 46px;
+    padding: 0 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: var(--blue);
+    color: white;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.search-form button:hover {
+    background: var(--navy);
+}
+
+/* =========================================
+   8. STATISTICS
+========================================= */
+
+.statistics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: clamp(10px, 1.5vw, 20px);
+
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    min-width: 0;
+    min-height: 84px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    padding: 14px 16px;
+
+    transition: 0.2s;
+}
+
+.stat-card:hover {
+    border-color: #B5CBE7;
+}
+
+.stat-card h2 {
+    font-size: clamp(21px, 2vw, 25px);
+    font-weight: 700;
+    color: var(--blue);
+
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    font-size: clamp(10px, 0.9vw, 11px);
+    color: var(--muted);
+}
+
+/* =========================================
+   9. CONTENT GRID
+========================================= */
+
+.content-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 2.15fr)
+        minmax(210px, 0.9fr);
+
+    gap: clamp(12px, 1.5vw, 22px);
+
+    align-items: start;
+}
+
+.recommendations,
+.profile-panel {
+    min-width: 0;
+}
+
+/* =========================================
+   10. SECTION HEADER
+========================================= */
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+    margin-bottom: 21px;
+}
+
+.section-header h2 {
+    font-size: clamp(16px, 1.5vw, 18px);
+    font-weight: 700;
+    color: var(--text);
+}
+
+.section-header a {
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* =========================================
+   11. JOB CARDS
+========================================= */
+
+.job-card {
+    min-width: 0;
+    min-height: 97px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    padding: 14px 16px;
+
+    margin-bottom: 17px;
+
+    transition: 0.2s;
+}
+
+.job-card:hover {
+    border-color: #B5CBE7;
+}
+
+/* COMPANY LOGO */
+
+.company-logo {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 11px;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.blue-logo {
+    background: #E8F1FF;
+    color: #1557AB;
+}
+
+/* JOB INFORMATION */
+
+.job-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.job-info h3 {
+    font-size: clamp(12px, 1.1vw, 15px);
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 7px;
+}
+
+.job-info p {
+    font-size: clamp(10px, 0.9vw, 12px);
+    color: var(--muted);
+
+    margin-bottom: 6px;
+}
+
+/* BADGES */
+
+.badge {
+    display: inline-block;
+
+    padding: 5px 13px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.internship {
+    background: #E8F1FF;
+    color: #1557AB;
+}
+
+.fulltime {
+    background: #DDF5E6;
+    color: #168044;
+}
+
+/* DETAIL BUTTON */
+
+.detail-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    white-space: nowrap;
+
+    background: #E4EFFF;
+    color: var(--blue);
+
+    border-radius: 10px;
+
+    padding: 10px 14px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.detail-button:hover {
+    background: var(--blue);
+    color: white;
+}
+
+/* =========================================
+   12. PROFILE PANEL
+========================================= */
+
+.profile-panel {
+    min-width: 0;
+}
+
+.profile-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    padding: clamp(16px, 1.7vw, 22px);
+}
+
+.profile-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 17px;
+}
+
+.percentage {
+    font-size: 11px;
+    color: var(--muted);
+
+    margin-bottom: 13px;
+}
+
+/* PROGRESS BAR */
+
+.progress {
+    width: 100%;
+    height: 9px;
+
+    background: #E7ECF4;
+    border-radius: 20px;
+
+    overflow: hidden;
+    margin-bottom: 27px;
+}
+
+.progress-value {
+    width: 80%;
+    height: 100%;
+
+    background: var(--blue);
+    border-radius: 20px;
+}
+
+/* PROFILE TEXT */
+
+.profile-card h4 {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+
+    margin-bottom: 13px;
+}
+
+.profile-description {
+    font-size: 11px;
+    color: var(--muted);
+
+    margin-bottom: 22px;
+}
+
+.profile-card .document-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+/* DOCUMENT */
+
+.document {
+    width: 100%;
+    min-height: 47px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 12px;
+
+    background: #F3F5FB;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    color: var(--muted);
+    font-size: 10px;
+
+    margin-bottom: 16px;
+    overflow-wrap: anywhere;
+}
+
+/* EDIT PROFILE */
+
+.edit-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    min-height: 38px;
+
+    background: var(--blue);
+    color: white;
+
+    border-radius: 9px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.edit-button:hover {
+    background: var(--navy);
+}
+
+/* =========================================
+   13. RESPONSIVE - desktop, tablet, mobile
+========================================= */
+
+/* Laptop / tablet landscape */
+@media (max-width: 1100px) {
+    .main-content {
+        padding: 24px;
+    }
+
+    .statistics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .content-grid {
+        grid-template-columns: minmax(0, 1.5fr) minmax(200px, 1fr);
+    }
+
+    .search-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Tablet and mobile */
+@media (max-width: 768px) {
+    body {
+        display: block;
+    }
+
+    .layout {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+    }
+
+    /* Sidebar berubah menjadi area navigasi di bagian atas,
+       mengikuti perilaku responsive Dashboard Perusahaan. */
+    .sidebar {
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        padding: 15px 16px 12px;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+        overflow: visible;
+    }
+
+    .brand {
+        padding: 4px 8px 8px;
+        margin: 0;
+    }
+
+    .role-label {
+        padding: 0 8px 5px;
+    }
+
+    .navigation {
+        width: 100%;
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2px 0 7px;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .navigation .nav-link {
+        flex: 0 0 auto;
+        min-height: 38px;
+        padding: 9px 13px;
+        white-space: nowrap;
+    }
+
+    .sidebar-footer {
+        width: 100%;
+        margin-top: 0;
+        padding: 8px 8px 2px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 24px 20px;
+    }
+
+    .content-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Smartphone */
+@media (max-width: 560px) {
+    .main-content {
+        padding: 20px 14px;
+    }
+
+    .page-header {
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .page-header h1 {
+        font-size: 21px;
+    }
+
+    .page-header p {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .statistics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 13px;
+    }
+
+    .search-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .job-card {
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 11px;
+        padding: 13px;
+    }
+
+    .job-info {
+        flex: 1 1 calc(100% - 60px);
+    }
+
+    .detail-button {
+        margin-left: 57px;
+    }
+
+    .profile-card {
+        padding: 18px;
+    }
+}
+
+/* Very small phone */
+@media (max-width: 360px) {
+    .main-content {
+        padding: 17px 11px;
+    }
+
+    .sidebar {
+        padding: 13px 11px 10px;
+    }
+
+    .brand span {
+        font-size: 16px;
+    }
+
+    .navigation .nav-link {
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+
+    .statistics {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        flex-wrap: wrap;
+    }
 }

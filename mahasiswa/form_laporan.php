@@ -234,7 +234,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="brand">
 
             <img
-                src="../assets/images/logo-uajy.png"
+                src="../assets/images/logo-uajy.jpg"
                 alt="Logo CareerMap"
             >
 

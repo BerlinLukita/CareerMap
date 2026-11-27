@@ -182,7 +182,7 @@ try {
         <div class="sidebar-logo">
 
             <img
-                src="../assets/images/logo-uajy.png"
+                src="../assets/images/logo-uajy.jpg"
                 alt="Logo CareerMap"
             >
 

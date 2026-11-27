@@ -1,13 +1,49 @@
+/* CareerMap - Detail Lamaran
+   Sidebar mengikuti desain Dashboard Perusahaan.
+   Menggunakan class HTML Detail Lamaran yang sudah ada.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --sidebar-bg: #133863;
+    --sidebar-active: #234d7d;
+    --sidebar-hover: rgba(255, 255, 255, 0.08);
+    --main-bg: #f6f8fb;
+    --card-bg: #ffffff;
+    --primary-blue: #184e8e;
+    --primary-blue-hover: #123c6e;
+    --text-dark: #162a45;
+    --text-muted: #7a8899;
+    --border-color: #e8eef5;
+
+    /* Variabel tambahan untuk komponen detail lamaran */
+    --navy-dark: #19365d;
+    --blue-soft: #edf4fc;
+    --text: #243d60;
+    --muted: #71829d;
+    --border: #e0e8f2;
+    --surface: #ffffff;
+    --page: #f6f8fb;
+}
+
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
 }
 
 body {
-    font-family: "Roboto Condensed", sans-serif;
-    background: #f3f5fa;
-    color: #19365d;
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--main-bg);
+    color: var(--text-dark);
+    line-height: 1.5;
+    overflow-x: hidden;
 }
 
 a {
@@ -15,335 +51,486 @@ a {
     color: inherit;
 }
 
-/* LAYOUT */
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
+    width: 100%;
 }
 
-/* SIDEBAR */
+/* SIDEBAR - STYLE DASHBOARD PERUSAHAAN */
 .sidebar {
-    width: 190px;
-    min-width: 190px;
-    background: #153c70;
-    padding: 20px 16px;
+    width: 225px;
+    min-width: 225px;
+    height: 100vh;
+    background-color: var(--sidebar-bg);
+    color: #ffffff;
     display: flex;
     flex-direction: column;
-    color: #fff;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 20px 14px;
+    z-index: 100;
+    overflow-y: auto;
 }
 
 .sidebar-logo {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 19px;
+    padding: 4px 8px 24px 8px;
+    margin-bottom: 0;
+    text-decoration: none;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 15.2px;
+    line-height: 1.2;
     font-weight: 700;
-    margin-bottom: 28px;
+    white-space: nowrap;
 }
 
 .sidebar-logo img {
-    width: 29px;
-    height: 29px;
-    object-fit: contain;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #ffffff;
+    padding: 1px;
+    flex-shrink: 0;
+    display: block;
 }
 
 .sidebar-label {
     font-size: 10px;
-    color: #c2d0e2;
-    margin: 0 0 13px 3px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.55);
+    padding: 0 12px 10px 12px;
+    text-transform: uppercase;
+    margin: 0;
 }
 
 .sidebar-menu {
+    list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-}
-
-.sidebar-menu .menu-item span,
-.sidebar-bottom .menu-item span {
-    display: none;
+    gap: 4px;
 }
 
 .menu-item {
     display: flex;
     align-items: center;
-    padding: 11px 13px;
-    color: #dce6f3;
-    border-radius: 7px;
-    font-size: 12px;
-    font-weight: 400;
-    transition: .2s;
+    min-height: 40px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .menu-item:hover {
-    background: rgba(255,255,255,.08);
-    color: #fff;
+    background-color: var(--sidebar-hover);
+    color: #ffffff;
 }
 
 .menu-item.active {
-    background: #28578e;
-    color: #fff;
-    font-weight: 700;
+    background-color: var(--sidebar-active);
+    color: #ffffff;
+    font-weight: 600;
 }
 
 .sidebar-bottom {
+    padding: 12px;
     margin-top: auto;
-    padding-top: 14px;
-    border-top: 1px solid rgba(255,255,255,.2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 0;
 }
 
 .sidebar-bottom .menu-item {
-    font-size: 10px;
-    padding: 9px 7px;
+    min-height: auto;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 11px;
+}
+
+.sidebar-bottom .menu-item:hover {
+    color: #ffffff;
+    background: transparent;
 }
 
 .sidebar-bottom .logout {
-    color: #fff;
+    color: #ffffff;
+    font-size: 13px;
     font-weight: 600;
 }
 
 /* MAIN CONTENT */
 .main-content {
-    flex: 1;
+    margin-left: 225px;
+    width: calc(100% - 225px);
     min-width: 0;
-    background: #f3f5fa;
-    padding: 27px;
+    flex: 1;
+    padding: 28px 36px;
 }
 
 .page-header {
-    margin-bottom: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 24px;
 }
 
 .page-header h1 {
-    font-size: 22px;
-    color: #1b355a;
-    margin-bottom: 7px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-dark);
+    margin-bottom: 4px;
 }
 
 .page-header p {
-    font-size: 11px;
-    color: #7b8ba7;
+    font-size: 13px;
+    color: var(--text-muted);
 }
 
-/* DETAIL CONTAINER */
+/* DETAIL LAYOUT */
 .detail-container {
     width: 100%;
-    max-width: 850px;
-    background: #fff;
-    border: 1px solid #dfe7f2;
-    border-radius: 11px;
-    padding: 22px 19px;
+    max-width: 1180px;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 200px;
-    gap: 15px;
+    grid-template-columns: minmax(0, 1fr) 290px;
+    gap: 22px;
     align-items: start;
 }
 
-/* DETAIL CARD */
-.detail-card {
-    border: 1px solid #dce5f2;
-    border-radius: 10px;
-    padding: 22px 20px 12px;
+.detail-card,
+.job-summary-card {
     min-width: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(27, 53, 90, 0.035);
+}
+
+.detail-card {
+    padding: 26px;
 }
 
 .detail-card > h2 {
-    font-size: 11px;
-    font-weight: 500;
-    color: #203b60;
-    margin-bottom: 28px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 20px;
 }
 
 .job-summary {
-    margin-bottom: 27px;
+    padding: 18px 20px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    background: #f5f8fd;
+    border: 1px solid var(--border-color);
 }
 
 .job-summary h3 {
-    color: #203b60;
-    font-size: 12px;
-    font-weight: 500;
-    margin-bottom: 10px;
+    color: var(--text-dark);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
 }
 
 .job-summary p {
-    color: #8290a9;
-    font-size: 10px;
+    color: var(--text-muted);
+    font-size: 13px;
 }
 
-/* INFORMASI LAMARAN */
 .section-title {
-    font-size: 10px;
-    color: #203b60;
-    font-weight: 500;
-    margin-bottom: 20px;
+    font-size: 15px;
+    color: var(--text-dark);
+    font-weight: 700;
+    margin-bottom: 15px;
 }
 
 .information-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 0;
 }
 
 .information-row {
     display: grid;
-    grid-template-columns: 40% 60%;
-    gap: 8px;
+    grid-template-columns: minmax(145px, 210px) minmax(0, 1fr);
+    gap: 16px;
     align-items: start;
-    font-size: 10px;
+    padding: 13px 0;
+    border-bottom: 1px solid #edf1f6;
+    font-size: 13px;
 }
 
 .information-row > span {
-    color: #7e8da7;
+    color: var(--text-muted);
 }
 
 .information-row strong {
-    color: #243d60;
-    font-weight: 500;
+    color: var(--text-dark);
+    font-weight: 600;
     overflow-wrap: anywhere;
 }
 
-.document-link {
-    color: #1b5ba5;
-}
-
-.document-link:hover {
-    text-decoration: underline;
-}
-
 .cover-letter-value {
-    line-height: 1.6;
+    line-height: 1.7;
+    white-space: normal;
 }
 
-/* RIWAYAT STATUS */
+/* CV FILE */
+.document-actions {
+    min-width: 0;
+}
+
+.document-file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    margin-bottom: 12px;
+}
+
+.document-icon {
+    width: 42px;
+    height: 48px;
+    flex: 0 0 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: #fff0f0;
+    color: #c43e48;
+    font-size: 11px;
+    font-weight: 800;
+    border: 1px solid #f5d6d8;
+}
+
+.document-meta {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.document-meta strong {
+    overflow-wrap: anywhere;
+    font-size: 13px;
+}
+
+.document-meta small {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.document-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.document-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 36px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.preview-button {
+    background: var(--primary-blue);
+    color: #ffffff;
+}
+
+.preview-button:hover {
+    background: var(--primary-blue-hover);
+}
+
+.download-button {
+    background: var(--blue-soft);
+    color: var(--primary-blue);
+    border: 1px solid #d5e4f7;
+}
+
+.download-button:hover {
+    background: #dfeeff;
+}
+
+.document-unavailable {
+    padding: 12px;
+    background: #fff8e8;
+    border: 1px solid #f3dfae;
+    border-radius: 8px;
+    color: #805b12;
+    font-size: 13px;
+}
+
+.document-unavailable small {
+    display: block;
+    margin-top: 5px;
+}
+
+.document-empty {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+/* STATUS TIMELINE */
 .history-title {
-    margin-top: 37px;
-    margin-bottom: 20px;
+    margin-top: 30px;
 }
 
 .timeline {
     position: relative;
-    padding-left: 10px;
-    margin-left: 2px;
+    padding-left: 12px;
+    margin-left: 4px;
 }
 
 .timeline::before {
     content: "";
     position: absolute;
-    left: 3px;
+    left: 4px;
     top: 8px;
-    bottom: 10px;
+    bottom: 12px;
     width: 2px;
     background: #dce7f5;
 }
 
 .timeline-item {
     position: relative;
-    padding-left: 20px;
-    padding-bottom: 16px;
+    padding-left: 23px;
+    padding-bottom: 22px;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 4px;
 }
 
 .timeline-dot {
     position: absolute;
-    top: 2px;
-    left: -10px;
-    width: 11px;
-    height: 11px;
+    top: 4px;
+    left: -12px;
+    width: 12px;
+    height: 12px;
     background: #1558a6;
+    border: 3px solid #e5effc;
     border-radius: 50%;
     z-index: 1;
 }
 
 .timeline-content strong {
     display: block;
-    color: #243d60;
-    font-size: 10px;
-    font-weight: 500;
-    margin-bottom: 5px;
+    color: var(--text-dark);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
 }
 
 .timeline-content p {
-    color: #8190a8;
-    font-size: 9px;
-    line-height: 1.5;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.6;
 }
 
-/* TOMBOL KEMBALI */
 .back-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 26px;
-    padding: 0 24px;
-    border: 1px solid #1b5ba5;
-    border-radius: 6px;
-    color: #1558a6;
-    font-size: 9px;
-    margin-top: 4px;
-    transition: .2s;
+    min-height: 38px;
+    padding: 0 16px;
+    border: 1px solid #cbdcf0;
+    border-radius: 8px;
+    color: var(--primary-blue);
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 22px;
+    transition: background-color 0.2s ease;
 }
 
 .back-button:hover {
-    background: #edf4fc;
+    background: var(--blue-soft);
 }
 
-/* RINGKASAN LOWONGAN */
+/* SUMMARY SIDE CARD */
 .job-summary-card {
-    border: 1px solid #dce5f2;
-    border-radius: 10px;
-    padding: 13px 15px;
-    min-height: 204px;
-    text-align: left;
+    padding: 22px;
 }
 
 .job-summary-card > .status-badge {
-    display: flex;
-    width: fit-content;
-    margin: 0 auto 7px;
+    display: inline-flex;
+    margin-bottom: 18px;
 }
 
 .job-summary-card h3 {
-    font-size: 10px;
-    font-weight: 500;
-    color: #203b60;
-    margin-bottom: 17px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 14px;
 }
 
 .summary-title {
-    font-size: 10px;
-    color: #243d60;
-    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 5px;
 }
 
 .summary-company {
-    font-size: 10px;
-    color: #8190a8;
-    margin-bottom: 23px;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 22px;
 }
 
 .job-summary-card .contact-title {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .job-summary-card > a {
-    color: #8190a8;
-    font-size: 9px;
+    color: var(--primary-blue);
+    font-size: 12px;
     overflow-wrap: anywhere;
 }
 
 .job-summary-card > a:hover {
-    color: #1558a6;
+    text-decoration: underline;
 }
 
-/* STATUS */
+/* STATUS BADGES */
 .status-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 80px;
+    min-width: 100px;
     padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 9px;
-    font-weight: 700;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
     white-space: nowrap;
 }
 
@@ -359,7 +546,7 @@ a {
 
 .status-interview {
     background: #e5f7f0;
-    color: #00966b;
+    color: #00835e;
 }
 
 .status-accepted {
@@ -369,55 +556,105 @@ a {
 
 .status-rejected {
     background: #fdecec;
-    color: #df4c4c;
+    color: #c43e48;
 }
 
-/* RESPONSIVE TABLET */
-@media (max-width: 850px) {
-    .sidebar {
-        width: 175px;
-        min-width: 175px;
-    }
-
+/* TABLET */
+@media (max-width: 1100px) {
     .main-content {
-        padding: 22px 18px;
+        padding: 26px 24px;
     }
 
     .detail-container {
-        grid-template-columns: minmax(0, 1fr) 180px;
+        grid-template-columns: minmax(0, 1fr) 250px;
+        gap: 16px;
+    }
+
+    .detail-card {
+        padding: 22px;
     }
 }
 
-/* RESPONSIVE MOBILE */
-@media (max-width: 650px) {
-    .dashboard-layout {
+/* LAYAR KECIL / TABLET */
+@media (max-width: 900px) {
+    .detail-container {
+        grid-template-columns: 1fr;
+    }
+
+    .job-summary-card {
+        order: -1;
+    }
+
+    .page-header {
+        margin-bottom: 20px;
+    }
+}
+
+/* MOBILE - SIDEBAR MENGIKUTI POLA DASHBOARD PERUSAHAAN */
+@media (max-width: 768px) {
+    body {
         display: block;
     }
 
+    .dashboard-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
     .sidebar {
+        position: static;
         width: 100%;
         min-width: 0;
-        padding: 13px 16px;
+        height: auto;
+        min-height: 0;
+        flex: 0 0 auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 14px 16px;
+        overflow: visible;
     }
 
     .sidebar-logo {
-        margin-bottom: 15px;
+        width: 100%;
+        padding: 4px 8px 10px;
+        margin: 0;
+        font-size: 15.2px;
+    }
+
+    .sidebar-logo img {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        max-width: 30px !important;
     }
 
     .sidebar-label {
-        margin-bottom: 8px;
+        width: 100%;
+        padding: 0 8px 4px;
+        margin: 0;
     }
 
     .sidebar-menu {
+        width: 100%;
         flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 6px;
         overflow-x: auto;
-        gap: 5px;
+        overflow-y: hidden;
+        padding: 0 0 5px;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
     }
 
     .menu-item {
+        flex: 0 0 auto;
+        min-height: 38px;
+        padding: 9px 13px;
         white-space: nowrap;
-        padding: 9px;
-        font-size: 11px;
+        font-size: 12px;
     }
 
     .sidebar-bottom {
@@ -425,47 +662,132 @@ a {
     }
 
     .main-content {
-        padding: 20px 13px;
-    }
-
-    .page-header {
-        margin-bottom: 22px;
+        width: 100%;
+        margin-left: 0;
+        padding: 22px 20px;
     }
 
     .page-header h1 {
-        font-size: 21px;
+        font-size: 22px;
     }
 
     .detail-container {
-        grid-template-columns: 1fr;
-        padding: 13px;
-    }
-
-    .detail-card {
-        padding: 19px 14px;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .job-summary-card {
-        min-height: auto;
-        padding: 17px;
-    }
-
-    .information-row {
-        grid-template-columns: 42% 58%;
-        font-size: 10px;
+        order: -1;
     }
 }
 
-@media (max-width: 380px) {
-    .main-content {
-        padding: 16px 9px;
+/* SMARTPHONE */
+@media (max-width: 480px) {
+    .sidebar {
+        padding: 12px 12px 10px;
     }
 
-    .detail-container {
-        padding: 9px;
+    .sidebar-logo {
+        font-size: 15.2px;
+    }
+
+    .main-content {
+        padding: 20px 14px;
+    }
+
+    .page-header {
+        margin-bottom: 18px;
+    }
+
+    .page-header h1 {
+        font-size: 19px;
+    }
+
+    .page-header p {
+        font-size: 12px;
     }
 
     .detail-card {
-        padding: 15px 11px;
+        padding: 18px 15px;
+        border-radius: 12px;
+    }
+
+    .detail-card > h2 {
+        font-size: 17px;
+        margin-bottom: 17px;
+    }
+
+    .job-summary {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .job-summary h3 {
+        font-size: 18px;
+    }
+
+    .job-summary p {
+        font-size: 12px;
+    }
+
+    .section-title {
+        font-size: 14px;
+    }
+
+    .information-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 5px;
+        padding: 12px 0;
+        font-size: 12px;
+    }
+
+    .document-buttons {
+        width: 100%;
+    }
+
+    .document-button {
+        flex: 1 1 auto;
+    }
+
+    .job-summary-card {
+        padding: 17px;
+        border-radius: 12px;
+    }
+
+    .status-badge {
+        min-width: 0;
+        font-size: 10px;
+    }
+
+    .timeline-content strong {
+        font-size: 12px;
+    }
+
+    .timeline-content p {
+        font-size: 11px;
+    }
+}
+
+/* HP SANGAT KECIL */
+@media (max-width: 350px) {
+    .main-content {
+        padding: 17px 11px;
+    }
+
+    .detail-card {
+        padding: 15px 12px;
+    }
+
+    .sidebar {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .menu-item {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .document-button {
+        width: 100%;
     }
 }
