@@ -552,3 +552,41 @@ button, input, select { font: inherit; }
     .distance-button { padding: 0 9px; }
     .main-content { padding: 14px 9px; }
 }
+
+
+/* =========================================
+   PERBAIKAN FOOTER SIDEBAR
+   Samakan Bantuan & Pusat Dukungan dengan
+   halaman Lowongan Disimpan dan Dashboard Mahasiswa
+========================================= */
+
+.sidebar-footer {
+    padding-left: 0 !important;
+    padding-right: 8px !important;
+    gap: 8px !important;
+}
+
+.sidebar-footer a {
+    display: block;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    min-height: auto;
+    background: transparent;
+    border-radius: 0;
+}
+
+.sidebar-footer a:hover {
+    background: transparent;
+    color: #ffffff;
+}
+
+.sidebar-footer .logout {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    color: #ffffff;
+}

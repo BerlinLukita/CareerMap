@@ -239,7 +239,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="sidebar-logo">
 
             <img
-                src="../assets/images/logo%20uajy.png"
+                src="../assets/images/logo-uajy.jpg"
                 alt="CareerMap"
             >
 

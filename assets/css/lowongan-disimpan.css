@@ -911,3 +911,31 @@ body,
         font-size: 10px;
     }
 }
+
+
+/* =========================================
+   PERBAIKAN FOOTER SIDEBAR
+   Ukuran lebih kecil dan posisi lebih ke kiri
+========================================= */
+
+.sidebar-bottom {
+    padding-left: 0 !important;
+    padding-right: 8px !important;
+    gap: 8px;
+}
+
+.sidebar-bottom .menu-item {
+    font-size: 10px !important;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    min-height: auto;
+    background: transparent;
+    border-radius: 0;
+}
+
+.sidebar-bottom .menu-item:hover {
+    background: transparent;
+    color: #ffffff;
+}

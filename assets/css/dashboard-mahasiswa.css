@@ -1695,3 +1695,57 @@ select {
         flex-wrap: wrap;
     }
 }
+
+
+/* =========================================
+   PERBAIKAN FOOTER SIDEBAR DASHBOARD MAHASISWA
+   Samakan ukuran dan posisi Bantuan dengan
+   halaman Lowongan Disimpan (revisi 2)
+========================================= */
+
+.sidebar-footer {
+    padding-left: 0 !important;
+    padding-right: 8px !important;
+    gap: 8px !important;
+}
+
+.sidebar-footer a {
+    font-size: 10px !important;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    min-height: auto;
+    background: transparent;
+    border-radius: 0;
+}
+
+.sidebar-footer a:hover {
+    background: transparent;
+    color: #ffffff;
+}
+
+/* Pertahankan tulisan Keluar tetap tegas,
+   tetapi samakan ukuran dasarnya dengan sidebar */
+.sidebar-footer .logout,
+.sidebar-footer .logout-link {
+    font-size: 10px !important;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+
+/* FINAL MATCH: tipografi footer sama dengan Lowongan Disimpan */
+.sidebar-footer a {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+}
+
+.sidebar-footer .logout,
+.sidebar-footer .logout-link {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+}

@@ -278,7 +278,7 @@ $userName = $_SESSION["name"] ?? "Mahasiswa";
     <aside class="sidebar">
 
         <div class="sidebar-logo">
-            <img src="../assets/images/logo%20uajy.png" alt="CareerMap">
+            <img src="../assets/images/logo-uajy.jpg" alt="CareerMap">
             <span>CareerMap</span>
         </div>
 

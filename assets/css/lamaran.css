@@ -577,3 +577,35 @@ button, input, select { font: inherit; }
     line-height: 1.2 !important;
     font-weight: 700 !important;
 }
+
+
+/* FOOTER SIDEBAR - ukuran dan posisi disamakan dengan halaman lain */
+.sidebar-bottom {
+    padding-left: 0 !important;
+    padding-right: 8px !important;
+    gap: 8px !important;
+}
+
+.sidebar-bottom .menu-item {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    min-height: auto;
+    background: transparent;
+    border-radius: 0;
+}
+
+.sidebar-bottom .menu-item:hover {
+    background: transparent;
+    color: #ffffff;
+}
+
+.sidebar-bottom .logout {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    color: #ffffff;
+}

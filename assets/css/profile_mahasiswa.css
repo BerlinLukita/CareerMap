@@ -2459,3 +2459,40 @@ body {
         font-size: 11px;
     }
 }
+
+
+/* FOOTER SIDEBAR - ukuran dan posisi disamakan dengan halaman lain */
+.sidebar-bottom,
+.cm-sidebar-bottom {
+    padding-left: 0 !important;
+    padding-right: 8px !important;
+    gap: 8px !important;
+}
+
+.sidebar-bottom .menu-item,
+.cm-sidebar-bottom a {
+    display: block;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    min-height: auto !important;
+    background: transparent !important;
+    border-radius: 0;
+}
+
+.sidebar-bottom .menu-item:hover,
+.cm-sidebar-bottom a:hover {
+    background: transparent !important;
+    color: #ffffff !important;
+}
+
+.sidebar-bottom .logout,
+.cm-sidebar-bottom a:last-child {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
