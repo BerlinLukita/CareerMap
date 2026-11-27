@@ -8,7 +8,11 @@ if (!isset($_SESSION["user_id"]) || ($_SESSION["role"] ?? "") !== "student") {
 
 require_once "../config/database.php";
 
-function e($value) {
+/**
+ * Mengamankan output agar tidak bisa menyisipkan HTML/script.
+ */
+function e($value)
+{
     return htmlspecialchars((string)($value ?? ""), ENT_QUOTES, "UTF-8");
 }
 
@@ -22,13 +26,14 @@ if (!$applicationId) {
     exit;
 }
 
-// Ambil data lamaran dan lowongan
+// Ambil data lamaran dan lowongan.
 $sql = "
     SELECT
         a.id AS application_id,
         a.job_id,
         a.student_id,
         a.cv_path,
+        sp.cv_path AS profile_cv_path,
         a.cover_letter,
         a.status,
         a.applied_at,
@@ -47,6 +52,7 @@ $sql = "
     INNER JOIN job_vacancies j ON a.job_id = j.id
     INNER JOIN company_profiles cp ON j.company_id = cp.user_id
     INNER JOIN users u ON cp.user_id = u.id
+    LEFT JOIN student_profiles sp ON sp.user_id = a.student_id
 
     WHERE a.id = :application_id
       AND a.student_id = :student_id
@@ -55,7 +61,6 @@ $sql = "
 ";
 
 $stmt = $pdo->prepare($sql);
-
 $stmt->execute([
     "application_id" => $applicationId,
     "student_id" => $studentId
@@ -68,7 +73,7 @@ if (!$application) {
     exit("Data lamaran tidak ditemukan.");
 }
 
-// Ambil riwayat status
+// Ambil riwayat status.
 $historySql = "
     SELECT
         h.status,
@@ -80,14 +85,13 @@ $historySql = "
 ";
 
 $historyStmt = $pdo->prepare($historySql);
-
 $historyStmt->execute([
     "application_id" => $applicationId
 ]);
 
 $history = $historyStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Jika riwayat belum dibuat, tampilkan status lamaran saat ini
+// Jika riwayat belum dibuat, tampilkan status lamaran saat ini.
 if (empty($history)) {
     $history[] = [
         "status" => $application["status"],
@@ -104,8 +108,17 @@ $statusLabels = [
     "rejected" => "Ditolak"
 ];
 
-function formatDateLong($date) {
-    if (!$date) return "-";
+function formatDateLong($date)
+{
+    if (!$date) {
+        return "-";
+    }
+
+    $timestamp = strtotime($date);
+
+    if ($timestamp === false) {
+        return "-";
+    }
 
     $months = [
         1 => "Januari", "Februari", "Maret", "April",
@@ -113,31 +126,109 @@ function formatDateLong($date) {
         "September", "Oktober", "November", "Desember"
     ];
 
-    $timestamp = strtotime($date);
-
     return date("d", $timestamp) . " " .
-        $months[(int)date("n", $timestamp)] . " " .
+        $months[(int) date("n", $timestamp)] . " " .
         date("Y", $timestamp);
 }
 
-function formatDateShort($date) {
-    if (!$date) return "-";
+function formatDateShort($date)
+{
+    if (!$date) {
+        return "-";
+    }
+
+    $timestamp = strtotime($date);
+
+    if ($timestamp === false) {
+        return "-";
+    }
 
     $months = [
         1 => "Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
         "Jul", "Agu", "Sep", "Okt", "Nov", "Des"
     ];
 
-    $timestamp = strtotime($date);
-
     return date("d", $timestamp) . " " .
-        $months[(int)date("n", $timestamp)] . " " .
+        $months[(int) date("n", $timestamp)] . " " .
         date("Y", $timestamp);
 }
 
-$status = $application["status"];
-$cvPath = $application["cv_path"];
-$cvUrl = "../" . ltrim($cvPath, "/\\");
+$status = $application["status"] ?? "submitted";
+
+/*
+|--------------------------------------------------------------------------
+| PENGATURAN FILE CV
+|--------------------------------------------------------------------------
+| CV lamaran biasanya disimpan di applications.cv_path.
+| Jika file tersebut sudah tidak ada (misalnya CV profil pernah diperbarui),
+| gunakan student_profiles.cv_path sebagai fallback.
+| Folder upload berdasarkan kode profile.php: uploads/cvs/
+|--------------------------------------------------------------------------
+*/
+
+$projectRoot = realpath(__DIR__ . "/..");
+$cvPath = "";
+$cvFileName = "";
+$cvUrl = "";
+$cvExists = false;
+
+$possibleCvPaths = [
+    $application["cv_path"] ?? "",
+    $application["profile_cv_path"] ?? ""
+];
+
+if ($projectRoot !== false) {
+    foreach ($possibleCvPaths as $storedPath) {
+        $storedPath = trim((string)$storedPath);
+
+        if ($storedPath === "") {
+            continue;
+        }
+
+        $normalizedPath = str_replace("\\", "/", $storedPath);
+
+        // Simpan path pertama agar file yang hilang tidak dianggap
+        // sama dengan kondisi ketika CV memang belum pernah dilampirkan.
+        if ($cvPath === "") {
+            $cvPath = $normalizedPath;
+            $cvFileName = basename($normalizedPath);
+        }
+
+        // Tolak path absolut dan path traversal.
+        if (
+            str_starts_with($normalizedPath, "/") ||
+            preg_match('/^[A-Za-z]:\//', $normalizedPath) ||
+            in_array("..", explode("/", $normalizedPath), true)
+        ) {
+            continue;
+        }
+
+        $candidatePath = $projectRoot . DIRECTORY_SEPARATOR .
+            str_replace("/", DIRECTORY_SEPARATOR, $normalizedPath);
+
+        $realCvPath = realpath($candidatePath);
+        $rootPrefix = rtrim($projectRoot, DIRECTORY_SEPARATOR) .
+            DIRECTORY_SEPARATOR;
+
+        if (
+            $realCvPath !== false &&
+            is_file($realCvPath) &&
+            strpos($realCvPath, $rootPrefix) === 0
+        ) {
+            $cvPath = $normalizedPath;
+            $cvFileName = basename($normalizedPath);
+
+            $encodedParts = array_map(
+                "rawurlencode",
+                explode("/", $normalizedPath)
+            );
+
+            $cvUrl = "../" . implode("/", $encodedParts);
+            $cvExists = true;
+            break;
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -185,8 +276,8 @@ $cvUrl = "../" . ltrim($cvPath, "/\\");
 
         <div class="sidebar-bottom">
             <a href="index.php" class="menu-item">
-    Bantuan & Pusat Dukungan
-</a>
+                Bantuan &amp; Pusat Dukungan
+            </a>
 
             <a href="../auth/logout.php" class="menu-item logout">
                 Keluar
@@ -250,38 +341,70 @@ $cvUrl = "../" . ltrim($cvPath, "/\\");
                         <strong><?php echo e($application["location"]); ?></strong>
                     </div>
 
+                    <!-- DOKUMEN CV -->
                     <div class="information-row document-row">
                         <span>Dokumen CV</span>
+
                         <div class="document-actions">
-                            <?php if ($cvUrl !== ""): ?>
+
+                            <?php if ($cvExists): ?>
+
                                 <div class="document-file">
                                     <span class="document-icon">PDF</span>
+
                                     <div class="document-meta">
                                         <strong><?php echo e($cvFileName); ?></strong>
                                         <small>CV yang dikirim saat melamar</small>
                                     </div>
                                 </div>
+
                                 <div class="document-buttons">
-                                    <a href="<?php echo e($cvUrl); ?>" target="_blank" rel="noopener" class="document-button preview-button">
+
+                                    <a
+                                        href="<?php echo e($cvUrl); ?>"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="document-button preview-button"
+                                    >
                                         Lihat CV
                                     </a>
-                                    <a href="<?php echo e($cvUrl); ?>" download="<?php echo e($cvFileName); ?>" class="document-button download-button">
+
+                                    <a
+                                        href="<?php echo e($cvUrl); ?>"
+                                        download="<?php echo e($cvFileName); ?>"
+                                        class="document-button download-button"
+                                    >
                                         Unduh CV
                                     </a>
+
                                 </div>
+
                             <?php elseif ($cvPath !== ""): ?>
+
                                 <div class="document-unavailable">
-                                    File tercatat di database, tetapi tidak ditemukan di folder penyimpanan.
-                                    <small>Periksa kembali nilai cv_path dan lokasi folder upload.</small>
+                                    File CV belum ditemukan pada folder penyimpanan.
+
+                                    <small>
+                                        Sistem sudah memeriksa CV pada data lamaran dan profil mahasiswa.
+                                        Pastikan file tersedia di folder uploads/cvs/ dan nilai cv_path
+                                        pada database sesuai dengan nama file tersebut.
+                                    </small>
                                 </div>
+
                             <?php else: ?>
-                                <span class="document-empty">Belum ada CV yang dilampirkan.</span>
+
+                                <span class="document-empty">
+                                    Belum ada CV yang dilampirkan.
+                                </span>
+
                             <?php endif; ?>
+
                         </div>
                     </div>
 
                     <div class="information-row">
                         <span>Surat Pengantar</span>
+
                         <strong class="cover-letter-value">
                             <?php
                             echo !empty($application["cover_letter"])
