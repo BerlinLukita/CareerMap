@@ -1,0 +1,625 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
+
+/* =========================================
+   1. GLOBAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --navy: #1B416F;
+    --navy-hover: #28588D;
+    --blue: #1959A8;
+    --background: #F3F6FC;
+    --white: #FFFFFF;
+    --text: #203D67;
+    --muted: #7186A6;
+    --border: #DCE6F5;
+    --light-blue: #EAF2FF;
+    --red: #DD4447;
+}
+
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+}
+
+/* =========================================
+   2. MAIN LAYOUT
+========================================= */
+
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* =========================================
+   3. SIDEBAR
+========================================= */
+
+.sidebar {
+    width: 205px;
+    min-width: 205px;
+    min-height: 100vh;
+    background: var(--navy);
+    color: white;
+    padding: 22px 18px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+
+/* LOGO */
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+    margin-bottom: 30px;
+}
+
+.sidebar-logo img {
+    width: 29px;
+    height: 34px;
+    object-fit: contain;
+}
+
+.sidebar-logo span {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+}
+
+/* LABEL */
+
+.sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #C0D0E5;
+    padding: 0 12px;
+    margin-bottom: 17px;
+}
+
+/* MENU */
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #E5ECF6;
+    transition: 0.2s ease;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.10);
+}
+
+.menu-item.active {
+    background: #2D5D91;
+    color: white;
+    font-weight: 700;
+}
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    padding: 20px 12px 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.bottom-link {
+    color: #D3DFEE;
+    font-size: 10px;
+}
+
+.logout-link {
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* =========================================
+   4. MAIN CONTENT
+========================================= */
+
+.main-content {
+    width: calc(100% - 205px);
+    min-height: 100vh;
+    margin-left: 205px;
+    padding: 31px 30px;
+    background: var(--background);
+}
+
+/* =========================================
+   5. PAGE HEADER
+========================================= */
+
+.page-header {
+    margin-bottom: 26px;
+}
+
+.page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.page-header p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* =========================================
+   6. ALERT
+========================================= */
+
+.alert {
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-bottom: 17px;
+}
+
+.alert-success {
+    background: #EAF7EF;
+    border: 1px solid #C5E8D0;
+    color: #237A45;
+}
+
+.alert-error {
+    background: #FFF0F0;
+    border: 1px solid #F4CCCC;
+    color: #C63838;
+}
+
+/* =========================================
+   7. SAVED JOBS GRID
+========================================= */
+
+.saved-jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 30px;
+    max-width: 780px;
+}
+
+/* =========================================
+   8. SAVED JOB CARD
+========================================= */
+
+.saved-job-card {
+    min-width: 0;
+    min-height: 142px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.2s ease;
+}
+
+.saved-job-card:hover {
+    border-color: #C7D8EF;
+}
+
+/* CARD TOP */
+
+.job-card-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+}
+
+/* COMPANY INITIAL */
+
+.company-initial {
+    width: 43px;
+    height: 43px;
+    min-width: 43px;
+    border-radius: 10px;
+    background: var(--light-blue);
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* JOB INFORMATION */
+
+.job-information {
+    flex: 1;
+    min-width: 0;
+}
+
+.job-information h2 {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 7px;
+    overflow-wrap: anywhere;
+}
+
+.job-information p {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+/* DELETE BUTTON */
+
+.delete-button {
+    width: 27px;
+    height: 30px;
+    min-width: 27px;
+    border: none;
+    background: transparent;
+    color: #69809F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.delete-button:hover {
+    color: var(--red);
+    transform: scale(1.08);
+}
+
+/* CARD BOTTOM */
+
+.job-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 17px;
+}
+
+/* SAVED BADGE */
+
+.saved-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--light-blue);
+    color: var(--blue);
+    border-radius: 20px;
+    padding: 6px 13px;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+/* DETAIL BUTTON */
+
+.detail-button {
+    width: 113px;
+    height: 34px;
+    border-radius: 7px;
+    background: var(--blue);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.detail-button:hover {
+    background: #104781;
+}
+
+/* =========================================
+   9. EMPTY STATE
+========================================= */
+
+.empty-state {
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 35px 20px;
+}
+
+.empty-icon {
+    width: 72px;
+    height: 72px;
+    background: var(--light-blue);
+    color: var(--blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.empty-state h2 {
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    max-width: 360px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.browse-button {
+    background: var(--blue);
+    color: white;
+    border-radius: 7px;
+    padding: 10px 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* =========================================
+   10. MODAL OVERLAY
+========================================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(22, 42, 72, 0.40);
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+/* =========================================
+   11. DELETE MODAL
+========================================= */
+
+.delete-modal {
+    width: 100%;
+    max-width: 440px;
+    background: white;
+    border-radius: 15px;
+    padding: 29px 30px;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(20, 43, 75, 0.12);
+    animation: modalAppear 0.2s ease;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* MODAL ICON */
+
+.modal-icon {
+    width: 53px;
+    height: 53px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: #FFF0F0;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* MODAL TEXT */
+
+.delete-modal h2 {
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.delete-modal p {
+    max-width: 300px;
+    margin: 0 auto;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* MODAL BUTTONS */
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 28px;
+}
+
+.modal-actions form {
+    margin: 0;
+}
+
+.cancel-button,
+.confirm-delete-button {
+    width: 119px;
+    height: 38px;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cancel-button {
+    background: #F0F4FA;
+    border: 1px solid var(--border);
+    color: #405775;
+}
+
+.cancel-button:hover {
+    background: #E5ECF5;
+}
+
+.confirm-delete-button {
+    background: var(--red);
+    color: white;
+}
+
+.confirm-delete-button:hover {
+    background: #C93438;
+}
+
+/* =========================================
+   12. RESPONSIVE TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+    .saved-jobs-grid {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+        gap: 17px;
+    }
+
+}
+
+/* =========================================
+   13. RESPONSIVE MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        min-width: 0;
+        min-height: auto;
+        padding: 15px;
+    }
+
+    .dashboard-layout {
+        display: block;
+    }
+
+    .sidebar-logo {
+        margin-bottom: 15px;
+    }
+
+    .sidebar-label {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .menu-item {
+        white-space: nowrap;
+        padding: 0 11px;
+        min-height: 34px;
+    }
+
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 23px 15px;
+    }
+
+    .page-header h1 {
+        font-size: 22px;
+    }
+
+    .saved-jobs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .saved-job-card {
+        min-height: 140px;
+        padding: 15px;
+    }
+
+    .delete-modal {
+        padding: 25px 18px;
+    }
+
+    .delete-modal h2 {
+        font-size: 19px;
+    }
+
+    .modal-actions {
+        gap: 9px;
+    }
+
+    .cancel-button,
+    .confirm-delete-button {
+        width: 110px;
+    }
+
+}

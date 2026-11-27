@@ -1,0 +1,471 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Roboto Condensed", sans-serif;
+    background: #f3f5fa;
+    color: #19365d;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* LAYOUT */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 190px;
+    min-width: 190px;
+    background: #153c70;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 28px;
+}
+
+.sidebar-logo img {
+    width: 29px;
+    height: 29px;
+    object-fit: contain;
+}
+
+.sidebar-label {
+    font-size: 10px;
+    color: #c2d0e2;
+    margin: 0 0 13px 3px;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sidebar-menu .menu-item span,
+.sidebar-bottom .menu-item span {
+    display: none;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 11px 13px;
+    color: #dce6f3;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 400;
+    transition: .2s;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,.08);
+    color: #fff;
+}
+
+.menu-item.active {
+    background: #28578e;
+    color: #fff;
+    font-weight: 700;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.2);
+}
+
+.sidebar-bottom .menu-item {
+    font-size: 10px;
+    padding: 9px 7px;
+}
+
+.sidebar-bottom .logout {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    flex: 1;
+    min-width: 0;
+    background: #f3f5fa;
+    padding: 27px;
+}
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    font-size: 22px;
+    color: #1b355a;
+    margin-bottom: 7px;
+}
+
+.page-header p {
+    font-size: 11px;
+    color: #7b8ba7;
+}
+
+/* DETAIL CONTAINER */
+.detail-container {
+    width: 100%;
+    max-width: 850px;
+    background: #fff;
+    border: 1px solid #dfe7f2;
+    border-radius: 11px;
+    padding: 22px 19px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 200px;
+    gap: 15px;
+    align-items: start;
+}
+
+/* DETAIL CARD */
+.detail-card {
+    border: 1px solid #dce5f2;
+    border-radius: 10px;
+    padding: 22px 20px 12px;
+    min-width: 0;
+}
+
+.detail-card > h2 {
+    font-size: 11px;
+    font-weight: 500;
+    color: #203b60;
+    margin-bottom: 28px;
+}
+
+.job-summary {
+    margin-bottom: 27px;
+}
+
+.job-summary h3 {
+    color: #203b60;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.job-summary p {
+    color: #8290a9;
+    font-size: 10px;
+}
+
+/* INFORMASI LAMARAN */
+.section-title {
+    font-size: 10px;
+    color: #203b60;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.information-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.information-row {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    gap: 8px;
+    align-items: start;
+    font-size: 10px;
+}
+
+.information-row > span {
+    color: #7e8da7;
+}
+
+.information-row strong {
+    color: #243d60;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.document-link {
+    color: #1b5ba5;
+}
+
+.document-link:hover {
+    text-decoration: underline;
+}
+
+.cover-letter-value {
+    line-height: 1.6;
+}
+
+/* RIWAYAT STATUS */
+.history-title {
+    margin-top: 37px;
+    margin-bottom: 20px;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 10px;
+    margin-left: 2px;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 8px;
+    bottom: 10px;
+    width: 2px;
+    background: #dce7f5;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 20px;
+    padding-bottom: 16px;
+}
+
+.timeline-dot {
+    position: absolute;
+    top: 2px;
+    left: -10px;
+    width: 11px;
+    height: 11px;
+    background: #1558a6;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.timeline-content strong {
+    display: block;
+    color: #243d60;
+    font-size: 10px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.timeline-content p {
+    color: #8190a8;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+/* TOMBOL KEMBALI */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+    padding: 0 24px;
+    border: 1px solid #1b5ba5;
+    border-radius: 6px;
+    color: #1558a6;
+    font-size: 9px;
+    margin-top: 4px;
+    transition: .2s;
+}
+
+.back-button:hover {
+    background: #edf4fc;
+}
+
+/* RINGKASAN LOWONGAN */
+.job-summary-card {
+    border: 1px solid #dce5f2;
+    border-radius: 10px;
+    padding: 13px 15px;
+    min-height: 204px;
+    text-align: left;
+}
+
+.job-summary-card > .status-badge {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto 7px;
+}
+
+.job-summary-card h3 {
+    font-size: 10px;
+    font-weight: 500;
+    color: #203b60;
+    margin-bottom: 17px;
+}
+
+.summary-title {
+    font-size: 10px;
+    color: #243d60;
+    margin-bottom: 8px;
+}
+
+.summary-company {
+    font-size: 10px;
+    color: #8190a8;
+    margin-bottom: 23px;
+}
+
+.job-summary-card .contact-title {
+    margin-bottom: 10px;
+}
+
+.job-summary-card > a {
+    color: #8190a8;
+    font-size: 9px;
+    overflow-wrap: anywhere;
+}
+
+.job-summary-card > a:hover {
+    color: #1558a6;
+}
+
+/* STATUS */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-submitted {
+    background: #eaf2ff;
+    color: #1558a6;
+}
+
+.status-under_review {
+    background: #fff2cf;
+    color: #a66b00;
+}
+
+.status-interview {
+    background: #e5f7f0;
+    color: #00966b;
+}
+
+.status-accepted {
+    background: #e4f5e9;
+    color: #21834b;
+}
+
+.status-rejected {
+    background: #fdecec;
+    color: #df4c4c;
+}
+
+/* RESPONSIVE TABLET */
+@media (max-width: 850px) {
+    .sidebar {
+        width: 175px;
+        min-width: 175px;
+    }
+
+    .main-content {
+        padding: 22px 18px;
+    }
+
+    .detail-container {
+        grid-template-columns: minmax(0, 1fr) 180px;
+    }
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 650px) {
+    .dashboard-layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        padding: 13px 16px;
+    }
+
+    .sidebar-logo {
+        margin-bottom: 15px;
+    }
+
+    .sidebar-label {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 5px;
+    }
+
+    .menu-item {
+        white-space: nowrap;
+        padding: 9px;
+        font-size: 11px;
+    }
+
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .main-content {
+        padding: 20px 13px;
+    }
+
+    .page-header {
+        margin-bottom: 22px;
+    }
+
+    .page-header h1 {
+        font-size: 21px;
+    }
+
+    .detail-container {
+        grid-template-columns: 1fr;
+        padding: 13px;
+    }
+
+    .detail-card {
+        padding: 19px 14px;
+    }
+
+    .job-summary-card {
+        min-height: auto;
+        padding: 17px;
+    }
+
+    .information-row {
+        grid-template-columns: 42% 58%;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 380px) {
+    .main-content {
+        padding: 16px 9px;
+    }
+
+    .detail-container {
+        padding: 9px;
+    }
+
+    .detail-card {
+        padding: 15px 11px;
+    }
+}

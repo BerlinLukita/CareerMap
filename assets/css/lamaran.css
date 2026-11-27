@@ -1,0 +1,331 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Roboto Condensed", sans-serif;
+    background: #f3f5fa;
+    color: #19365d;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* LAYOUT */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 190px;
+    min-width: 190px;
+    background: #153c70;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 28px;
+}
+
+.sidebar-logo img {
+    width: 29px;
+    height: 29px;
+    object-fit: contain;
+}
+
+.sidebar-label {
+    font-size: 10px;
+    color: #c2d0e2;
+    margin: 0 0 13px 3px;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sidebar-menu .menu-item span,
+.sidebar-bottom .menu-item span {
+    display: none;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 11px 13px;
+    color: #dce6f3;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 400;
+    transition: .2s;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,.08);
+    color: #fff;
+}
+
+.menu-item.active {
+    background: #28578e;
+    color: #fff;
+    font-weight: 700;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.2);
+}
+
+.sidebar-bottom .menu-item {
+    font-size: 10px;
+    padding: 9px 7px;
+}
+
+.sidebar-bottom .logout {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* KONTEN */
+.main-content {
+    flex: 1;
+    min-width: 0;
+    background: #f3f5fa;
+    padding: 27px;
+}
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    font-size: 22px;
+    color: #1b355a;
+    margin-bottom: 7px;
+}
+
+.page-header p {
+    font-size: 11px;
+    color: #7b8ba7;
+}
+
+/* KARTU LAMARAN */
+.application-container {
+    width: 100%;
+    min-height: 490px;
+    background: #fff;
+    border: 1px solid #e1e8f2;
+    border-radius: 12px;
+    padding: 18px 20px;
+}
+
+.application-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 3px;
+}
+
+.application-heading h2 {
+    font-size: 16px;
+    color: #1c355a;
+}
+
+.total-badge {
+    background: #eaf2ff;
+    color: #1558a6;
+    padding: 6px 13px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* TABEL */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.application-table {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: collapse;
+}
+
+.application-table thead {
+    border-bottom: 1px solid #e5ebf3;
+}
+
+.application-table th {
+    text-align: left;
+    padding: 10px 3px;
+    color: #70819d;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.application-table td {
+    padding: 23px 3px;
+    border-bottom: 1px solid #e7edf4;
+    color: #7585a0;
+    font-size: 11px;
+}
+
+.application-table .position-cell {
+    color: #19365d;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+/* TOMBOL DETAIL */
+.detail-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background: #e6f0ff;
+    color: #1558a6;
+    border-radius: 7px;
+    padding: 8px 14px;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: .2s;
+}
+
+.detail-button:hover {
+    background: #d3e4ff;
+}
+
+/* STATUS */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-submitted {
+    background: #eaf2ff;
+    color: #1558a6;
+}
+
+.status-under_review {
+    background: #fff2cf;
+    color: #a66b00;
+}
+
+.status-interview {
+    background: #e5f7f0;
+    color: #00966b;
+}
+
+.status-accepted {
+    background: #e4f5e9;
+    color: #21834b;
+}
+
+.status-rejected {
+    background: #fdecec;
+    color: #df4c4c;
+}
+
+/* DATA KOSONG */
+.empty-state {
+    text-align: center;
+    padding: 90px 20px;
+}
+
+.empty-state h3 {
+    font-size: 17px;
+    color: #263f61;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    font-size: 12px;
+    color: #8190a8;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* RESPONSIVE */
+@media (max-width: 850px) {
+    .sidebar {
+        width: 175px;
+        min-width: 175px;
+    }
+
+    .main-content {
+        padding: 22px 18px;
+    }
+}
+
+@media (max-width: 650px) {
+    .dashboard-layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        padding: 13px 16px;
+    }
+
+    .sidebar-logo {
+        margin-bottom: 15px;
+    }
+
+    .sidebar-label {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 5px;
+    }
+
+    .menu-item {
+        white-space: nowrap;
+        padding: 9px;
+        font-size: 11px;
+    }
+
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .main-content {
+        padding: 20px 13px;
+    }
+
+    .application-container {
+        padding: 15px;
+        min-height: 350px;
+    }
+
+    .application-heading h2 {
+        font-size: 14px;
+    }
+}
