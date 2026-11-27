@@ -1,8 +1,6 @@
-
 /* =========================================
    RESET DAN GLOBAL
 ========================================= */
-
 * {
     margin: 0;
     padding: 0;
@@ -15,43 +13,33 @@ body {
     color: #19365d;
 }
 
-a {
-    text-decoration: none;
-}
+a { text-decoration: none; }
 
-button,
-input,
-select,
-textarea {
+button, input, select, textarea {
     font-family: inherit;
 }
-
 
 /* =========================================
    LAYOUT UTAMA
 ========================================= */
-
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
 }
 
-
 /* =========================================
    SIDEBAR BIRU
 ========================================= */
-
 .sidebar {
     width: 206px;
     min-width: 206px;
+    min-height: 100vh;
     background: #153c70;
-    padding: 22px 20px;
+    padding: 22px 16px;
     display: flex;
     flex-direction: column;
-    color: #ffffff;
+    color: #fff;
 }
-
-/* Logo CareerMap */
 
 .sidebar-logo {
     display: flex;
@@ -59,7 +47,7 @@ textarea {
     gap: 10px;
     font-size: 19px;
     font-weight: 700;
-    color: #ffffff;
+    color: #fff;
     margin-bottom: 39px;
     padding-left: 3px;
 }
@@ -70,24 +58,18 @@ textarea {
     object-fit: contain;
 }
 
-/* Label mahasiswa */
-
 .sidebar-label {
     font-size: 10px;
     color: #c2d0e2;
-    margin: 0 0 26px 0;
-    letter-spacing: 0.2px;
+    margin: 0 0 18px 3px;
+    letter-spacing: .2px;
 }
-
-/* Menu sidebar */
 
 .sidebar-menu {
     display: flex;
     flex-direction: column;
     gap: 7px;
 }
-
-/* Menghilangkan ikon menu */
 
 .sidebar-menu .menu-item span,
 .sidebar-bottom .menu-item span {
@@ -97,43 +79,49 @@ textarea {
 .menu-item {
     display: flex;
     align-items: center;
-    padding: 12px 10px;
-    color: #ffffff;
-    border-radius: 5px;
+    width: 100%;
+    min-height: 39px;
+    padding: 11px 12px;
+    color: #fff;
+    border-radius: 6px;
     font-size: 13px;
     font-weight: 600;
-    transition: 0.2s;
+    transition: background .2s ease, color .2s ease;
 }
 
-.menu-item:hover,
+.menu-item:hover {
+    background: rgba(255, 255, 255, .10);
+    color: #fff;
+}
+
+/* Menu halaman yang sedang dibuka */
 .menu-item.active {
-    background: transparent;
-    color: #ffffff;
+    background: #24558e;
+    color: #fff;
+    box-shadow: inset 3px 0 0 #a9c9ef;
 }
 
 /* Bagian bawah sidebar */
-
 .sidebar-bottom {
     margin-top: auto;
     padding-top: 14px;
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-top: 1px solid rgba(255, 255, 255, .25);
 }
 
 .sidebar-bottom .menu-item {
+    min-height: 34px;
     font-size: 11px;
     font-weight: 400;
-    padding: 9px 0;
+    padding: 9px 12px;
 }
 
 .logout {
-    color: #ffffff;
+    color: #fff;
 }
-
 
 /* =========================================
    KONTEN UTAMA
 ========================================= */
-
 .main-content {
     flex: 1;
     min-width: 0;
@@ -141,11 +129,9 @@ textarea {
     padding: 25px 32px;
 }
 
-
 /* =========================================
    HEADER HALAMAN
 ========================================= */
-
 .page-header {
     margin-bottom: 41px;
 }
@@ -162,38 +148,32 @@ textarea {
     color: #7b8ba7;
 }
 
-
 /* =========================================
    KOTAK LUAR FORM
 ========================================= */
-
 .report-container {
     width: 100%;
     max-width: 790px;
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #dce5f2;
     border-radius: 11px;
     padding: 25px 21px;
 }
 
-
 /* =========================================
    KOTAK FORM BAGIAN DALAM
 ========================================= */
-
 .report-card {
     width: 100%;
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #dce5f2;
     border-radius: 11px;
     padding: 28px 29px 16px;
 }
 
-
 /* =========================================
    JUDUL FORM
 ========================================= */
-
 .report-card-header {
     margin-bottom: 34px;
 }
@@ -211,11 +191,9 @@ textarea {
     line-height: 1.5;
 }
 
-
 /* =========================================
    FORM INPUT
 ========================================= */
-
 .form-group {
     margin-bottom: 29px;
 }
@@ -239,9 +217,9 @@ textarea {
     font-family: inherit;
     font-size: 10px;
     color: #344a6b;
-    background: #ffffff;
+    background: #fff;
     outline: none;
-    transition: 0.2s;
+    transition: border-color .2s ease;
 }
 
 .form-group input,
@@ -261,9 +239,7 @@ textarea {
     cursor: default;
 }
 
-.form-group select {
-    cursor: pointer;
-}
+.form-group select { cursor: pointer; }
 
 .form-group textarea {
     min-height: 93px;
@@ -277,11 +253,9 @@ textarea {
     color: #8190a9;
 }
 
-
 /* =========================================
    INFORMASI PRIVASI
 ========================================= */
-
 .privacy-note {
     color: #7e8da7;
     font-size: 10px;
@@ -290,11 +264,9 @@ textarea {
     margin-bottom: 8px;
 }
 
-
 /* =========================================
    TOMBOL FORM
 ========================================= */
-
 .form-actions {
     display: flex;
     justify-content: flex-end;
@@ -315,38 +287,28 @@ textarea {
     font-size: 10px;
     font-weight: 500;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background .2s ease;
 }
 
-/* Tombol batal */
-
 .cancel-button {
-    background: #ffffff;
+    background: #fff;
     color: #1b5ba5;
     border: 1px solid #1b5ba5;
 }
 
-.cancel-button:hover {
-    background: #edf4fc;
-}
-
-/* Tombol kirim laporan */
+.cancel-button:hover { background: #edf4fc; }
 
 .submit-button {
     background: #1558a6;
-    color: #ffffff;
+    color: #fff;
     border: 1px solid #1558a6;
 }
 
-.submit-button:hover {
-    background: #10477f;
-}
-
+.submit-button:hover { background: #10477f; }
 
 /* =========================================
    PESAN ERROR
 ========================================= */
-
 .error-message {
     background: #fff0f0;
     color: #b83e3e;
@@ -357,11 +319,9 @@ textarea {
     font-size: 12px;
 }
 
-
 /* =========================================
    PESAN SUKSES
 ========================================= */
-
 .success-message {
     background: #f1f7f2;
     border: 1px solid #d7e8d9;
@@ -387,96 +347,58 @@ textarea {
     font-weight: 700;
 }
 
-
 /* =========================================
    RESPONSIVE TABLET
 ========================================= */
-
 @media (max-width: 900px) {
-
     .sidebar {
         width: 190px;
         min-width: 190px;
     }
 
-    .main-content {
-        padding: 24px;
-    }
-
-    .report-container {
-        max-width: 100%;
-    }
-
+    .main-content { padding: 24px; }
+    .report-container { max-width: 100%; }
 }
-
 
 /* =========================================
    RESPONSIVE MOBILE
 ========================================= */
-
 @media (max-width: 650px) {
-
-    .dashboard-layout {
-        display: block;
-    }
+    .dashboard-layout { display: block; }
 
     .sidebar {
         width: 100%;
         min-width: 0;
+        min-height: auto;
         padding: 13px 16px;
     }
 
-    .sidebar-logo {
-        margin-bottom: 15px;
-    }
-
-    .sidebar-label {
-        margin-bottom: 8px;
-    }
+    .sidebar-logo { margin-bottom: 15px; }
+    .sidebar-label { margin-bottom: 8px; }
 
     .sidebar-menu {
         flex-direction: row;
         overflow-x: auto;
         gap: 5px;
+        padding-bottom: 4px;
     }
 
     .menu-item {
+        width: auto;
         white-space: nowrap;
-        padding: 9px;
+        padding: 9px 11px;
         font-size: 12px;
     }
 
-    .sidebar-bottom {
-        display: none;
-    }
+    .sidebar-bottom { display: none; }
 
-    .main-content {
-        padding: 22px 14px;
-    }
-
-    .page-header {
-        margin-bottom: 25px;
-    }
-
-    .page-header h1 {
-        font-size: 22px;
-    }
-
-    .report-container {
-        padding: 13px;
-    }
-
-    .report-card {
-        padding: 21px 16px 16px;
-    }
-
-    .report-card-header {
-        margin-bottom: 26px;
-    }
-
-    .form-group {
-        margin-bottom: 22px;
-    }
+    .main-content { padding: 22px 14px; }
+    .page-header { margin-bottom: 25px; }
+    .page-header h1 { font-size: 22px; }
+    .report-container { padding: 13px; }
+    .report-card { padding: 21px 16px 16px; }
+    .report-card-header { margin-bottom: 26px; }
+    .form-group { margin-bottom: 22px; }
 
     .form-actions {
         flex-direction: column-reverse;
@@ -489,5 +411,491 @@ textarea {
         width: 100%;
         height: 39px;
     }
+}
 
+
+/* =====================================================
+   FINAL SIDEBAR — DISELARASKAN DENGAN DASHBOARD MAHASISWA
+   Menggunakan class HTML halaman Laporkan Lowongan yang ada:
+   .sidebar-logo, .sidebar-label, .sidebar-menu,
+   .sidebar-bottom, .menu-item, .logout
+===================================================== */
+
+/* Samakan tipografi dan warna dasar dengan Dashboard */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f6f8fb;
+    color: #162a45;
+}
+
+/* Sidebar tetap di kiri dan memenuhi tinggi layar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 225px;
+    min-width: 225px;
+    height: 100vh;
+    padding: 20px 14px;
+    background: #133863;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+/* Logo dan nama CareerMap */
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 8px 24px;
+    margin: 0;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.sidebar-logo img {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+    background: #fff;
+    padding: 1px;
+    flex-shrink: 0;
+}
+
+.sidebar-logo span {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* Label role */
+.sidebar-label {
+    padding: 0 12px 10px;
+    margin: 0;
+    color: rgba(255,255,255,.55);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+/* Menu navigasi */
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebar-menu .menu-item span,
+.sidebar-bottom .menu-item span {
+    display: none;
+}
+
+.sidebar-menu .menu-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 40px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    color: rgba(255,255,255,.85);
+    background: transparent;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.sidebar-menu .menu-item:hover {
+    background: rgba(255,255,255,.08);
+    color: #fff;
+}
+
+/* Menu aktif: tambahkan class active pada menu halaman terkait */
+.sidebar-menu .menu-item.active {
+    background: #234d7d;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Bantuan dan Keluar: diletakkan di bawah seperti dashboard */
+.sidebar-bottom {
+    margin-top: auto;
+    padding: 12px 12px 5px;
+    border-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-bottom .menu-item {
+    display: block;
+    width: 100%;
+    min-height: 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: rgba(255,255,255,.65);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.sidebar-bottom .menu-item:hover {
+    background: transparent;
+    color: #fff;
+}
+
+/* Keluar dibuat lebih tegas, posisinya tetap di bawah Bantuan */
+.sidebar-bottom .menu-item.logout {
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* Konten diberi ruang untuk sidebar fixed 225px */
+.main-content {
+    width: calc(100% - 225px);
+    margin-left: 225px;
+    padding: 28px 36px;
+    background: #f6f8fb;
+}
+
+/* Penyesuaian warna konten mengikuti dashboard */
+.page-header h1 {
+    color: #162a45;
+}
+
+.page-header p {
+    color: #7a8899;
+}
+
+/* Tablet dan ponsel: sidebar berpindah ke atas seperti dashboard */
+@media (max-width: 768px) {
+    .dashboard-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: relative;
+        top: auto;
+        left: auto;
+        bottom: auto;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        padding: 15px 16px 12px;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+        overflow: visible;
+    }
+
+    .sidebar-logo {
+        padding: 4px 8px 8px;
+        margin: 0;
+    }
+
+    .sidebar-label {
+        padding: 0 8px 5px;
+    }
+
+    .sidebar-menu {
+        width: 100%;
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2px 0 7px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sidebar-menu .menu-item {
+        flex: 0 0 auto;
+        width: auto;
+        min-height: 38px;
+        padding: 9px 13px;
+        white-space: nowrap;
+    }
+
+    /* Bantuan dan Keluar tetap terlihat pada tampilan tablet/mobile */
+    .sidebar-bottom {
+        width: 100%;
+        margin-top: 0;
+        padding: 8px 8px 2px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .sidebar-bottom .menu-item {
+        width: auto;
+        white-space: nowrap;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 24px 20px;
+    }
+}
+
+@media (max-width: 560px) {
+    .main-content {
+        padding: 20px 14px;
+    }
+
+    .sidebar {
+        padding: 13px 11px 10px;
+    }
+
+    .sidebar-logo span {
+        font-size: 16px;
+    }
+
+    .sidebar-menu .menu-item {
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+}
+
+
+/* =========================================================
+   FINAL OVERRIDE — UKURAN SIDEBAR DISAMAKAN PERSIS DENGAN
+   SIDEBAR DASHBOARD (referensi CSS Dashboard)
+========================================================= */
+
+:root {
+    --sidebar-bg: #133863;
+    --sidebar-active: #234D7D;
+}
+
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background: #F3F5FB;
+    color: #192F53;
+}
+
+/* Dimensi dan posisi sidebar mengikuti Dashboard */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: 0;
+    width: 225px;
+    min-width: 225px;
+    max-width: 225px;
+    height: 100vh;
+    min-height: 100vh;
+    padding: 20px 14px;
+    background: #133863;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+/* Logo */
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 9px;
+    margin: 0 0 32px;
+    min-height: 39px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.sidebar-logo img {
+    width: 33px;
+    min-width: 33px;
+    height: 39px;
+    max-width: 33px;
+    max-height: 39px;
+    object-fit: contain;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.sidebar-logo span {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+/* Label MAHASISWA */
+.sidebar-label {
+    padding: 0 9px;
+    margin: 0 0 12px;
+    color: #B9CBE3;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+/* Menu */
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sidebar-menu .menu-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 38px;
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 9px;
+    color: #E0E9F6;
+    background: transparent;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1;
+    box-shadow: none;
+}
+
+.sidebar-menu .menu-item:hover {
+    background: rgba(255,255,255,0.10);
+    color: #fff;
+}
+
+.sidebar-menu .menu-item.active {
+    background: #234D7D;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+/* Bantuan dan Keluar: posisi serta jarak mengikuti footer Dashboard */
+.sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.20);
+    padding: 24px 9px 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.sidebar-bottom .menu-item,
+.sidebar-bottom .menu-item.logout {
+    display: block;
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #E0E9F6;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: normal;
+    white-space: normal;
+}
+
+.sidebar-bottom .menu-item:hover {
+    background: transparent;
+    color: #fff;
+}
+
+.sidebar-bottom .menu-item.logout {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Konten dimulai tepat setelah sidebar 225px */
+.main-content {
+    width: calc(100% - 225px);
+    margin-left: 225px;
+    padding: 28px 36px;
+    background: #F3F5FB;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        height: auto;
+        min-height: 0;
+        padding: 15px 16px 12px;
+    }
+
+    .sidebar-logo {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-label {
+        margin-bottom: 5px;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+    }
+
+    .sidebar-menu .menu-item {
+        width: auto;
+        height: 38px;
+        min-height: 38px;
+        padding: 0 16px;
+        white-space: nowrap;
+    }
+
+    .sidebar-bottom {
+        margin-top: 0;
+        padding: 8px 9px 2px;
+        flex-direction: row;
+        gap: 17px;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 24px 20px;
+    }
+}
+
+@media (max-width: 560px) {
+    .sidebar {
+        padding: 13px 11px 10px;
+    }
+
+    .main-content {
+        padding: 20px 14px;
+    }
 }

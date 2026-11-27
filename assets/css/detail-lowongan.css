@@ -961,3 +961,327 @@ button {
     .job-header-actions form { flex: 1; }
     .detail-save-button, .job-header-actions .report-button { width: 100%; }
 }
+
+
+
+/* =========================================================
+   RESPONSIVE FIX — HALAMAN DETAIL LOWONGAN
+   Override diletakkan di bagian paling bawah agar aturan
+   responsive lama tidak saling bertabrakan.
+========================================================= */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.layout {
+    width: 100%;
+    max-width: 1600px;
+    min-width: 0;
+}
+
+.main-content,
+.detail-layout,
+.job-information-card,
+.right-column,
+.company-location-card {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.detail-layout {
+    grid-template-columns: minmax(0, 1.75fr) minmax(230px, 0.95fr);
+}
+
+/* Laptop kecil dan tablet landscape */
+@media (max-width: 1100px) {
+    .sidebar {
+        width: 190px;
+        min-width: 190px;
+        flex: 0 0 190px;
+    }
+
+    .main-content {
+        padding: 22px 20px;
+    }
+
+    .detail-layout {
+        grid-template-columns: minmax(0, 1.4fr) minmax(210px, 0.9fr);
+        gap: 16px;
+    }
+
+    .job-information-card {
+        padding: 20px;
+    }
+
+    .job-header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .job-header-actions {
+        width: 100%;
+        margin: 4px 0 0 63px;
+        flex-wrap: wrap;
+    }
+}
+
+/* Tablet portrait: sidebar pindah ke atas, konten satu kolom */
+@media (max-width: 760px) {
+    .layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        position: relative;
+        top: auto;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        height: auto;
+        min-height: 0;
+        flex: 0 0 auto;
+        padding: 15px;
+    }
+
+    .brand {
+        margin-bottom: 14px;
+    }
+
+    .role-label {
+        display: none;
+    }
+
+    .navigation {
+        flex-direction: row;
+        gap: 7px;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 6px;
+        scrollbar-width: thin;
+    }
+
+    .nav-link {
+        flex: 0 0 auto;
+        min-height: 38px;
+        white-space: nowrap;
+    }
+
+    /* Footer tidak disembunyikan di layar tablet */
+    .sidebar-footer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 10px;
+        padding: 12px 9px 2px;
+    }
+
+    .main-content {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 22px 18px;
+    }
+
+    .page-header {
+        gap: 14px;
+        align-items: flex-start;
+    }
+
+    .detail-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .job-information-card {
+        min-height: 0;
+    }
+
+    .right-column {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 0.75fr);
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .company-location-card {
+        min-width: 0;
+    }
+
+    .apply-button {
+        width: 100%;
+        min-height: 44px;
+        align-self: center;
+        margin: 0;
+    }
+}
+
+/* Smartphone */
+@media (max-width: 560px) {
+    .main-content {
+        padding: 19px 14px;
+    }
+
+    .page-header {
+        margin-bottom: 18px;
+    }
+
+    .page-header h1 {
+        font-size: 22px;
+        line-height: 1.25;
+    }
+
+    .page-header p {
+        font-size: 11px;
+    }
+
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+
+    .job-information-card {
+        padding: 17px 15px;
+        border-radius: 11px;
+    }
+
+    .job-header {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+        margin-bottom: 24px;
+    }
+
+    .company-logo {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        grid-row: 1;
+    }
+
+    .job-title {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .job-title h2 {
+        font-size: 16px;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+    }
+
+    .job-title p {
+        overflow-wrap: anywhere;
+    }
+
+    .job-header-actions {
+        grid-column: 1 / -1;
+        width: 100%;
+        margin: 5px 0 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .job-header-actions form {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .job-header-actions .report-button,
+    .detail-save-button {
+        width: 100%;
+        min-width: 0;
+        min-height: 40px;
+    }
+
+    .information-section {
+        margin-bottom: 22px;
+    }
+
+    .information-section h3 {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .description,
+    .qualification-list li,
+    .job-meta-grid p {
+        font-size: 11px;
+        overflow-wrap: anywhere;
+    }
+
+    .job-meta-grid {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 11px;
+    }
+
+    .right-column {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+    }
+
+    .company-location-card {
+        padding: 16px;
+    }
+
+    .mini-map {
+        height: 175px;
+    }
+
+    .apply-button {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .not-found {
+        padding: 45px 17px;
+    }
+}
+
+/* Smartphone kecil */
+@media (max-width: 380px) {
+    .main-content {
+        padding: 16px 11px;
+    }
+
+    .page-header h1 {
+        font-size: 20px;
+    }
+
+    .job-information-card {
+        padding: 15px 12px;
+    }
+
+    .job-title h2 {
+        font-size: 15px;
+    }
+
+    .company-location-card {
+        padding: 14px;
+    }
+
+    .mini-map {
+        height: 155px;
+    }
+
+    .sidebar {
+        padding: 12px 10px;
+    }
+
+    .nav-link {
+        padding: 9px 11px;
+        font-size: 12px;
+    }
+}

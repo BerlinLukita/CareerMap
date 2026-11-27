@@ -1,7 +1,16 @@
 <?php
+// Simpan file ini dengan nama persis: laporkan_lowongan.php
+// Lokasi: <folder-project>/mahasiswa/laporkan_lowongan.php
 session_start();
 
-require_once "../config/database.php";
+// Gunakan path filesystem absolut berdasarkan lokasi file ini.
+// File harus berada di: <folder-project>/mahasiswa/laporkan_lowongan.php
+$configPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "database.php";
+if (!is_file($configPath)) {
+    http_response_code(500);
+    exit("File konfigurasi database tidak ditemukan. Pastikan folder config berada satu tingkat di atas folder mahasiswa.");
+}
+require_once $configPath;
 
 // ==========================================
 // 1. CEK LOGIN MAHASISWA
@@ -32,16 +41,18 @@ function e($value)
 
 // ==========================================
 // 3. AMBIL ID LOWONGAN
+// Menerima parameter id maupun job_id agar kompatibel
+// dengan tautan dari halaman detail/cari lowongan.
 // ==========================================
 
-$jobId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+$rawJobId = $_GET["id"] ?? $_GET["job_id"] ??
+            $_POST["job_id"] ?? $_POST["id"] ?? null;
 
-if (!$jobId) {
-    $jobId = filter_input(INPUT_POST, "job_id", FILTER_VALIDATE_INT);
-}
+$jobId = filter_var($rawJobId, FILTER_VALIDATE_INT);
 
-if (!$jobId || $jobId <= 0) {
-    exit("ID lowongan tidak valid.");
+if ($jobId === false || $jobId === null || $jobId <= 0) {
+    http_response_code(400);
+    exit("ID lowongan tidak valid. Silakan kembali ke halaman detail lowongan dan klik tombol Laporkan dari sana.");
 }
 
 // ==========================================
@@ -75,7 +86,7 @@ try {
 
 if (!$job) {
     http_response_code(404);
-    exit("Lowongan tidak ditemukan.");
+    exit("Lowongan dengan ID " . (int)$jobId . " tidak ditemukan. Pastikan tombol Laporkan mengirim ID lowongan yang benar.");
 }
 
 // ==========================================
@@ -368,7 +379,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     <form
                         method="POST"
-                        action="laporkan_lowongan.php?id=<?php echo (int)$jobId; ?>"
+                        action="laporkan_lowongan.php?id=<?php echo (int)$jobId; ?>&amp;job_id=<?php echo (int)$jobId; ?>"
                     >
 
                         <input
