@@ -720,3 +720,31 @@ button, input, select, textarea {
         font-size: 15px !important;
     }
 }
+
+
+/* Ukuran gambar logo di dalam lingkaran putih diperbesar dengan padding 1px */
+.brand-logo-circle {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    overflow: hidden !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+}
+
+.brand-logo-circle img {
+    display: block !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    padding: 1px !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    object-fit: contain !important;
+    object-position: center !important;
+}

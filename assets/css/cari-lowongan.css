@@ -1910,3 +1910,23 @@ body {
     width: auto !important;
     height: 1px !important;
 }
+
+
+/* Penyesuaian ukuran GAMBAR logo di dalam lingkaran putih */
+.sidebar .brand img,
+.sidebar .sidebar-brand img,
+.sidebar .sidebar-logo img {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    flex: 0 0 36px !important;
+    padding: 1px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    object-fit: contain !important;
+    mix-blend-mode: multiply !important;
+}
