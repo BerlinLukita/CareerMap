@@ -1,0 +1,1631 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* =========================================
+   1. GLOBAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --sidebar-bg: #133863;
+    --sidebar-active: #234d7d;
+    --sidebar-hover: rgba(255,255,255,.08);
+    --navy: #133863;
+    --navy-hover: #234d7d;
+    --blue: #184e8e;
+    --background: #f6f8fb;
+    --white: #ffffff;
+    --text: #162a45;
+    --muted: #7a8899;
+    --border: #e8eef5;
+    --light-blue: #e7eef9;
+    --green: #168044;
+    --red: #D94343;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+/* =========================================
+   2. LAYOUT
+========================================= */
+
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* =========================================
+   3. SIDEBAR
+   DISESUAIKAN DENGAN HALAMAN CARI LOWONGAN
+========================================= */
+
+.sidebar {
+    width: 225px;
+    min-width: 225px;
+    height: 100vh;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    overflow-y: auto;
+    padding: 20px 14px;
+
+    background: var(--sidebar-bg);
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* LOGO */
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 9px;
+    margin-bottom: 24px;
+    white-space: nowrap;
+}
+
+.sidebar-logo img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #ffffff;
+    padding: 1px;
+    flex-shrink: 0;
+}
+
+.sidebar-logo span {
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* LABEL */
+
+.sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #B9CBE3;
+    padding: 0 9px;
+    margin-bottom: 12px;
+}
+
+/* MENU */
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    color: #E0E9F6;
+    font-size: 13px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.10);
+    color: white;
+}
+
+.menu-item.active {
+    background: var(--sidebar-active);
+    color: white;
+    font-weight: 600;
+}
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.20);
+    padding: 24px 9px 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.sidebar-bottom .menu-item {
+    padding: 0;
+    min-height: auto;
+    font-size: 11px;
+}
+
+.sidebar-bottom .menu-item:hover {
+    background: transparent;
+    color: white;
+}
+
+.sidebar-bottom .logout {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* =========================================
+   4. MAIN CONTENT
+========================================= */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    margin-left: 225px;
+    width: calc(100% - 225px);
+    padding: 28px 36px;
+    background: var(--background);
+}
+
+/* =========================================
+   5. PAGE HEADER
+========================================= */
+
+.page-header {
+    margin-bottom: 27px;
+}
+
+.page-header h1 {
+    font-size: clamp(21px, 2vw, 29px);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 7px;
+}
+
+.page-header p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* =========================================
+   6. HELP CONTAINER
+========================================= */
+
+.help-container {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 17px;
+}
+
+.help-inner {
+    width: 100%;
+    min-height: 500px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 36px 26px 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   7. HELP INTRO
+========================================= */
+
+.help-intro {
+    margin-bottom: 20px;
+}
+
+.help-intro h2 {
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.help-intro p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* =========================================
+   8. SEARCH FORM
+========================================= */
+
+.help-search {
+    width: 100%;
+    min-height: 41px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px;
+    margin-bottom: 33px;
+    background: white;
+}
+
+.help-search input {
+    flex: 1;
+    min-width: 0;
+    height: 34px;
+    border: none;
+    outline: none;
+    padding: 0 15px;
+    color: var(--text);
+    font-size: 12px;
+    background: transparent;
+}
+
+.help-search input::placeholder {
+    color: #8999B0;
+}
+
+.help-search button {
+    height: 34px;
+    min-width: 110px;
+    border: none;
+    border-radius: 7px;
+    background: var(--blue);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.help-search button:hover {
+    background: #104781;
+}
+
+/* =========================================
+   9. TOPIC HEADING
+========================================= */
+
+.topic-heading {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+}
+
+/* =========================================
+   10. TOPIC GRID
+========================================= */
+
+.topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 18px;
+}
+
+/* TOPIC CARD */
+
+.topic-card {
+    min-height: 71px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 15px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.topic-card:hover {
+    border-color: #9DBCE2;
+    background: #FAFCFF;
+    transform: translateY(-1px);
+}
+
+.topic-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 9px;
+}
+
+.topic-card p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+}
+
+.topic-arrow {
+    color: #526D91;
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+/* =========================================
+   11. HELP FOOTER
+========================================= */
+
+.help-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: auto;
+    padding-top: 30px;
+}
+
+.help-footer h3 {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.help-footer p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* CONTACT BUTTON */
+
+.contact-button {
+    min-width: 150px;
+    height: 35px;
+    padding: 0 18px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--blue);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    transition: 0.2s;
+    flex-shrink: 0;
+}
+
+.contact-button:hover {
+    background: #104781;
+}
+
+/* =========================================
+   12. CATEGORY DETAIL PAGE
+========================================= */
+
+.breadcrumb {
+    margin-bottom: 10px;
+}
+
+.breadcrumb a {
+    color: #8295B0;
+    font-size: 9px;
+}
+
+.breadcrumb a:hover {
+    color: var(--blue);
+}
+
+.category-heading {
+    margin-bottom: 12px;
+}
+
+.category-heading h2 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 7px;
+}
+
+.category-heading p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+/* =========================================
+   13. FAQ LIST
+========================================= */
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+/* FAQ ITEM */
+
+.faq-item {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.faq-item:hover {
+    border-color: #B8CDE9;
+}
+
+.faq-item[open] {
+    border-color: #2196F3;
+}
+
+/* FAQ SUMMARY */
+
+.faq-item summary {
+    list-style: none;
+    min-height: 59px;
+    padding: 11px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-question {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.55;
+}
+
+.faq-short-answer {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 400;
+    margin-top: 6px;
+}
+
+/* FAQ ARROW */
+
+.faq-arrow {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    background: #F0F5FC;
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    transition: transform 0.2s;
+}
+
+.faq-item[open] .faq-arrow {
+    transform: rotate(90deg);
+}
+
+/* FAQ ANSWER */
+
+.faq-answer {
+    padding: 0 15px 16px;
+    color: #667D9D;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.answer-category {
+    margin-top: 10px;
+    font-size: 9px;
+}
+
+.answer-category a {
+    color: var(--blue);
+    font-weight: 700;
+}
+
+/* =========================================
+   14. CATEGORY FOOTER
+========================================= */
+
+.category-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.category-footer h3 {
+    color: var(--text);
+    font-size: 10px;
+    margin-bottom: 4px;
+}
+
+.category-footer p {
+    color: var(--muted);
+    font-size: 9px;
+}
+
+/* =========================================
+   15. SEARCH RESULTS
+========================================= */
+
+.search-result-heading {
+    margin-bottom: 18px;
+}
+
+.search-result-heading h2 {
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 7px;
+}
+
+.search-result-heading p {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.search-result-heading strong {
+    color: var(--blue);
+}
+
+.search-results {
+    margin-bottom: 20px;
+}
+
+.empty-search {
+    text-align: center;
+    padding: 50px 15px;
+}
+
+.empty-search h3 {
+    color: var(--text);
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.empty-search p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 18px;
+}
+
+/* =========================================
+   16. CONTACT FORM PAGE
+========================================= */
+
+.contact-container {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 20px;
+}
+
+.contact-card {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 28px;
+}
+
+.contact-heading {
+    margin-bottom: 25px;
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--blue);
+    font-size: 10px;
+    margin-bottom: 18px;
+}
+
+.contact-heading h2 {
+    color: var(--text);
+    font-size: 19px;
+    margin-bottom: 8px;
+}
+
+.contact-heading p {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* FORM GRID */
+
+.contact-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.contact-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact-form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.contact-form-group label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.contact-form-group input,
+.contact-form-group select,
+.contact-form-group textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 11px 12px;
+    background: white;
+    color: var(--text);
+    font-size: 11px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.contact-form-group input,
+.contact-form-group select {
+    height: 40px;
+}
+
+.contact-form-group textarea {
+    resize: vertical;
+    min-height: 125px;
+    line-height: 1.6;
+}
+
+.contact-form-group input:focus,
+.contact-form-group select:focus,
+.contact-form-group textarea:focus {
+    border-color: var(--blue);
+}
+
+.contact-form-group input::placeholder,
+.contact-form-group textarea::placeholder {
+    color: #96A5BA;
+}
+
+.contact-form-group small {
+    font-size: 9px;
+    color: var(--muted);
+}
+
+/* PRIVACY */
+
+.contact-privacy {
+    background: #F5F8FD;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 13px;
+    margin-top: 22px;
+    color: #647A98;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+/* ACTIONS */
+
+.contact-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.contact-cancel,
+.contact-submit {
+    min-width: 125px;
+    height: 38px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.contact-cancel {
+    background: #F0F4FA;
+    border: 1px solid var(--border);
+    color: #435B7B;
+}
+
+.contact-submit {
+    border: none;
+    background: var(--blue);
+    color: white;
+    padding: 0 18px;
+}
+
+.contact-submit:hover {
+    background: #104781;
+}
+
+/* =========================================
+   17. FORM ALERT
+========================================= */
+
+.form-alert {
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.form-alert p + p {
+    margin-top: 5px;
+}
+
+.error-alert {
+    background: #FFF0F0;
+    border: 1px solid #F4CCCC;
+    color: #C63838;
+}
+
+.success-alert {
+    background: #EAF7EF;
+    border: 1px solid #C5E8D0;
+    color: #237A45;
+}
+
+.success-alert h3 {
+    margin-bottom: 7px;
+    font-size: 14px;
+}
+
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+@media (max-width: 900px) and (min-width: 769px) {
+    .main-content {
+        padding: 25px 22px;
+    }
+
+    .help-container {
+        padding: 14px;
+    }
+
+    .help-inner {
+        padding: 28px 20px 18px;
+    }
+
+    .topic-grid {
+        gap: 12px;
+    }
+
+    .topic-card {
+        padding: 14px;
+    }
+}
+
+/* =========================================
+   RESPONSIVE - MOBILE / TABLET PORTRAIT
+========================================= */
+@media (max-width: 768px) {
+    .dashboard-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        padding: 15px 16px 12px;
+        overflow: visible;
+    }
+
+    .sidebar-logo {
+        gap: 9px;
+        padding: 0 4px;
+        margin-bottom: 14px;
+    }
+
+    .sidebar-logo img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .sidebar-logo span {
+        font-size: 16px;
+    }
+
+    .sidebar-label {
+        padding: 0 4px;
+        margin-bottom: 8px;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        gap: 5px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0 0 7px;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sidebar-menu .menu-item {
+        flex: 0 0 auto;
+        min-height: 38px;
+        padding: 9px 12px;
+        white-space: nowrap;
+        font-size: 12px;
+    }
+
+    .sidebar-bottom {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 5px;
+        padding: 10px 4px 0;
+        border-top: 1px solid rgba(255,255,255,.16);
+    }
+
+    .sidebar-bottom .menu-item {
+        min-height: 30px;
+        padding: 5px 0;
+        font-size: 11px;
+    }
+
+    .sidebar-bottom .logout {
+        font-size: 12px;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        min-height: auto;
+        padding: 24px 20px;
+    }
+
+    .page-header {
+        margin-bottom: 20px;
+    }
+
+    .page-header h1 {
+        font-size: 23px;
+    }
+
+    .page-header p {
+        font-size: 12px;
+    }
+
+    .help-container {
+        padding: 12px;
+    }
+
+    .help-inner {
+        min-height: auto;
+        padding: 25px 18px 18px;
+    }
+
+    .topic-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .topic-card {
+        min-height: 82px;
+        padding: 13px;
+    }
+
+    .help-footer,
+    .category-footer {
+        padding-top: 24px;
+    }
+
+    .contact-container {
+        padding: 14px;
+    }
+
+    .contact-card {
+        padding: 22px 18px;
+    }
+}
+
+/* =========================================
+   RESPONSIVE - SMALL PHONE
+========================================= */
+@media (max-width: 560px) {
+    .main-content {
+        padding: 21px 14px;
+    }
+
+    .page-header h1 {
+        font-size: 21px;
+    }
+
+    .page-header p {
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .help-container {
+        padding: 9px;
+        border-radius: 10px;
+    }
+
+    .help-inner {
+        padding: 21px 13px 15px;
+    }
+
+    .help-intro h2 {
+        font-size: 15px;
+    }
+
+    .help-intro p {
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .help-search {
+        min-height: 40px;
+        margin-bottom: 23px;
+    }
+
+    .help-search input {
+        padding: 0 10px;
+        font-size: 11px;
+    }
+
+    .help-search button {
+        min-width: 68px;
+        height: 34px;
+        font-size: 11px;
+    }
+
+    .topic-heading {
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+    .topic-grid {
+        grid-template-columns: 1fr;
+        gap: 9px;
+    }
+
+    .topic-card {
+        min-height: 72px;
+        padding: 13px 14px;
+    }
+
+    .topic-card h3 {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .topic-card p {
+        font-size: 11px;
+    }
+
+    .help-footer,
+    .category-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .help-footer h3,
+    .category-footer h3 {
+        font-size: 12px;
+    }
+
+    .help-footer p,
+    .category-footer p {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .contact-button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .category-heading h2 {
+        font-size: 18px;
+    }
+
+    .category-heading p {
+        font-size: 11px;
+    }
+
+    .faq-item summary {
+        min-height: 58px;
+        padding: 11px 12px;
+        gap: 10px;
+    }
+
+    .faq-question {
+        font-size: 12px;
+    }
+
+    .faq-short-answer {
+        font-size: 10px;
+    }
+
+    .faq-answer {
+        padding: 0 12px 14px;
+        font-size: 11px;
+    }
+
+    .search-result-heading h2 {
+        font-size: 17px;
+    }
+
+    .search-result-heading p {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .empty-search {
+        padding: 35px 10px;
+    }
+
+    .contact-container {
+        padding: 9px;
+    }
+
+    .contact-card {
+        padding: 19px 13px;
+    }
+
+    .contact-heading h2 {
+        font-size: 18px;
+    }
+
+    .contact-heading p {
+        font-size: 11px;
+    }
+
+    .contact-form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .contact-form-group.full-width {
+        grid-column: auto;
+    }
+
+    .contact-form-group label {
+        font-size: 11px;
+    }
+
+    .contact-form-group input,
+    .contact-form-group select,
+    .contact-form-group textarea {
+        font-size: 12px;
+    }
+
+    .contact-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .contact-cancel,
+    .contact-submit {
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .sidebar {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .main-content {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+
+    .page-header h1 {
+        font-size: 19px;
+    }
+
+    .help-inner {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .sidebar-menu .menu-item {
+        font-size: 11px;
+        padding: 8px 10px;
+    }
+}
+
+
+
+/* ==========================================================
+   CAREermap — SIDEBAR MAHASISWA SERAGAM
+   Acuan visual: css/dashboard-perusahaan.css
+   Berlaku untuk Dashboard, Cari Lowongan, Lamaran Saya,
+   Lowongan Disimpan, Profil Saya, Bantuan & Dukungan.
+========================================================== */
+
+:root {
+    --sidebar-bg: #133863;
+    --sidebar-active: #234d7d;
+    --sidebar-hover: rgba(255, 255, 255, 0.08);
+    --main-bg: #f6f8fb;
+    --card-bg: #ffffff;
+    --primary-blue: #184e8e;
+    --primary-blue-hover: #123c6e;
+    --text-dark: #162a45;
+    --text-muted: #7a8899;
+    --border-color: #e8eef5;
+}
+
+/* Global sizing and full-width page */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-width: 320px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--main-bg);
+    color: var(--text-dark);
+    overflow-x: hidden;
+}
+
+/* Main wrappers used by the different student pages */
+.layout {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* One consistent 225px fixed sidebar — same as company dashboard */
+.sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    bottom: 0 !important;
+    z-index: 1000;
+    display: flex !important;
+    flex: 0 0 225px;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: stretch;
+    width: 225px !important;
+    min-width: 225px !important;
+    max-width: 225px !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh;
+    padding: 20px 14px !important;
+    margin: 0 !important;
+    background: #133863 !important;
+    color: #fff !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Brand/logo: normalize different markup names */
+.sidebar-brand,
+.brand,
+.sidebar-logo {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto;
+    gap: 10px !important;
+    min-height: 30px;
+    padding: 4px 8px 24px !important;
+    margin: 0 !important;
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.25;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.sidebar-brand img,
+.brand img,
+.sidebar-logo img,
+.sidebar .sidebar-brand img,
+.sidebar .brand img,
+.sidebar .sidebar-logo img {
+    display: block !important;
+    flex: 0 0 30px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
+    padding: 1px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    background: #fff !important;
+}
+
+.sidebar-brand span,
+.brand span,
+.sidebar-logo span,
+.sidebar-logo strong {
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+/* Section label */
+.sidebar-section-label,
+.role-label,
+.sidebar-label {
+    display: block;
+    flex: 0 0 auto;
+    padding: 0 12px 10px !important;
+    margin: 0 !important;
+    color: rgba(255, 255, 255, 0.55) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+/* Navigation containers */
+.nav-menu,
+.navigation,
+.sidebar-menu {
+    display: flex !important;
+    flex: 1 1 auto;
+    flex-direction: column !important;
+    align-items: stretch;
+    gap: 4px !important;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Links: shared styles for all student page HTML variants */
+.nav-link,
+.sidebar-menu .menu-item,
+.sidebar-menu a,
+.nav-menu .nav-link,
+.navigation .nav-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px;
+    width: 100%;
+    min-width: 0;
+    min-height: 40px !important;
+    height: auto;
+    padding: 11px 14px !important;
+    margin: 0 !important;
+    border: 0;
+    border-radius: 8px !important;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.35;
+    text-align: left;
+    text-decoration: none !important;
+    white-space: normal;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    box-shadow: none;
+}
+
+.nav-link:hover,
+.sidebar-menu .menu-item:hover,
+.sidebar-menu a:hover,
+.nav-menu .nav-link:hover,
+.navigation .nav-link:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #fff !important;
+}
+
+.nav-link.active,
+.sidebar-menu .menu-item.active,
+.sidebar-menu a.active,
+.nav-menu .nav-link.active,
+.navigation .nav-link.active {
+    background: #234d7d !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+}
+
+/* Footer: Help & Support and Logout sit at the bottom */
+.sidebar-footer,
+.sidebar-bottom {
+    display: flex !important;
+    flex: 0 0 auto;
+    flex-direction: column !important;
+    align-items: stretch;
+    gap: 10px !important;
+    margin: auto 0 0 !important;
+    padding: 12px !important;
+    border: 0 !important;
+    border-top: 0 !important;
+    background: transparent !important;
+}
+
+.sidebar-footer a,
+.sidebar-bottom a,
+.sidebar-bottom .menu-item,
+.sidebar-bottom .support-link,
+.support-link {
+    display: block;
+    width: 100%;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 1.4;
+    text-decoration: none !important;
+    white-space: normal;
+}
+
+.sidebar-footer a:hover,
+.sidebar-bottom a:hover,
+.sidebar-bottom .menu-item:hover,
+.support-link:hover {
+    color: #fff !important;
+    background: transparent !important;
+}
+
+.sidebar-footer .logout,
+.sidebar-bottom .logout,
+.sidebar-bottom .logout-link,
+.logout-link {
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1.4;
+}
+
+/* Content starts after the 225px sidebar */
+.main-content {
+    width: calc(100% - 225px) !important;
+    min-width: 0 !important;
+    max-width: none;
+    margin-left: 225px !important;
+    padding: 28px 36px !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Normalize common page headings */
+.page-header h1,
+.page-title {
+    color: #162a45;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+
+.page-header p,
+.page-subtitle {
+    color: #7a8899;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ================= TABLET ================= */
+@media (max-width: 900px) {
+    .main-content {
+        padding: 24px 22px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .layout {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .sidebar {
+        position: relative !important;
+        inset: auto !important;
+        flex: 0 0 auto;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        padding: 16px !important;
+        overflow: visible !important;
+    }
+
+    .sidebar-brand,
+    .brand,
+    .sidebar-logo {
+        padding: 0 8px 12px !important;
+        margin: 0 !important;
+    }
+
+    .sidebar-section-label,
+    .role-label,
+    .sidebar-label {
+        display: none !important;
+    }
+
+    .nav-menu,
+    .navigation,
+    .sidebar-menu {
+        flex: 0 0 auto;
+        flex-direction: row !important;
+        gap: 6px !important;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2px 0 8px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .nav-link,
+    .sidebar-menu .menu-item,
+    .sidebar-menu a,
+    .nav-menu .nav-link,
+    .navigation .nav-link {
+        flex: 0 0 auto;
+        width: auto;
+        min-height: 38px !important;
+        padding: 10px 13px !important;
+        white-space: nowrap;
+    }
+
+    .sidebar-footer,
+    .sidebar-bottom {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px 20px !important;
+        margin: 6px 0 0 !important;
+        padding: 10px 8px 0 !important;
+    }
+
+    .sidebar-footer a,
+    .sidebar-bottom a,
+    .sidebar-bottom .menu-item,
+    .sidebar-bottom .support-link,
+    .support-link,
+    .sidebar-footer .logout,
+    .sidebar-bottom .logout,
+    .sidebar-bottom .logout-link,
+    .logout-link {
+        width: auto;
+    }
+
+    .main-content {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 24px 20px !important;
+    }
+}
+
+/* ================= SMARTPHONE ================= */
+@media (max-width: 560px) {
+    .sidebar {
+        padding: 13px 12px !important;
+    }
+
+    .sidebar-brand,
+    .brand,
+    .sidebar-logo {
+        gap: 9px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .sidebar-brand span,
+    .brand span,
+    .sidebar-logo span,
+    .sidebar-logo strong {
+        font-size: 15px !important;
+    }
+
+    .nav-link,
+    .sidebar-menu .menu-item,
+    .sidebar-menu a,
+    .nav-menu .nav-link,
+    .navigation .nav-link {
+        min-height: 36px !important;
+        padding: 9px 11px !important;
+        font-size: 12px !important;
+    }
+
+    .sidebar-footer,
+    .sidebar-bottom {
+        gap: 9px 15px !important;
+        padding: 8px 7px 0 !important;
+    }
+
+    .main-content {
+        padding: 20px 14px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .sidebar {
+        padding: 11px 9px !important;
+    }
+
+    .main-content {
+        padding: 17px 10px !important;
+    }
+
+    .nav-link,
+    .sidebar-menu .menu-item,
+    .sidebar-menu a,
+    .nav-menu .nav-link,
+    .navigation .nav-link {
+        padding: 8px 10px !important;
+        font-size: 11px !important;
+    }
+}

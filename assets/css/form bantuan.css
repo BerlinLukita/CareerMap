@@ -1,0 +1,1022 @@
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f6f8fb;
+    color: #162a45;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   LAYOUT
+========================================= */
+
+.cm-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background: #f6f8fb;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.cm-sidebar {
+    width: 225px;
+    min-width: 225px;
+    height: 100vh;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    overflow-y: auto;
+    background: #133863;
+    color: #ffffff;
+    padding: 20px 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================
+   LOGO ATMA JAYA + CAREERMAP
+========================================= */
+
+.cm-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    margin: 0 0 24px 0;
+    padding: 0;
+}
+
+/* Logo asli, tidak bulat dan tanpa background tambahan */
+.cm-logo {
+    display: block;
+    width: 48px;
+    height: 60px;
+    object-fit: contain;
+    object-position: center;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+/* Tulisan CareerMap */
+.cm-brand span {
+    display: inline-block;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   ROLE MAHASISWA
+========================================= */
+
+.cm-role {
+    font-size: 10px;
+    letter-spacing: .5px;
+    color: #c3d2e8;
+    margin-bottom: 28px;
+}
+
+
+/* =========================================
+   MENU SIDEBAR
+========================================= */
+
+.cm-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.cm-menu a {
+    min-height: 40px;
+    padding: 11px 14px;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 10px;
+}
+
+.cm-menu a:hover,
+.cm-sidebar-bottom a:hover {
+    color: #a9d5ff;
+}
+
+
+/* =========================================
+   MENU BAWAH
+========================================= */
+
+.cm-sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.27);
+    padding-top: 17px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.cm-sidebar-bottom a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 11px;
+}
+
+
+/* =========================================
+   MAIN CONTENT
+========================================= */
+
+.cm-main {
+    flex: 1;
+    min-width: 0;
+    width: calc(100% - 225px);
+    margin-left: 225px;
+    padding: 28px 36px 40px;
+    background: #f6f8fb;
+}
+
+
+/* =========================================
+   BREADCRUMB
+========================================= */
+
+.cm-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 11px;
+    color: #24466f;
+    margin-bottom: 16px;
+}
+
+.cm-breadcrumb .cm-chevron {
+    color: #8296b3;
+    font-size: 15px;
+}
+
+.cm-breadcrumb strong {
+    font-weight: 700;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.cm-page-header {
+    margin-bottom: 38px;
+}
+
+.cm-page-header h1 {
+    color: #17365f;
+    font-size: clamp(21px, 2vw, 29px);
+    line-height: 1.25;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.cm-page-header p {
+    font-size: 12px;
+    color: #7187a8;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   FORM CARD
+========================================= */
+
+.cm-form-card {
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #e5ebf3;
+    border-radius: 12px;
+    padding: 24px 26px 22px;
+    box-shadow: 0 4px 18px rgba(19,56,99,.04);
+}
+
+.cm-form-card h2 {
+    color: #17365f;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   FORM FIELD
+========================================= */
+
+.cm-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin-bottom: 14px;
+}
+
+.cm-field > label {
+    color: #17365f;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Tanda wajib merah */
+.cm-field > label > span {
+    color: #e54a4a;
+}
+
+/* Input, select, textarea */
+.cm-field input,
+.cm-field select,
+.cm-field textarea {
+    width: 100%;
+    border: 1px solid #cbdaf0;
+    border-radius: 8px;
+    background: #ffffff;
+    outline: none;
+    color: #29466d;
+    font-family: inherit;
+    font-size: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cm-field input,
+.cm-field select {
+    height: 42px;
+    padding: 0 13px;
+}
+
+.cm-field input::placeholder,
+.cm-field textarea::placeholder {
+    color: #8499b8;
+    opacity: 1;
+}
+
+.cm-field input:focus,
+.cm-field select:focus,
+.cm-field textarea:focus {
+    border-color: #3979bd;
+    box-shadow: 0 0 0 3px rgba(57,121,189,.10);
+}
+
+
+/* =========================================
+   TOPIK BANTUAN
+========================================= */
+
+.cm-topic-field {
+    max-width: 440px;
+    margin-bottom: 16px;
+}
+
+.cm-select-wrap {
+    position: relative;
+}
+
+.cm-select-wrap select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 35px;
+    color: #8499b8;
+    cursor: pointer;
+}
+
+.cm-select-wrap::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    right: 10px;
+    top: 11px;
+    border-right: 1.7px solid #173f73;
+    border-bottom: 1.7px solid #173f73;
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+
+/* =========================================
+   DESKRIPSI
+========================================= */
+
+.cm-description-field {
+    margin-bottom: 16px;
+}
+
+.cm-field textarea {
+    height: 120px;
+    resize: none;
+    padding: 11px 12px;
+    line-height: 1.5;
+}
+
+.cm-counter {
+    text-align: right;
+    font-size: 11px;
+    color: #7187a8;
+    margin-top: 5px;
+}
+
+
+/* =========================================
+   UPLOAD AREA
+========================================= */
+
+.cm-upload-field {
+    margin-bottom: 23px;
+}
+
+.cm-upload-box {
+    width: 100%;
+    height: 100px;
+    border: 1px dashed #bdd2f2;
+    border-radius: 8px;
+    background: #fbfcff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.cm-upload-box:hover {
+    background: #f5f9ff;
+    border-color: #3979bd;
+    box-shadow: 0 0 0 3px rgba(57,121,189,.10);
+}
+
+
+/* IKON UPLOAD */
+
+.cm-upload-icon {
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background: #0964bd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.cm-upload-arrow {
+    position: absolute;
+    top: 4px;
+    width: 6px;
+    height: 8px;
+    border-left: 1.5px solid #ffffff;
+}
+
+.cm-upload-arrow::before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    left: -1px;
+    top: 0;
+    border-left: 1.5px solid #ffffff;
+    border-top: 1.5px solid #ffffff;
+    transform: rotate(45deg);
+}
+
+.cm-upload-base {
+    position: absolute;
+    bottom: 4px;
+    width: 11px;
+    height: 5px;
+    border: 1.4px solid #ffffff;
+    border-top: 0;
+    border-radius: 0 0 2px 2px;
+}
+
+
+/* TULISAN UNGGAH */
+
+.cm-upload-box .cm-upload-title {
+    color: #29466d !important;
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0 !important;
+}
+
+.cm-upload-box .cm-upload-info {
+    color: #7890b3 !important;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+
+/* =========================================
+   KONTAK
+========================================= */
+
+.cm-contact-section h3 {
+    font-size: 15px;
+    color: #17365f;
+    margin-bottom: 16px;
+}
+
+.cm-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 19px;
+}
+
+.cm-contact-grid .cm-field {
+    margin-bottom: 0;
+}
+
+
+/* =========================================
+   TOMBOL
+========================================= */
+
+.cm-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.cm-btn {
+    height: 37px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.cm-btn-cancel {
+    width: 111px;
+    background: #ffffff;
+    color: #1260bd;
+    border: 1px solid #6da2ff;
+}
+
+.cm-btn-submit {
+    width: 146px;
+    background: #184e8e;
+    color: #ffffff;
+    border: 1px solid #184e8e;
+}
+
+.cm-btn-cancel:hover {
+    background: #f4f8ff;
+}
+
+.cm-btn-submit:hover {
+    background: #133863;
+}
+
+
+/* =========================================
+   ALERT
+========================================= */
+
+.cm-alert {
+    max-width: 820px;
+    margin: -20px auto 15px;
+    padding: 11px 14px;
+    border-radius: 6px;
+    background: #eaf5ff;
+    color: #175a9c;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 760px) {
+
+    .cm-sidebar {
+        width: 170px;
+        min-width: 170px;
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+
+    .cm-main {
+        padding: 24px 18px;
+    }
+
+    .cm-contact-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+}
+
+
+@media (max-width: 560px) {
+
+    .cm-layout {
+        display: block;
+    }
+
+    .cm-sidebar {
+        width: 100%;
+        min-height: auto;
+        padding: 15px 20px;
+    }
+
+    .cm-brand {
+        margin-bottom: 10px;
+    }
+
+    .cm-role,
+    .cm-sidebar-bottom {
+        display: none;
+    }
+
+    .cm-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 12px;
+    }
+
+    .cm-menu a {
+        white-space: nowrap;
+        height: 32px;
+        padding: 0;
+    }
+
+    .cm-main {
+        padding: 22px 14px;
+    }
+
+    .cm-form-card {
+        padding: 16px 14px;
+    }
+
+    .cm-actions {
+        gap: 9px;
+    }
+}
+
+/* =========================================
+   CAREERMAP VISUAL ALIGNMENT + RESPONSIVE
+   Final overrides: desktop, tablet, and mobile
+========================================= */
+
+.cm-layout {
+    background: #f6f8fb;
+}
+
+.cm-sidebar {
+    background: #133863;
+}
+
+.cm-menu a {
+    min-height: 40px;
+    height: auto;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background .2s ease, color .2s ease;
+}
+
+.cm-menu a:hover,
+.cm-sidebar-bottom a:hover {
+    background: rgba(255,255,255,.08);
+    color: #fff;
+}
+
+.cm-menu a.active,
+.cm-menu a[aria-current="page"] {
+    background: #234d7d;
+    font-weight: 600;
+}
+
+.cm-sidebar-bottom {
+    gap: 8px;
+}
+
+.cm-sidebar-bottom a {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 11px;
+}
+
+.cm-page-header {
+    margin-bottom: 26px;
+}
+
+.cm-page-header h1 {
+    color: #162a45;
+    font-size: clamp(22px, 2vw, 29px);
+    line-height: 1.25;
+    font-weight: 700;
+}
+
+.cm-page-header p {
+    color: #7a8899;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.cm-breadcrumb {
+    font-size: 11px;
+    margin-bottom: 18px;
+}
+
+.cm-form-card {
+    max-width: 820px;
+    padding: 25px 28px 24px;
+    border: 1px solid #e5ebf3;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(19,56,99,.04);
+}
+
+.cm-form-card h2 {
+    font-size: 16px;
+    margin-bottom: 22px;
+}
+
+.cm-field {
+    margin-bottom: 17px;
+}
+
+.cm-field > label {
+    font-size: 12px;
+    line-height: 1.45;
+    margin-bottom: 8px;
+}
+
+.cm-field input,
+.cm-field select,
+.cm-field textarea {
+    border-color: #d9e2ec;
+    border-radius: 8px;
+    color: #243b57;
+    font-size: 12px;
+}
+
+.cm-field input,
+.cm-field select {
+    height: 42px;
+    padding-left: 13px;
+    padding-right: 13px;
+}
+
+.cm-field textarea {
+    min-height: 120px;
+    height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.cm-field input:focus,
+.cm-field select:focus,
+.cm-field textarea:focus {
+    border-color: #3979bd;
+    box-shadow: 0 0 0 3px rgba(57,121,189,.10);
+}
+
+.cm-topic-field {
+    max-width: 440px;
+}
+
+.cm-select-wrap::after {
+    top: 14px;
+    border-color: #133863;
+}
+
+.cm-counter {
+    font-size: 11px;
+    color: #7a8899;
+}
+
+.cm-upload-field {
+    margin-bottom: 24px;
+}
+
+.cm-upload-box {
+    min-height: 105px;
+    height: auto;
+    padding: 15px;
+    border-color: #bfd0e3;
+    background: #f9fbfd;
+}
+
+.cm-upload-box:hover {
+    background: #f2f6fb;
+    border-color: #3979bd;
+}
+
+.cm-upload-icon {
+    background: #184e8e;
+}
+
+.cm-upload-box .cm-upload-title {
+    font-size: 12px;
+    color: #243b57 !important;
+}
+
+.cm-upload-box .cm-upload-info {
+    font-size: 11px;
+    color: #7a8899 !important;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.cm-contact-section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.cm-contact-grid {
+    gap: 18px;
+}
+
+.cm-actions {
+    gap: 10px;
+    margin-top: 28px;
+}
+
+.cm-btn {
+    min-height: 40px;
+    height: auto;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.cm-btn-cancel {
+    width: auto;
+    min-width: 112px;
+    color: #184e8e;
+    border-color: #9bb8d8;
+}
+
+.cm-btn-submit {
+    width: auto;
+    min-width: 145px;
+    background: #184e8e;
+    border-color: #184e8e;
+}
+
+.cm-alert {
+    max-width: 820px;
+    border: 1px solid #d7e6f5;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+/* Tablet: sidebar moves above content, menu becomes scrollable */
+@media (max-width: 900px) {
+    .cm-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cm-sidebar {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        padding: 15px 16px 12px;
+        overflow: visible;
+    }
+
+    .cm-brand {
+        gap: 9px;
+        margin: 0 0 12px;
+    }
+
+    .cm-logo {
+        width: 30px;
+        height: 30px;
+    }
+
+    .cm-brand span {
+        font-size: 16px;
+    }
+
+    .cm-role {
+        margin: 0 0 8px;
+        font-size: 10px;
+    }
+
+    .cm-menu {
+        flex-direction: row;
+        gap: 5px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 7px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .cm-menu a {
+        flex: 0 0 auto;
+        min-height: 38px;
+        padding: 9px 12px;
+        white-space: nowrap;
+        font-size: 12px;
+    }
+
+    .cm-sidebar-bottom {
+        flex-direction: row;
+        gap: 8px;
+        margin-top: 5px;
+        padding-top: 9px;
+        border-top: 1px solid rgba(255,255,255,.16);
+    }
+
+    .cm-sidebar-bottom a {
+        min-height: 30px;
+        padding: 5px 10px;
+    }
+
+    .cm-main {
+        width: 100%;
+        margin-left: 0;
+        padding: 24px 22px 32px;
+    }
+
+    .cm-page-header {
+        margin-bottom: 21px;
+    }
+
+    .cm-form-card {
+        max-width: 100%;
+        padding: 22px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .cm-sidebar {
+        padding: 14px 14px 10px;
+    }
+
+    .cm-role,
+    .cm-sidebar-bottom {
+        display: none;
+    }
+
+    .cm-menu {
+        gap: 5px;
+    }
+
+    .cm-menu a {
+        min-height: 36px;
+        padding: 8px 11px;
+        font-size: 11px;
+    }
+
+    .cm-main {
+        padding: 21px 14px 28px;
+    }
+
+    .cm-breadcrumb {
+        gap: 9px;
+        font-size: 10px;
+    }
+
+    .cm-page-header {
+        margin-bottom: 19px;
+    }
+
+    .cm-page-header h1 {
+        font-size: 22px;
+    }
+
+    .cm-page-header p {
+        font-size: 11px;
+    }
+
+    .cm-form-card {
+        padding: 19px 15px 17px;
+        border-radius: 10px;
+    }
+
+    .cm-form-card h2 {
+        font-size: 15px;
+        margin-bottom: 18px;
+    }
+
+    .cm-field {
+        margin-bottom: 15px;
+    }
+
+    .cm-field > label {
+        font-size: 11px;
+    }
+
+    .cm-field input,
+    .cm-field select {
+        height: 41px;
+        font-size: 12px;
+    }
+
+    .cm-field textarea {
+        min-height: 112px;
+        height: 112px;
+    }
+
+    .cm-topic-field {
+        max-width: 100%;
+    }
+
+    .cm-upload-box {
+        min-height: 100px;
+        padding: 13px 10px;
+    }
+
+    .cm-contact-section h3 {
+        font-size: 14px;
+    }
+
+    .cm-contact-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .cm-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 9px;
+        margin-top: 23px;
+    }
+
+    .cm-btn,
+    .cm-btn-cancel,
+    .cm-btn-submit {
+        width: 100%;
+        min-width: 0;
+        min-height: 42px;
+    }
+
+    .cm-alert {
+        margin: 0 auto 13px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 360px) {
+    .cm-main {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+
+    .cm-form-card {
+        padding: 17px 12px 15px;
+    }
+
+    .cm-page-header h1 {
+        font-size: 20px;
+    }
+
+    .cm-menu a {
+        padding: 8px 9px;
+        font-size: 10px;
+    }
+}
