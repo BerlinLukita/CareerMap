@@ -52,7 +52,6 @@ $interviewStmt = $pdo->prepare("
 $interviewStmt->execute([$userId]);
 $interviewCount = (int) $interviewStmt->fetchColumn();
 
-// Belum ada tabel pencatatan kunjungan lowongan pada database.
 $viewsCount = 0;
 
 $jobsStmt = $pdo->prepare("
@@ -66,7 +65,6 @@ $jobsStmt = $pdo->prepare("
 $jobsStmt->execute();
 $recommendedJobs = $jobsStmt->fetchAll(PDO::FETCH_ASSOC);
 
-$profileCompletion = 0;
 $profileFields = [
     !empty($student["name"]),
     !empty($student["email"]),
@@ -75,81 +73,59 @@ $profileFields = [
     !empty($student["cv_path"]),
     !empty($student["portfolio_url"])
 ];
-$profileCompletion = (int) round(count(array_filter($profileFields)) / count($profileFields) * 100);
 
-$cvFileName = !empty($student["cv_path"]) ? basename($student["cv_path"]) : "";
+$profileCompletion = (int) round(
+    count(array_filter($profileFields)) / count($profileFields) * 100
+);
+
+$cvFileName = !empty($student["cv_path"])
+    ? basename($student["cv_path"])
+    : "";
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Dashboard Mahasiswa | CareerMap</title>
-
     <link rel="stylesheet" href="../assets/css/dashboard-mahasiswa.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
 <div class="layout">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
-
-        <div class="brand">
-            <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
-            <span>CareerMap</span>
+        <div class="sidebar-logo">
+            <span class="brand-logo-circle">
+                <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
+            </span>
+            <span class="brand-name">CareerMap</span>
         </div>
 
-        <div class="role-label">MAHASISWA</div>
+        <div class="sidebar-label">MAHASISWA</div>
 
-        <nav class="navigation">
-
-            <a href="dashboard.php" class="nav-link active">
-                Dashboard
-            </a>
-
-            <a href="cari_lowongan.php" class="nav-link">
-                Cari Lowongan
-            </a>
-
-            <a href="lamaran_saya.php" class="nav-link">
-                Lamaran Saya
-            </a>
-
-            <a href="lowongan_disimpan.php" class="nav-link">
-                Lowongan Disimpan
-            </a>
-
-            <a href="profile.php" class="nav-link">
-                Profil Saya
-            </a>
-
+        <nav class="sidebar-menu">
+            <a href="dashboard.php" class="menu-item active" aria-current="page">Dashboard</a>
+            <a href="cari_lowongan.php" class="menu-item">Cari Lowongan</a>
+            <a href="lamaran_saya.php" class="menu-item">Lamaran Saya</a>
+            <a href="lowongan_disimpan.php" class="menu-item">Lowongan Disimpan</a>
+            <a href="profile.php" class="menu-item">Profil Saya</a>
         </nav>
 
-        <div class="sidebar-footer">
-
-            <a href="index.php" class="menu-item">
-    Bantuan & Pusat Dukungan
-</a>
-
-            <a href="../auth/logout.php" class="logout">Keluar</a>
-
+        <div class="sidebar-bottom">
+            <a href="index.php" class="menu-item">Bantuan &amp; Pusat Dukungan</a>
+            <a href="../auth/logout.php" class="menu-item logout">Keluar</a>
         </div>
-
     </aside>
 
-
-    <!-- MAIN CONTENT -->
     <main class="main-content">
 
-        <!-- HEADER -->
         <header class="page-header">
-
             <div>
                 <h1>Halo, <?php echo $name; ?>! 👋</h1>
-
                 <p>
                     Temukan peluang karier yang sesuai dengan minat
                     dan kemampuanmu.
@@ -159,17 +135,12 @@ $cvFileName = !empty($student["cv_path"]) ? basename($student["cv_path"]) : "";
             <div class="user-avatar">
                 <?php echo $initial; ?>
             </div>
-
         </header>
 
-
-        <!-- SEARCH -->
         <section class="search-box">
-
             <h3>CARI LOWONGAN</h3>
 
             <form action="cari_lowongan.php" method="GET" class="search-form">
-
                 <input
                     type="text"
                     name="keyword"
@@ -191,15 +162,10 @@ $cvFileName = !empty($student["cv_path"]) ? basename($student["cv_path"]) : "";
                 </select>
 
                 <button type="submit">Cari Lowongan</button>
-
             </form>
-
         </section>
 
-
-        <!-- STATISTICS -->
         <section class="statistics">
-
             <div class="stat-card">
                 <h2><?php echo (int)$viewsCount; ?></h2>
                 <p>Lowongan dilihat</p>
@@ -219,23 +185,15 @@ $cvFileName = !empty($student["cv_path"]) ? basename($student["cv_path"]) : "";
                 <h2><?php echo (int)$interviewCount; ?></h2>
                 <p>Interview</p>
             </div>
-
         </section>
 
-
-        <!-- RECOMMENDATION -->
         <section class="content-grid">
 
             <div class="recommendations">
-
                 <div class="section-header">
                     <h2>Rekomendasi untukmu</h2>
-
-                    <a href="cari_lowongan.php">
-                        Lihat semua →
-                    </a>
+                    <a href="cari_lowongan.php">Lihat semua →</a>
                 </div>
-
 
                 <?php if (!empty($recommendedJobs)): ?>
                     <?php foreach ($recommendedJobs as $job): ?>
@@ -243,13 +201,20 @@ $cvFileName = !empty($student["cv_path"]) ? basename($student["cv_path"]) : "";
                             <div class="company-logo blue-logo">
                                 <?php echo e(mb_substr($job["company_name"], 0, 1)); ?>
                             </div>
+
                             <div class="job-info">
                                 <h3><?php echo e($job["title"]); ?></h3>
-                                <p><?php echo e($job["company_name"]); ?> • <?php echo e($job["location"]); ?></p>
+                                <p>
+                                    <?php echo e($job["company_name"]); ?>
+                                    •
+                                    <?php echo e($job["location"]); ?>
+                                </p>
+
                                 <span class="badge <?php echo $job["job_type"] === "Full-time" ? "fulltime" : "internship"; ?>">
                                     <?php echo e($job["job_type"]); ?>
                                 </span>
                             </div>
+
                             <a href="detail_lowongan.php?id=<?php echo (int)$job["id"]; ?>" class="detail-button">
                                 Lihat Detail →
                             </a>
@@ -260,18 +225,19 @@ $cvFileName = !empty($student["cv_path"]) ? basename($student["cv_path"]) : "";
                 <?php endif; ?>
             </div>
 
-
-            <!-- PROFILE PANEL -->
             <aside class="profile-panel">
-
                 <div class="profile-card">
-
                     <h3>Lengkapi Profil</h3>
 
-                    <p class="percentage">Profilmu <?php echo (int)$profileCompletion; ?>% lengkap</p>
+                    <p class="percentage">
+                        Profilmu <?php echo (int)$profileCompletion; ?>% lengkap
+                    </p>
 
                     <div class="progress">
-                        <div class="progress-value" style="width: <?php echo (int)$profileCompletion; ?>%;"></div>
+                        <div
+                            class="progress-value"
+                            style="width: <?php echo (int)$profileCompletion; ?>%;"
+                        ></div>
                     </div>
 
                     <h4>Tingkatkan peluang dilirik</h4>
@@ -289,15 +255,12 @@ $cvFileName = !empty($student["cv_path"]) ? basename($student["cv_path"]) : "";
                     <a href="profile.php" class="edit-button">
                         Edit Profil
                     </a>
-
                 </div>
-
             </aside>
 
         </section>
 
     </main>
-
 </div>
 
 </body>

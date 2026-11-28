@@ -3,10 +3,6 @@ session_start();
 
 require_once "../config/database.php";
 
-// ==========================================
-// 1. CEK LOGIN MAHASISWA
-// ==========================================
-
 if (
     !isset($_SESSION["user_id"]) ||
     ($_SESSION["role"] ?? "") !== "student"
@@ -17,10 +13,6 @@ if (
 
 $userId = (int) $_SESSION["user_id"];
 
-// ==========================================
-// 2. FUNGSI PENGAMAN OUTPUT
-// ==========================================
-
 function e($value)
 {
     return htmlspecialchars(
@@ -30,19 +22,11 @@ function e($value)
     );
 }
 
-// ==========================================
-// 3. TOKEN KEAMANAN
-// ==========================================
-
 if (empty($_SESSION["csrf_saved_jobs"])) {
     $_SESSION["csrf_saved_jobs"] = bin2hex(random_bytes(32));
 }
 
 $csrfToken = $_SESSION["csrf_saved_jobs"];
-
-// ==========================================
-// 4. PROSES HAPUS LOWONGAN DARI SIMPANAN
-// ==========================================
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -100,10 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-// ==========================================
-// 5. AMBIL PESAN NOTIFIKASI
-// ==========================================
-
 $successMessage = $_SESSION["saved_job_success"] ?? "";
 $errorMessage = $_SESSION["saved_job_error"] ?? "";
 
@@ -111,10 +91,6 @@ unset(
     $_SESSION["saved_job_success"],
     $_SESSION["saved_job_error"]
 );
-
-// ==========================================
-// 6. AMBIL DATA LOWONGAN YANG DISIMPAN
-// ==========================================
 
 try {
 
@@ -173,73 +149,29 @@ try {
 
 <div class="dashboard-layout">
 
-    <!-- ==================================
-         SIDEBAR
-    =================================== -->
-
     <aside class="sidebar">
-
-        <div class="sidebar-logo">
-
-            <img
-                src="../assets/images/logo-uajy.jpg"
-                alt="Logo CareerMap"
-            >
-
+        <div class="brand">
+            <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
             <span>CareerMap</span>
-
         </div>
 
-        <div class="sidebar-label">
-            MAHASISWA
-        </div>
+        <div class="role-label">MAHASISWA</div>
 
-        <nav class="sidebar-menu">
-
-            <a href="dashboard.php" class="menu-item">
-                Dashboard
-            </a>
-
-            <a href="cari_lowongan.php" class="menu-item">
-                Cari Lowongan
-            </a>
-
-            <a href="lamaran_saya.php" class="menu-item">
-                Lamaran Saya
-            </a>
-
-            <a href="lowongan_disimpan.php" class="menu-item active">
-                Lowongan Disimpan
-            </a>
-
-            <a href="profile.php" class="menu-item">
-                Profil Saya
-            </a>
-
+        <nav class="navigation">
+            <a href="dashboard.php" class="nav-link">Dashboard</a>
+            <a href="cari_lowongan.php" class="nav-link">Cari Lowongan</a>
+            <a href="lamaran_saya.php" class="nav-link">Lamaran Saya</a>
+            <a href="lowongan_disimpan.php" class="nav-link active" aria-current="page">Lowongan Disimpan</a>
+            <a href="profile.php" class="nav-link">Profil Saya</a>
         </nav>
 
-        <div class="sidebar-bottom">
-
-           <a href="index.php" class="menu-item">
-    Bantuan & Pusat Dukungan
-</a>
-
-            <a href="../auth/logout.php" class="logout-link">
-                Keluar
-            </a>
-
+        <div class="sidebar-footer">
+            <a href="index.php">Bantuan &amp; Pusat Dukungan</a>
+            <a href="../auth/logout.php" class="logout">Keluar</a>
         </div>
-
     </aside>
 
-
-    <!-- ==================================
-         MAIN CONTENT
-    =================================== -->
-
     <main class="main-content">
-
-        <!-- HEADER -->
 
         <header class="page-header">
 
@@ -251,9 +183,6 @@ try {
 
         </header>
 
-
-        <!-- NOTIFIKASI -->
-
         <?php if ($successMessage !== ""): ?>
 
             <div class="alert alert-success">
@@ -262,7 +191,6 @@ try {
 
         <?php endif; ?>
 
-
         <?php if ($errorMessage !== ""): ?>
 
             <div class="alert alert-error">
@@ -270,11 +198,6 @@ try {
             </div>
 
         <?php endif; ?>
-
-
-        <!-- ==================================
-             DAFTAR LOWONGAN
-        =================================== -->
 
         <?php if (!empty($savedJobs)): ?>
 
@@ -308,8 +231,6 @@ try {
                                 </p>
 
                             </div>
-
-                            <!-- TOMBOL HAPUS -->
 
                             <button
                                 type="button"
@@ -348,7 +269,6 @@ try {
 
                         </div>
 
-
                         <div class="job-card-bottom">
 
                             <span class="saved-badge">
@@ -371,8 +291,6 @@ try {
             </section>
 
         <?php else: ?>
-
-            <!-- JIKA BELUM ADA LOWONGAN DISIMPAN -->
 
             <section class="empty-state">
 
@@ -411,11 +329,6 @@ try {
     </main>
 
 </div>
-
-
-<!-- ======================================
-     MODAL KONFIRMASI HAPUS
-======================================= -->
 
 <div class="modal-overlay" id="deleteModal">
 
@@ -492,11 +405,6 @@ try {
 
 </div>
 
-
-<!-- ======================================
-     JAVASCRIPT MODAL
-======================================= -->
-
 <script>
 
 function openDeleteModal(savedId, jobTitle) {
@@ -515,7 +423,6 @@ function closeDeleteModal() {
     document.body.classList.remove("modal-open");
 }
 
-// Tutup modal jika klik bagian luar
 document.getElementById("deleteModal").addEventListener("click", function(event) {
 
     if (event.target === this) {
@@ -524,7 +431,6 @@ document.getElementById("deleteModal").addEventListener("click", function(event)
 
 });
 
-// Tutup modal dengan tombol Escape
 document.addEventListener("keydown", function(event) {
 
     if (event.key === "Escape") {

@@ -1590,7 +1590,6 @@ body {
     }
 }
 
-
 .sidebar {
     position: fixed !important;
     inset: 0 auto 0 0 !important;
@@ -1898,7 +1897,6 @@ body {
     .sidebar .navigation .nav-link { padding: 8px 10px !important; font-size: 11px !important; }
 }
 
-
 .sidebar .brand {
     width: 100% !important;
     max-width: 100% !important;
@@ -1911,8 +1909,6 @@ body {
     height: 1px !important;
 }
 
-
-/* Penyesuaian ukuran GAMBAR logo di dalam lingkaran putih */
 .sidebar .brand img,
 .sidebar .sidebar-brand img,
 .sidebar .sidebar-logo img {
@@ -1929,4 +1925,604 @@ body {
     background: transparent !important;
     object-fit: contain !important;
     mix-blend-mode: multiply !important;
+}
+
+
+.sidebar {
+    position: fixed !important;
+    inset: 0 auto 0 0 !important;
+    z-index: 100 !important;
+    display: flex !important;
+    flex: 0 0 225px !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    width: 225px !important;
+    min-width: 225px !important;
+    max-width: 225px !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+    margin: 0 !important;
+    padding: 20px 14px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    background: #133863 !important;
+    color: #fff !important;
+}
+
+.sidebar-logo {
+    position: relative !important;
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-height: 36px !important;
+    margin: 0 0 28px !important;
+    padding: 4px 8px 24px !important;
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+}
+
+.sidebar-logo::after {
+    position: absolute !important;
+    right: 9px !important;
+    bottom: 0 !important;
+    left: 9px !important;
+    height: 1px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    content: "" !important;
+}
+
+.brand-logo-circle {
+    display: flex !important;
+    flex: 0 0 36px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+}
+
+.brand-logo-circle img {
+    display: block !important;
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    margin: 0 !important;
+    padding: 1px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    object-fit: contain !important;
+    object-position: center !important;
+}
+
+.brand-name {
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+}
+
+.sidebar-label {
+    display: block !important;
+    flex: 0 0 auto !important;
+    margin: 0 0 12px !important;
+    padding: 0 9px !important;
+    color: #b9cbe3 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: normal !important;
+    line-height: 1.4 !important;
+    text-transform: uppercase !important;
+}
+
+.sidebar-menu {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 7px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    overflow: visible !important;
+}
+
+.sidebar-menu .menu-item {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    gap: 9px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 38px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    color: #e0e9f6 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.35 !important;
+    text-align: left !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    box-shadow: none !important;
+    transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+.sidebar-menu .menu-item::before {
+    display: inline-flex !important;
+    flex: 0 0 18px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 18px !important;
+    height: 20px !important;
+    color: #fff !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 17px !important;
+    font-weight: 400 !important;
+    line-height: 1 !important;
+}
+
+.sidebar-menu .menu-item:nth-child(1)::before { content: "▦" !important; }
+.sidebar-menu .menu-item:nth-child(2)::before { content: "⌕" !important; font-size: 22px !important; }
+.sidebar-menu .menu-item:nth-child(3)::before { content: "▤" !important; }
+.sidebar-menu .menu-item:nth-child(4)::before { content: "▣" !important; }
+.sidebar-menu .menu-item:nth-child(5)::before { content: "◎" !important; }
+
+.sidebar-menu .menu-item:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #fff !important;
+}
+
+.sidebar-menu .menu-item.active {
+    background: #234d7d !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+}
+
+.sidebar-bottom {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 17px !important;
+    margin: auto 0 0 !important;
+    padding: 24px 9px 5px !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: transparent !important;
+}
+
+.sidebar-bottom .menu-item {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    gap: 14px !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #e0e9f6 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+    text-decoration: none !important;
+    white-space: normal !important;
+    box-shadow: none !important;
+}
+
+.sidebar-bottom .menu-item::before {
+    display: inline-flex !important;
+    flex: 0 0 18px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 18px !important;
+    height: 20px !important;
+    color: #fff !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+}
+
+.sidebar-bottom .menu-item:first-child::before { content: "?" !important; }
+.sidebar-bottom .menu-item.logout::before { content: "⇥" !important; font-size: 20px !important; }
+.sidebar-bottom .menu-item:hover { background: transparent !important; color: #fff !important; }
+.sidebar-bottom .menu-item.logout { color: #fff !important; font-size: 13px !important; font-weight: 700 !important; }
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative !important;
+        inset: auto !important;
+        flex: 0 0 auto !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin: 0 !important;
+        padding: 15px 16px 12px !important;
+        overflow: visible !important;
+        gap: 10px !important;
+    }
+
+    .sidebar-logo {
+        margin: 0 0 4px !important;
+        padding: 4px 8px 8px !important;
+    }
+
+    .sidebar-logo::after,
+    .sidebar-label {
+        display: none !important;
+    }
+
+    .sidebar-menu {
+        flex: 0 0 auto !important;
+        flex-direction: row !important;
+        gap: 6px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding: 2px 0 7px !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: thin !important;
+    }
+
+    .sidebar-menu .menu-item {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        min-height: 38px !important;
+        height: auto !important;
+        padding: 9px 13px !important;
+        white-space: nowrap !important;
+    }
+
+    .sidebar-bottom { display: none !important; }
+
+    .main-content {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+}
+
+@media (max-width: 560px) {
+    .sidebar { padding: 13px 12px !important; }
+    .sidebar-logo { gap: 9px !important; padding-bottom: 10px !important; }
+    .brand-name { font-size: 15px !important; }
+    .sidebar-menu .menu-item {
+        min-height: 36px !important;
+        height: auto !important;
+        padding: 9px 11px !important;
+        font-size: 12px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .sidebar { padding: 11px 9px !important; }
+    .sidebar-menu .menu-item { padding: 8px 10px !important; font-size: 11px !important; }
+}
+
+
+.sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    bottom: 0 !important;
+    display: flex !important;
+    flex: 0 0 225px !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: stretch !important;
+    width: 225px !important;
+    min-width: 225px !important;
+    max-width: 225px !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    padding: 20px 14px !important;
+    margin: 0 !important;
+    background: #133863 !important;
+    color: #fff !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+.sidebar .brand {
+    position: relative !important;
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-height: 36px !important;
+    margin: 0 0 28px !important;
+    padding: 4px 8px 24px !important;
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+}
+
+.sidebar .brand::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 9px !important;
+    right: 9px !important;
+    bottom: 0 !important;
+    height: 1px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.sidebar .brand img {
+    display: block !important;
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    margin: 0 !important;
+    padding: 1px !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    object-fit: contain !important;
+    object-position: center !important;
+}
+
+.sidebar .brand span {
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+}
+
+.sidebar .role-label {
+    display: block !important;
+    flex: 0 0 auto !important;
+    margin: 0 0 12px !important;
+    padding: 0 9px !important;
+    color: #b9cbe3 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    line-height: 1.4 !important;
+    text-transform: uppercase !important;
+}
+
+.sidebar .navigation {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 7px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+.sidebar .navigation > a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 38px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    color: #e0e9f6 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.35 !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
+.sidebar .navigation > a::before {
+    display: inline-flex !important;
+    flex: 0 0 18px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 18px !important;
+    height: 20px !important;
+    color: #fff !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 17px !important;
+    font-weight: 400 !important;
+    line-height: 1 !important;
+}
+
+.sidebar .navigation > a:nth-child(1)::before { content: "▦" !important; }
+.sidebar .navigation > a:nth-child(2)::before { content: "⌕" !important; font-size: 22px !important; }
+.sidebar .navigation > a:nth-child(3)::before { content: "▤" !important; }
+.sidebar .navigation > a:nth-child(4)::before { content: "▣" !important; }
+.sidebar .navigation > a:nth-child(5)::before { content: "◎" !important; }
+
+.sidebar .navigation > a:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #fff !important;
+}
+
+.sidebar .navigation > a.active {
+    background: #234d7d !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+}
+
+.sidebar .sidebar-footer {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 17px !important;
+    margin: auto 0 0 !important;
+    padding: 24px 9px 5px !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: transparent !important;
+}
+
+.sidebar .sidebar-footer a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #e0e9f6 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+    text-decoration: none !important;
+}
+
+.sidebar .sidebar-footer a:first-child::before {
+    content: "?" !important;
+    display: inline-flex !important;
+    flex: 0 0 18px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 18px !important;
+    height: 20px !important;
+    color: #fff !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+}
+
+.sidebar .sidebar-footer a.logout::before {
+    content: "⇥" !important;
+    display: inline-flex !important;
+    flex: 0 0 18px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 18px !important;
+    height: 20px !important;
+    color: #fff !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+}
+
+.sidebar .sidebar-footer .logout {
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative !important;
+        inset: auto !important;
+        flex: 0 0 auto !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 0 !important;
+        padding: 15px 16px 12px !important;
+        overflow: visible !important;
+        gap: 10px !important;
+    }
+
+    .sidebar .brand {
+        margin: 0 0 4px !important;
+        padding: 4px 8px 8px !important;
+    }
+
+    .sidebar .brand::after,
+    .sidebar .role-label {
+        display: none !important;
+    }
+
+    .sidebar .navigation {
+        flex: 0 0 auto !important;
+        flex-direction: row !important;
+        gap: 6px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding: 2px 0 7px !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .sidebar .navigation > a {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        min-height: 38px !important;
+        padding: 9px 13px !important;
+        white-space: nowrap !important;
+    }
+
+    .sidebar .sidebar-footer { display: none !important; }
+}
+
+@media (max-width: 560px) {
+    .sidebar { padding: 13px 12px !important; }
+    .sidebar .brand { gap: 9px !important; padding-bottom: 10px !important; }
+    .sidebar .brand span { font-size: 15px !important; }
+    .sidebar .navigation > a {
+        min-height: 36px !important;
+        padding: 9px 11px !important;
+        font-size: 12px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .sidebar { padding: 11px 9px !important; }
+    .sidebar .navigation > a { padding: 8px 10px !important; font-size: 11px !important; }
 }

@@ -15,9 +15,6 @@ function e($value) {
 $name = e($_SESSION["name"] ?? "Mahasiswa");
 $initial = strtoupper(mb_substr($_SESSION["name"] ?? "M", 0, 1));
 
-// ==========================================
-// SIMPAN / HAPUS LOWONGAN DARI DAFTAR SIMPANAN
-// ==========================================
 if (empty($_SESSION["csrf_saved_jobs"])) {
     $_SESSION["csrf_saved_jobs"] = bin2hex(random_bytes(32));
 }
@@ -86,7 +83,6 @@ if (!in_array($distance, $allowedDistances, true)) {
     $distance = 10;
 }
 
-// Kategori berasal dari tabel job_categories.
 $categoryStmt = $pdo->query("
     SELECT category_name
     FROM job_categories
@@ -94,8 +90,6 @@ $categoryStmt = $pdo->query("
 ");
 $categories = $categoryStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Jarak belum dapat dihitung karena SQL belum memiliki koordinat pengguna.
-// Filter keyword, tipe, dan kategori tetap diterapkan ke database.
 $where = ["j.status = 'published'"];
 $params = [];
 
@@ -153,15 +147,9 @@ function distanceUrl($value, $keyword, $type, $category) {
     <title>Cari Lowongan | CareerMap</title>
 
     <link rel="stylesheet" href="../assets/css/cari-lowongan.css">
-    <style>
-       <div class="brand">
-    <span class="brand-logo-circle">
-        <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
-    </span>
-    <span>CareerMap</span>
-</div>
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <style>
@@ -176,63 +164,31 @@ function distanceUrl($value, $keyword, $type, $category) {
 
 <div class="layout">
 
-    <!-- =================================
-         SIDEBAR
-    ================================== -->
+    
 
     <aside class="sidebar">
-
         <div class="brand">
             <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
             <span>CareerMap</span>
         </div>
 
-        <div class="role-label">
-            MAHASISWA
-        </div>
+        <div class="role-label">MAHASISWA</div>
 
         <nav class="navigation">
-
-            <a href="dashboard.php" class="nav-link">
-                Dashboard
-            </a>
-
-            <a href="cari_lowongan.php" class="nav-link active">
-                Cari Lowongan
-            </a>
-
-            <a href="lamaran_saya.php" class="nav-link">
-                Lamaran Saya
-            </a>
-
-            <a href="lowongan_disimpan.php" class="nav-link">
-                Lowongan Disimpan
-            </a>
-
-            <a href="profile.php" class="nav-link">
-                Profil Saya
-            </a>
-
+            <a href="dashboard.php" class="nav-link">Dashboard</a>
+            <a href="cari_lowongan.php" class="nav-link active" aria-current="page">Cari Lowongan</a>
+            <a href="lamaran_saya.php" class="nav-link">Lamaran Saya</a>
+            <a href="lowongan_disimpan.php" class="nav-link">Lowongan Disimpan</a>
+            <a href="profile.php" class="nav-link">Profil Saya</a>
         </nav>
 
         <div class="sidebar-footer">
-
-            <a href="../bantuan/index.php">
-                Bantuan & Pusat Dukungan
-            </a>
-
-            <a href="../auth/logout.php" class="logout">
-                Keluar
-            </a>
-
+            <a href="../bantuan/index.php">Bantuan &amp; Pusat Dukungan</a>
+            <a href="../auth/logout.php" class="logout">Keluar</a>
         </div>
-
     </aside>
 
-
-    <!-- =================================
-         MAIN CONTENT
-    ================================== -->
+    
 
     <main class="main-content">
 
@@ -240,7 +196,7 @@ function distanceUrl($value, $keyword, $type, $category) {
             <div class="saved-notice"><?php echo e($savedNotice); ?></div>
         <?php endif; ?>
 
-        <!-- HEADER -->
+        
 
         <header class="page-header">
 
@@ -260,10 +216,7 @@ function distanceUrl($value, $keyword, $type, $category) {
 
         </header>
 
-
-        <!-- =================================
-             SEARCH FILTER
-        ================================== -->
+        
 
         <section class="search-section">
 
@@ -284,7 +237,6 @@ function distanceUrl($value, $keyword, $type, $category) {
                     >
 
                 </div>
-
 
                 <div class="form-group">
 
@@ -315,7 +267,6 @@ function distanceUrl($value, $keyword, $type, $category) {
 
                 </div>
 
-
                 <div class="form-group">
 
                     <label for="category">
@@ -337,7 +288,6 @@ function distanceUrl($value, $keyword, $type, $category) {
 
                 </div>
 
-
                 <button type="submit" class="search-button">
                     Cari
                 </button>
@@ -346,10 +296,7 @@ function distanceUrl($value, $keyword, $type, $category) {
 
         </section>
 
-
-        <!-- =================================
-             LOCATION SECTION
-        ================================== -->
+        
 
         <section class="location-section">
 
@@ -382,10 +329,7 @@ function distanceUrl($value, $keyword, $type, $category) {
 
         </section>
 
-
-        <!-- =================================
-             RESULT HEADER
-        ================================== -->
+        
 
         <section class="result-section">
 
@@ -403,8 +347,7 @@ function distanceUrl($value, $keyword, $type, $category) {
 
             </div>
 
-
-            <!-- DISTANCE FILTER -->
+            
 
             <div class="filter-toolbar">
 
@@ -429,7 +372,6 @@ function distanceUrl($value, $keyword, $type, $category) {
 
                 </div>
 
-
                 <button
                     type="button"
                     class="map-toggle"
@@ -440,15 +382,11 @@ function distanceUrl($value, $keyword, $type, $category) {
 
             </div>
 
-
-            <!-- =================================
-                 MAP AND JOB LIST
-            ================================== -->
+            
 
             <div class="results-layout" id="results-layout">
 
-
-                <!-- MAP -->
+                
 
                 <div class="map-container" id="map-container">
                     <div id="career-map" role="application" aria-label="Peta lokasi mahasiswa dan lowongan"></div>
@@ -457,8 +395,7 @@ function distanceUrl($value, $keyword, $type, $category) {
                     <p id="coordinate-display" style="font-size:12px; padding:0 12px;"></p>
                 </div>
 
-
-                <!-- JOB LIST -->
+                
 
                 <div class="nearby-jobs">
 
@@ -473,7 +410,6 @@ function distanceUrl($value, $keyword, $type, $category) {
                         </p>
 
                     </div>
-
 
                     <div class="job-list">
 
@@ -555,11 +491,6 @@ function distanceUrl($value, $keyword, $type, $category) {
 
 </div>
 
-
-<!-- =================================
-     JAVASCRIPT
-================================== -->
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
@@ -576,7 +507,6 @@ let userMarker = null;
 let accuracyCircle = null;
 let jobMarkers = [];
 
-// Peta langsung terlihat sebelum izin lokasi diberikan.
 const map = L.map("career-map").setView([-2.5, 118], 5);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -652,7 +582,6 @@ function escapeHtml(value) {
     return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"})[char]);
 }
 
-// Permintaan izin dipanggil langsung dari klik tombol agar browser dapat menampilkan prompt.
 locationButton.addEventListener("click", function () {
     if (!navigator.geolocation) {
         locationStatus.textContent = "Browser tidak mendukung fitur lokasi.";

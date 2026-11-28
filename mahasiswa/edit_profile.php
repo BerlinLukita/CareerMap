@@ -61,9 +61,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $error = "Masukkan tautan LinkedIn/portofolio yang valid.";
 
     }
-
-
-    // UPLOAD FOTO PROFIL
     if (
         $error === "" &&
         isset($_FILES["photo"]) &&
@@ -120,9 +117,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
     }
-
-
-    // SIMPAN PERUBAHAN PROFIL
     if ($error === "") {
 
         try {
@@ -154,9 +148,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ]);
 
             $pdo->commit();
-
-
-            // HAPUS FOTO LAMA JIKA ADA FOTO BARU
             if (
                 $newPhotoPath !== "" &&
                 !empty($profile["photo_path"]) &&
@@ -198,9 +189,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         unlink($destination);
 
     }
-
-
-    // PERTAHANKAN INPUT JIKA TERJADI ERROR
     $profile["name"] = $name;
     $profile["nim"] = $nim;
     $profile["study_program"] = $study;
@@ -235,65 +223,39 @@ $photo = !empty($profile["photo_path"])
 <title>Edit Profil Saya | CareerMap</title>
 
 <link rel="stylesheet" href="../assets/css/profile_mahasiswa.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
 <div class="cm-layout">
-
-
-    <!-- SIDEBAR -->
     <aside class="cm-sidebar">
-
-        <a href="dashboard.php" class="cm-brand">
-
-            <img
-                src="../assets/images/logo-uajy-transparan.png"
-                alt="Logo Atma Jaya"
-            >
-
-            <span>CareerMap</span>
-
-        </a>
-
+        <div class="cm-brand">
+            <span class="brand-logo-circle">
+                <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
+            </span>
+            <span class="brand-name">CareerMap</span>
+        </div>
 
         <div class="cm-role">MAHASISWA</div>
 
-
         <nav class="cm-menu">
-
             <a href="dashboard.php">Dashboard</a>
-
             <a href="cari_lowongan.php">Cari Lowongan</a>
-
             <a href="lamaran_saya.php">Lamaran Saya</a>
-
             <a href="lowongan_disimpan.php">Lowongan Disimpan</a>
-
             <a href="profile.php" class="active">Profil Saya</a>
-
         </nav>
 
-
         <div class="cm-sidebar-bottom">
-
-            <!-- LINK BANTUAN SUDAH DIPERBAIKI -->
-            <a href="index.php">
-                Bantuan &amp; Pusat Dukungan
-            </a>
-
-            <a href="../auth/logout.php">
-                Keluar
-            </a>
-
+            <a href="index.php">Bantuan &amp; Pusat Dukungan</a>
+            <a href="../auth/logout.php" class="logout">Keluar</a>
         </div>
-
     </aside>
 
-
-
-    <!-- KONTEN UTAMA -->
     <main class="cm-main">
 
 
@@ -340,7 +302,7 @@ $photo = !empty($profile["photo_path"])
 
 
 
-                <!-- FORM INFORMASI PROFIL -->
+                
                 <div class="cm-edit-grid">
 
 
@@ -436,7 +398,7 @@ $photo = !empty($profile["photo_path"])
 
 
 
-                <!-- FOTO PROFIL -->
+                
                 <div class="cm-photo-edit" id="foto">
 
                     <label>Foto Profil</label>
@@ -502,7 +464,7 @@ $photo = !empty($profile["photo_path"])
 
 
 
-                <!-- TOMBOL -->
+                
                 <div class="cm-edit-actions">
 
                     <a
@@ -534,7 +496,7 @@ $photo = !empty($profile["photo_path"])
 
 
 
-<!-- JAVASCRIPT PREVIEW FOTO -->
+
 <script>
 
 const photoInput = document.getElementById("photo");

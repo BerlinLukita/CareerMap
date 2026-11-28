@@ -148,7 +148,7 @@ $cv = !empty($profile["cv_path"])
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <title>Profil Saya | CareerMap</title>
 
@@ -160,31 +160,26 @@ $cv = !empty($profile["cv_path"])
 <div class="cm-layout">
 
     <!-- SIDEBAR -->
-    <aside class="cm-sidebar">
-
-        <a href="dashboard.php" class="cm-brand">
-            <img src="../assets/images/logo-uajy.jpg" alt="Logo Atma Jaya">
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
             <span>CareerMap</span>
-        </a>
-
-        <div class="cm-role">MAHASISWA</div>
-
-        <nav class="cm-menu">
-            <a href="dashboard.php">Dashboard</a>
-            <a href="cari_lowongan.php">Cari Lowongan</a>
-            <a href="lamaran_saya.php">Lamaran Saya</a>
-            <a href="lowongan_disimpan.php">Lowongan Disimpan</a>
-            <a href="profile.php" class="active">Profil Saya</a>
-        </nav>
-
-        <div class="cm-sidebar-bottom">
-           
-           <a href="index.php" class="menu-item">
-    Bantuan & Pusat Dukungan
-</a>
-            <a href="../auth/logout.php">Keluar</a>
         </div>
 
+        <div class="role-label">MAHASISWA</div>
+
+        <nav class="navigation">
+            <a href="dashboard.php" class="nav-link">Dashboard</a>
+            <a href="cari_lowongan.php" class="nav-link">Cari Lowongan</a>
+            <a href="lamaran_saya.php" class="nav-link">Lamaran Saya</a>
+            <a href="lowongan_disimpan.php" class="nav-link">Lowongan Disimpan</a>
+            <a href="profile.php" class="nav-link active" aria-current="page">Profil Saya</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="index.php">Bantuan &amp; Pusat Dukungan</a>
+            <a href="../auth/logout.php" class="logout">Keluar</a>
+        </div>
     </aside>
 
 

@@ -1,20 +1,11 @@
 <?php
-// Simpan file ini dengan nama persis: laporkan_lowongan.php
-// Lokasi: <folder-project>/mahasiswa/laporkan_lowongan.php
 session_start();
-
-// Gunakan path filesystem absolut berdasarkan lokasi file ini.
-// File harus berada di: <folder-project>/mahasiswa/laporkan_lowongan.php
 $configPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "database.php";
 if (!is_file($configPath)) {
     http_response_code(500);
     exit("File konfigurasi database tidak ditemukan. Pastikan folder config berada satu tingkat di atas folder mahasiswa.");
 }
 require_once $configPath;
-
-// ==========================================
-// 1. CEK LOGIN MAHASISWA
-// ==========================================
 
 if (
     !isset($_SESSION["user_id"]) ||
@@ -26,10 +17,6 @@ if (
 
 $userId = (int) $_SESSION["user_id"];
 
-// ==========================================
-// 2. FUNGSI PENGAMAN OUTPUT
-// ==========================================
-
 function e($value)
 {
     return htmlspecialchars(
@@ -38,12 +25,6 @@ function e($value)
         "UTF-8"
     );
 }
-
-// ==========================================
-// 3. AMBIL ID LOWONGAN
-// Menerima parameter id maupun job_id agar kompatibel
-// dengan tautan dari halaman detail/cari lowongan.
-// ==========================================
 
 $rawJobId = $_GET["id"] ?? $_GET["job_id"] ??
             $_POST["job_id"] ?? $_POST["id"] ?? null;
@@ -54,10 +35,6 @@ if ($jobId === false || $jobId === null || $jobId <= 0) {
     http_response_code(400);
     exit("ID lowongan tidak valid. Silakan kembali ke halaman detail lowongan dan klik tombol Laporkan dari sana.");
 }
-
-// ==========================================
-// 4. AMBIL DATA LOWONGAN DARI DATABASE
-// ==========================================
 
 try {
     $jobStmt = $pdo->prepare("
@@ -89,10 +66,6 @@ if (!$job) {
     exit("Lowongan dengan ID " . (int)$jobId . " tidak ditemukan. Pastikan tombol Laporkan mengirim ID lowongan yang benar.");
 }
 
-// ==========================================
-// 5. DAFTAR ALASAN LAPORAN
-// ==========================================
-
 $reasons = [
     "Informasi lowongan tidak sesuai",
     "Lowongan palsu atau penipuan",
@@ -103,19 +76,11 @@ $reasons = [
     "Lainnya"
 ];
 
-// ==========================================
-// 6. TOKEN KEAMANAN
-// ==========================================
-
 if (empty($_SESSION["csrf_report"])) {
     $_SESSION["csrf_report"] = bin2hex(random_bytes(32));
 }
 
 $csrfToken = $_SESSION["csrf_report"];
-
-// ==========================================
-// 7. VARIABEL FORM
-// ==========================================
 
 $error = "";
 $success = false;
@@ -123,31 +88,21 @@ $success = false;
 $reason = "";
 $description = "";
 
-// ==========================================
-// 8. PROSES PENGIRIMAN FORM
-// ==========================================
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $postedToken = $_POST["csrf_token"] ?? "";
 
     $reason = trim($_POST["reason"] ?? "");
     $description = trim($_POST["description"] ?? "");
-
-    // Validasi token
     if (
         !is_string($postedToken) ||
         !hash_equals($csrfToken, $postedToken)
     ) {
         $error = "Sesi formulir tidak valid. Silakan muat ulang halaman.";
     }
-
-    // Validasi alasan
     elseif (!in_array($reason, $reasons, true)) {
         $error = "Silakan pilih alasan laporan.";
     }
-
-    // Validasi keterangan
     elseif ($description === "") {
         $error = "Keterangan laporan wajib diisi.";
     }
@@ -157,10 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     else {
-
-        // ==================================
-        // 9. SIMPAN KE TABEL REPORTS
-        // ==================================
 
         try {
 
@@ -187,17 +138,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ":reason" => $reason,
                 ":description" => $description
             ]);
-
-            // Pastikan ada ID laporan yang berhasil dibuat
             if ($insertStmt->rowCount() > 0) {
 
                 $success = true;
-
-                // Perbarui token keamanan
                 $_SESSION["csrf_report"] = bin2hex(random_bytes(32));
                 $csrfToken = $_SESSION["csrf_report"];
-
-                // Kosongkan formulir
                 $reason = "";
                 $description = "";
 
@@ -241,73 +186,56 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <body>
 
-<div class="dashboard-layout">
-
-    <!-- SIDEBAR -->
-
+<div class="layout dashboard-layout">
     <aside class="sidebar">
 
-        <div class="sidebar-logo">
-
-            <img
-                src="../assets/images/logo-uajy.jpg"
-                alt="CareerMap"
-            >
-
+        <div class="brand">
+            <img src="../assets/images/logo-uajy.jpg"
+                 alt="Logo Universitas Atma Jaya Yogyakarta">
             <span>CareerMap</span>
-
         </div>
 
-        <div class="sidebar-label">
+        <div class="role-label">
             MAHASISWA
         </div>
 
-        <nav class="sidebar-menu">
+        <nav class="navigation">
 
-            <a href="dashboard.php" class="menu-item">
-                <span>▦</span>
+            <a href="dashboard.php" class="nav-link">
                 Dashboard
             </a>
 
-            <a href="cari_lowongan.php" class="menu-item">
-                <span>⌕</span>
+            <a href="cari_lowongan.php" class="nav-link">
                 Cari Lowongan
             </a>
 
-            <a href="lamaran_saya.php" class="menu-item">
-                <span>▤</span>
+            <a href="lamaran_saya.php" class="nav-link">
                 Lamaran Saya
             </a>
 
-            <a href="lowongan_disimpan.php" class="menu-item">
-                <span>♡</span>
+            <a href="lowongan_disimpan.php" class="nav-link">
                 Lowongan Disimpan
             </a>
 
-            <a href="profile.php" class="menu-item">
-                <span>♙</span>
+            <a href="profile.php" class="nav-link">
                 Profil Saya
             </a>
 
         </nav>
 
-        <div class="sidebar-bottom">
+        <div class="sidebar-footer">
 
             <a href="index.php" class="menu-item">
     Bantuan & Pusat Dukungan
 </a>
 
-            <a href="../auth/logout.php" class="menu-item logout">
-                <span>↪</span>
+            <a href="../auth/logout.php" class="logout">
                 Keluar
             </a>
 
         </div>
 
     </aside>
-
-
-    <!-- MAIN CONTENT -->
 
     <main class="main-content">
 
@@ -320,7 +248,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </p>
 
         </header>
-
 
         <section class="report-container">
 
@@ -337,8 +264,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 </div>
 
-
-                <!-- PESAN ERROR -->
+                
 
                 <?php if ($error !== ""): ?>
 
@@ -348,8 +274,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <?php endif; ?>
 
-
-                <!-- PESAN BERHASIL -->
+                
 
                 <?php if ($success): ?>
 
@@ -374,8 +299,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <?php else: ?>
 
-
-                    <!-- FORM LAPORAN -->
+                    
 
                     <form
                         method="POST"
@@ -394,8 +318,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             value="<?php echo e($csrfToken); ?>"
                         >
 
-
-                        <!-- LOWONGAN -->
+                        
 
                         <div class="form-group">
 
@@ -417,8 +340,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                         </div>
 
-
-                        <!-- ALASAN -->
+                        
 
                         <div class="form-group">
 
@@ -451,8 +373,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                         </div>
 
-
-                        <!-- KETERANGAN -->
+                        
 
                         <div class="form-group">
 
@@ -470,8 +391,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                         </div>
 
-
-                        <!-- PRIVASI -->
+                        
 
                         <div class="privacy-note">
 
@@ -480,8 +400,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                         </div>
 
-
-                        <!-- TOMBOL -->
+                        
 
                         <div class="form-actions">
 

@@ -20,12 +20,10 @@ if (!$jobId) {
     exit;
 }
 
-// Token keamanan formulir
 if (empty($_SESSION["csrf_token"])) {
     $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
 }
 
-// Ambil data lowongan dan perusahaan
 $sql = "
     SELECT
         j.id,
@@ -50,7 +48,6 @@ if (!$job) {
     exit("Lowongan tidak ditemukan.");
 }
 
-// Ambil CV mahasiswa yang sudah tersimpan
 $profileStmt = $pdo->prepare("
     SELECT cv_path
     FROM student_profiles
@@ -68,7 +65,6 @@ $success = false;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // Validasi token
     if (
         !isset($_POST["csrf_token"]) ||
         !hash_equals($_SESSION["csrf_token"], $_POST["csrf_token"])
@@ -80,7 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $newCvPath = $currentCv;
         $uploadedFilePath = null;
 
-        // Periksa apakah mahasiswa memilih CV baru
         if (
             isset($_FILES["cv"]) &&
             $_FILES["cv"]["error"] !== UPLOAD_ERR_NO_FILE
@@ -130,12 +125,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
 
-        // CV wajib tersedia, baik CV lama maupun CV baru
         if ($error === "" && empty($newCvPath)) {
             $error = "Silakan unggah Curriculum Vitae (CV) terlebih dahulu.";
         }
 
-        // Periksa status lowongan saat pengajuan
         if ($error === "" && $job["job_status"] !== "published") {
             $error = "Lowongan ini sudah tidak menerima lamaran.";
         }
@@ -144,7 +137,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             try {
                 $pdo->beginTransaction();
 
-                // Pastikan mahasiswa belum pernah melamar lowongan ini
                 $duplicateStmt = $pdo->prepare("
                     SELECT id
                     FROM applications
@@ -164,7 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     );
                 }
 
-                // Simpan atau perbarui CV di profil mahasiswa
                 $updateProfile = $pdo->prepare("
                     UPDATE student_profiles
                     SET cv_path = :cv_path
@@ -176,7 +167,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     "student_id" => $studentId
                 ]);
 
-                // Masukkan data lamaran
                 $insertApplication = $pdo->prepare("
                     INSERT INTO applications
                         (job_id, student_id, cv_path, cover_letter, status)
@@ -193,7 +183,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $applicationId = (int) $pdo->lastInsertId();
 
-                // Catat riwayat status awal
                 $insertHistory = $pdo->prepare("
                     INSERT INTO application_status_history
                         (application_id, changed_by, status, note)
@@ -209,7 +198,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $pdo->commit();
 
-                // Arahkan ke daftar lamaran setelah berhasil
                 header("Location: lamaran_saya.php?success=1");
                 exit;
 
@@ -246,7 +234,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-// Nama file CV untuk ditampilkan
 $cvFileName = $currentCv
     ? basename($currentCv)
     : "Belum ada CV. Silakan unggah file PDF.";
@@ -262,67 +249,39 @@ $userName = $_SESSION["name"] ?? "Mahasiswa";
 
     <title>Kirim Lamaran - CareerMap</title>
 
-    <link rel="stylesheet" href="../assets/css/form-lamaran.css">
+    <link rel="stylesheet" href="../assets/css/form-lamaran.css?v=3">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
 <div class="dashboard-layout">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
-
         <div class="sidebar-logo">
-            <img src="../assets/images/logo-uajy.jpg" alt="CareerMap">
-            <span>CareerMap</span>
+            <span class="brand-logo-circle">
+                <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
+            </span>
+            <span class="brand-name">CareerMap</span>
         </div>
 
         <div class="sidebar-label">MAHASISWA</div>
 
         <nav class="sidebar-menu">
-
-            <a href="dashboard.php" class="menu-item">
-                Dashboard
-            </a>
-
-            <a href="cari_lowongan.php" class="menu-item active">
-                Cari Lowongan
-            </a>
-
-            <a href="lamaran_saya.php" class="menu-item">
-                Lamaran Saya
-            </a>
-
-            <a href="lowongan_disimpan.php" class="menu-item">
-                Lowongan Disimpan
-            </a>
-
-            <a href="profile.php" class="menu-item">
-                Profil Saya
-            </a>
-
+            <a href="dashboard.php" class="menu-item">Dashboard</a>
+            <a href="cari_lowongan.php" class="menu-item active">Cari Lowongan</a>
+            <a href="lamaran_saya.php" class="menu-item">Lamaran Saya</a>
+            <a href="lowongan_disimpan.php" class="menu-item">Lowongan Disimpan</a>
+            <a href="profile.php" class="menu-item">Profil Saya</a>
         </nav>
 
         <div class="sidebar-bottom">
-
-            <a href="index.php" class="menu-item">
-    Bantuan & Pusat Dukungan
-</a>
-
-            <a href="../auth/logout.php" class="menu-item logout">
-                Keluar
-            </a>
-
+            <a href="index.php" class="menu-item">Bantuan &amp; Pusat Dukungan</a>
+            <a href="../auth/logout.php" class="menu-item logout">Keluar</a>
         </div>
-
     </aside>
 
-    <!-- KONTEN UTAMA -->
     <main class="main-content">
 
         <header class="page-header">
@@ -361,7 +320,6 @@ $userName = $_SESSION["name"] ?? "Mahasiswa";
                         value="<?php echo e($_SESSION["csrf_token"]); ?>"
                     >
 
-                    <!-- POSISI -->
                     <div class="form-group">
 
                         <label for="position">
@@ -377,7 +335,6 @@ $userName = $_SESSION["name"] ?? "Mahasiswa";
 
                     </div>
 
-                    <!-- CV -->
                     <div class="form-group">
 
                         <label for="cv">
@@ -413,7 +370,6 @@ $userName = $_SESSION["name"] ?? "Mahasiswa";
 
                     </div>
 
-                    <!-- SURAT PENGANTAR -->
                     <div class="form-group">
 
                         <label for="cover_letter">
@@ -432,7 +388,6 @@ $userName = $_SESSION["name"] ?? "Mahasiswa";
                         Pastikan CV dan informasi yang dikirim sudah benar.
                     </p>
 
-                    <!-- TOMBOL -->
                     <div class="form-actions">
 
                         <a

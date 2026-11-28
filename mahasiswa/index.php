@@ -1,14 +1,6 @@
-
 <?php
 session_start();
 
-// ==========================================
-// 1. CEK LOGIN MAHASISWA
-// ==========================================
-
-// Pastikan pengguna sudah login dan memiliki hak akses mahasiswa.
-// Beberapa bagian aplikasi mungkin menyimpan role sebagai "student"
-// atau "mahasiswa", sehingga keduanya diterima di halaman ini.
 $loggedInUserId = $_SESSION["user_id"] ?? null;
 $userRole = strtolower(trim((string) ($_SESSION["role"] ?? "")));
 
@@ -35,10 +27,6 @@ function e($value): string
         "UTF-8"
     );
 }
-
-// ==========================================
-// 2. DATA KATEGORI DAN FAQ
-// ==========================================
 
 $helpCategories = [
 
@@ -164,10 +152,6 @@ $helpCategories = [
 
 ];
 
-// ==========================================
-// 3. AMBIL PARAMETER URL
-// ==========================================
-
 $categoryKey = trim($_GET["kategori"] ?? "");
 $keyword = trim($_GET["q"] ?? "");
 
@@ -176,10 +160,6 @@ $isCategoryPage = isset($helpCategories[$categoryKey]);
 $selectedCategory = $isCategoryPage
     ? $helpCategories[$categoryKey]
     : null;
-
-// ==========================================
-// 4. PROSES PENCARIAN FAQ
-// ==========================================
 
 $searchResults = [];
 
@@ -218,10 +198,6 @@ if ($keyword !== "") {
     }
 }
 
-// ==========================================
-// 5. INFORMASI SIDEBAR
-// ==========================================
-
 $currentPage = "bantuan";
 
 ?>
@@ -238,6 +214,9 @@ $currentPage = "bantuan";
     <title>Bantuan & Pusat Dukungan | CareerMap</title>
 
     <link rel="stylesheet" href="../assets/css/bantuan_mahasiswa.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 </head>
 
@@ -245,69 +224,33 @@ $currentPage = "bantuan";
 
 <div class="dashboard-layout">
 
-    <!-- ==================================
-         SIDEBAR
-    =================================== -->
+    
 
     <aside class="sidebar">
-
         <div class="sidebar-logo">
-
-            <img
-                src="../assets/images/logo-uajy.jpg"
-                alt="Logo CareerMap"
-            >
-
-            <span>CareerMap</span>
-
+            <span class="brand-logo-circle">
+                <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
+            </span>
+            <span class="brand-name">CareerMap</span>
         </div>
 
-        <div class="sidebar-label">
-            MAHASISWA
-        </div>
+        <div class="sidebar-label">MAHASISWA</div>
 
         <nav class="sidebar-menu">
-
-            <a href="dashboard.php" class="menu-item">
-                Dashboard
-            </a>
-
-            <a href="cari_lowongan.php" class="menu-item">
-                Cari Lowongan
-            </a>
-
-            <a href="lamaran_saya.php" class="menu-item">
-                Lamaran Saya
-            </a>
-
-            <a href="lowongan_disimpan.php" class="menu-item">
-                Lowongan Disimpan
-            </a>
-
-            <a href="profile.php" class="menu-item">
-                Profil Saya
-            </a>
-
+            <a href="../mahasiswa/dashboard.php" class="menu-item">Dashboard</a>
+            <a href="../mahasiswa/cari_lowongan.php" class="menu-item">Cari Lowongan</a>
+            <a href="../mahasiswa/lamaran_saya.php" class="menu-item">Lamaran Saya</a>
+            <a href="../mahasiswa/lowongan_disimpan.php" class="menu-item">Lowongan Disimpan</a>
+            <a href="../mahasiswa/profile.php" class="menu-item">Profil Saya</a>
         </nav>
 
         <div class="sidebar-bottom">
-
-            <a href="index.php" class="menu-item active">
-                Bantuan & Pusat Dukungan
-            </a>
-
-            <a href="../auth/logout.php" class="menu-item logout">
-                Keluar
-            </a>
-
+            <a href="index.php" class="menu-item active" aria-current="page">Bantuan &amp; Pusat Dukungan</a>
+            <a href="../auth/logout.php" class="menu-item logout">Keluar</a>
         </div>
-
     </aside>
 
-
-    <!-- ==================================
-         MAIN CONTENT
-    =================================== -->
+    
 
     <main class="main-content">
 
@@ -321,17 +264,13 @@ $currentPage = "bantuan";
 
         </header>
 
-
         <section class="help-container">
 
             <div class="help-inner">
 
-
                 <?php if ($isCategoryPage): ?>
 
-                    <!-- ==================================
-                         HALAMAN DETAIL KATEGORI
-                    =================================== -->
+                    
 
                     <div class="breadcrumb">
 
@@ -340,7 +279,6 @@ $currentPage = "bantuan";
                         </a>
 
                     </div>
-
 
                     <div class="category-heading">
 
@@ -353,7 +291,6 @@ $currentPage = "bantuan";
                         </p>
 
                     </div>
-
 
                     <div class="faq-list">
 
@@ -382,7 +319,6 @@ $currentPage = "bantuan";
                         <?php endforeach; ?>
 
                     </div>
-
 
                     <div class="category-footer">
 
@@ -416,12 +352,9 @@ $currentPage = "bantuan";
 
                     </div>
 
-
                 <?php elseif ($keyword !== ""): ?>
 
-                    <!-- ==================================
-                         HASIL PENCARIAN
-                    =================================== -->
+                    
 
                     <div class="search-result-heading">
 
@@ -433,7 +366,6 @@ $currentPage = "bantuan";
                         </p>
 
                     </div>
-
 
                     <form action="index.php" method="GET" class="help-search">
 
@@ -449,7 +381,6 @@ $currentPage = "bantuan";
                         </button>
 
                     </form>
-
 
                     <?php if (!empty($searchResults)): ?>
 
@@ -515,7 +446,6 @@ $currentPage = "bantuan";
 
                     <?php endif; ?>
 
-
                     <div class="category-footer">
 
                         <div>
@@ -534,12 +464,9 @@ $currentPage = "bantuan";
 
                     </div>
 
-
                 <?php else: ?>
 
-                    <!-- ==================================
-                         HALAMAN UTAMA BANTUAN
-                    =================================== -->
+                    
 
                     <div class="help-home">
 
@@ -553,8 +480,7 @@ $currentPage = "bantuan";
 
                         </div>
 
-
-                        <!-- FORM PENCARIAN -->
+                        
 
                         <form action="index.php" method="GET" class="help-search">
 
@@ -571,13 +497,11 @@ $currentPage = "bantuan";
 
                         </form>
 
-
-                        <!-- TOPIK BANTUAN -->
+                        
 
                         <div class="topic-heading">
                             Topik Bantuan
                         </div>
-
 
                         <div class="topic-grid">
 
@@ -608,8 +532,7 @@ $currentPage = "bantuan";
 
                         </div>
 
-
-                        <!-- CONTACT FOOTER -->
+                        
 
                         <div class="help-footer">
 

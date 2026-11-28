@@ -1,9 +1,4 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-/* =========================================
-   1. GLOBAL
-========================================= */
 
 * {
     margin: 0;
@@ -47,20 +42,11 @@ textarea {
     font-family: inherit;
 }
 
-/* =========================================
-   2. LAYOUT
-========================================= */
-
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
     width: 100%;
 }
-
-/* =========================================
-   3. SIDEBAR
-   DISESUAIKAN DENGAN HALAMAN CARI LOWONGAN
-========================================= */
 
 .sidebar {
     width: 225px;
@@ -81,8 +67,6 @@ textarea {
     display: flex;
     flex-direction: column;
 }
-
-/* LOGO */
 
 .sidebar-logo {
     display: flex;
@@ -110,8 +94,6 @@ textarea {
     white-space: nowrap;
 }
 
-/* LABEL */
-
 .sidebar-label {
     font-size: 10px;
     font-weight: 700;
@@ -119,8 +101,6 @@ textarea {
     padding: 0 9px;
     margin-bottom: 12px;
 }
-
-/* MENU */
 
 .sidebar-menu {
     display: flex;
@@ -151,8 +131,6 @@ textarea {
     font-weight: 600;
 }
 
-/* SIDEBAR BOTTOM */
-
 .sidebar-bottom {
     margin-top: auto;
     border-top: 1px solid rgba(255,255,255,0.20);
@@ -179,10 +157,6 @@ textarea {
     font-weight: 700;
 }
 
-/* =========================================
-   4. MAIN CONTENT
-========================================= */
-
 .main-content {
     flex: 1;
     min-width: 0;
@@ -192,10 +166,6 @@ textarea {
     padding: 28px 36px;
     background: var(--background);
 }
-
-/* =========================================
-   5. PAGE HEADER
-========================================= */
 
 .page-header {
     margin-bottom: 27px;
@@ -213,10 +183,6 @@ textarea {
     color: var(--muted);
     line-height: 1.5;
 }
-
-/* =========================================
-   6. HELP CONTAINER
-========================================= */
 
 .help-container {
     width: 100%;
@@ -236,10 +202,6 @@ textarea {
     flex-direction: column;
 }
 
-/* =========================================
-   7. HELP INTRO
-========================================= */
-
 .help-intro {
     margin-bottom: 20px;
 }
@@ -255,10 +217,6 @@ textarea {
     color: var(--muted);
     font-size: 12px;
 }
-
-/* =========================================
-   8. SEARCH FORM
-========================================= */
 
 .help-search {
     width: 100%;
@@ -305,10 +263,6 @@ textarea {
     background: #104781;
 }
 
-/* =========================================
-   9. TOPIC HEADING
-========================================= */
-
 .topic-heading {
     font-size: 14px;
     font-weight: 600;
@@ -316,17 +270,11 @@ textarea {
     margin-bottom: 16px;
 }
 
-/* =========================================
-   10. TOPIC GRID
-========================================= */
-
 .topic-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px 18px;
 }
-
-/* TOPIC CARD */
 
 .topic-card {
     min-height: 71px;
@@ -366,10 +314,6 @@ textarea {
     flex-shrink: 0;
 }
 
-/* =========================================
-   11. HELP FOOTER
-========================================= */
-
 .help-footer {
     display: flex;
     justify-content: space-between;
@@ -391,8 +335,6 @@ textarea {
     font-size: 12px;
 }
 
-/* CONTACT BUTTON */
-
 .contact-button {
     min-width: 150px;
     height: 35px;
@@ -412,10 +354,6 @@ textarea {
 .contact-button:hover {
     background: #104781;
 }
-
-/* =========================================
-   12. CATEGORY DETAIL PAGE
-========================================= */
 
 .breadcrumb {
     margin-bottom: 10px;
@@ -447,17 +385,11 @@ textarea {
     line-height: 1.6;
 }
 
-/* =========================================
-   13. FAQ LIST
-========================================= */
-
 .faq-list {
     display: flex;
     flex-direction: column;
     gap: 9px;
 }
-
-/* FAQ ITEM */
 
 .faq-item {
     border: 1px solid var(--border);
@@ -474,8 +406,6 @@ textarea {
 .faq-item[open] {
     border-color: #2196F3;
 }
-
-/* FAQ SUMMARY */
 
 .faq-item summary {
     list-style: none;
@@ -507,8 +437,6 @@ textarea {
     margin-top: 6px;
 }
 
-/* FAQ ARROW */
-
 .faq-arrow {
     width: 20px;
     height: 20px;
@@ -528,8 +456,6 @@ textarea {
     transform: rotate(90deg);
 }
 
-/* FAQ ANSWER */
-
 .faq-answer {
     padding: 0 15px 16px;
     color: #667D9D;
@@ -546,10 +472,6 @@ textarea {
     color: var(--blue);
     font-weight: 700;
 }
-
-/* =========================================
-   14. CATEGORY FOOTER
-========================================= */
 
 .category-footer {
     margin-top: auto;
@@ -570,10 +492,6 @@ textarea {
     color: var(--muted);
     font-size: 9px;
 }
-
-/* =========================================
-   15. SEARCH RESULTS
-========================================= */
 
 .search-result-heading {
     margin-bottom: 18px;
@@ -615,10 +533,6 @@ textarea {
     margin-bottom: 18px;
 }
 
-/* =========================================
-   16. CONTACT FORM PAGE
-========================================= */
-
 .contact-container {
     width: 100%;
     background: white;
@@ -656,8 +570,6 @@ textarea {
     font-size: 11px;
     line-height: 1.5;
 }
-
-/* FORM GRID */
 
 .contact-form-grid {
     display: grid;
@@ -722,8 +634,6 @@ textarea {
     color: var(--muted);
 }
 
-/* PRIVACY */
-
 .contact-privacy {
     background: #F5F8FD;
     border: 1px solid var(--border);
@@ -734,8 +644,6 @@ textarea {
     font-size: 10px;
     line-height: 1.6;
 }
-
-/* ACTIONS */
 
 .contact-actions {
     display: flex;
@@ -775,10 +683,6 @@ textarea {
     background: #104781;
 }
 
-/* =========================================
-   17. FORM ALERT
-========================================= */
-
 .form-alert {
     padding: 14px 16px;
     border-radius: 8px;
@@ -808,11 +712,6 @@ textarea {
     font-size: 14px;
 }
 
-
-
-/* =========================================
-   RESPONSIVE - TABLET
-========================================= */
 @media (max-width: 900px) and (min-width: 769px) {
     .main-content {
         padding: 25px 22px;
@@ -835,9 +734,6 @@ textarea {
     }
 }
 
-/* =========================================
-   RESPONSIVE - MOBILE / TABLET PORTRAIT
-========================================= */
 @media (max-width: 768px) {
     .dashboard-layout {
         display: flex;
@@ -966,9 +862,6 @@ textarea {
     }
 }
 
-/* =========================================
-   RESPONSIVE - SMALL PHONE
-========================================= */
 @media (max-width: 560px) {
     .main-content {
         padding: 21px 14px;
@@ -1176,15 +1069,6 @@ textarea {
     }
 }
 
-
-
-/* ==========================================================
-   CAREermap — SIDEBAR MAHASISWA SERAGAM
-   Acuan visual: css/dashboard-perusahaan.css
-   Berlaku untuk Dashboard, Cari Lowongan, Lamaran Saya,
-   Lowongan Disimpan, Profil Saya, Bantuan & Dukungan.
-========================================================== */
-
 :root {
     --sidebar-bg: #133863;
     --sidebar-active: #234d7d;
@@ -1198,7 +1082,6 @@ textarea {
     --border-color: #e8eef5;
 }
 
-/* Global sizing and full-width page */
 *,
 *::before,
 *::after {
@@ -1222,7 +1105,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Main wrappers used by the different student pages */
 .layout {
     width: 100%;
     max-width: none;
@@ -1231,401 +1113,300 @@ body {
     margin: 0;
 }
 
-/* One consistent 225px fixed sidebar — same as company dashboard */
+/* Sidebar disamakan persis dengan halaman Lamaran Saya */
 .sidebar {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: auto !important;
-    bottom: 0 !important;
-    z-index: 1000;
-    display: flex !important;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 100;
+    display: flex;
     flex: 0 0 225px;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    align-items: stretch;
-    width: 225px !important;
-    min-width: 225px !important;
-    max-width: 225px !important;
-    height: 100vh !important;
-    min-height: 100vh !important;
-    max-height: 100vh;
-    padding: 20px 14px !important;
-    margin: 0 !important;
-    background: #133863 !important;
-    color: #fff !important;
+    flex-direction: column;
+    width: 225px;
+    height: 100vh;
+    padding: 20px 14px;
     overflow-x: hidden;
     overflow-y: auto;
+    background: var(--sidebar-bg);
+    color: #fff;
 }
 
-/* Brand/logo: normalize different markup names */
-.sidebar-brand,
-.brand,
 .sidebar-logo {
-    display: flex !important;
-    align-items: center !important;
+    position: relative;
+    display: flex;
     flex: 0 0 auto;
-    gap: 10px !important;
-    min-height: 30px;
-    padding: 4px 8px 24px !important;
-    margin: 0 !important;
-    color: #fff !important;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 16px !important;
-    font-weight: 700 !important;
+    align-items: center;
+    gap: 10px;
+    min-height: 36px;
+    margin: 0 0 28px;
+    padding: 4px 8px 24px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
     line-height: 1.25;
-    text-decoration: none;
     white-space: nowrap;
 }
 
-.sidebar-brand img,
-.brand img,
-.sidebar-logo img,
-.sidebar .sidebar-brand img,
-.sidebar .brand img,
-.sidebar .sidebar-logo img {
+.sidebar-logo::after {
+    position: absolute;
+    right: 9px;
+    bottom: 0;
+    left: 9px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    content: "";
+}
+
+.brand-logo-circle {
+    display: flex;
+    flex: 0 0 36px;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.brand-logo-circle img {
     display: block !important;
-    flex: 0 0 30px !important;
-    width: 30px !important;
-    height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
-    max-width: 30px !important;
-    max-height: 30px !important;
-    padding: 1px !important;
-    border-radius: 50% !important;
-    object-fit: cover !important;
-    background: #fff !important;
-}
-
-.sidebar-brand span,
-.brand span,
-.sidebar-logo span,
-.sidebar-logo strong {
-    color: #fff !important;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 16px !important;
-    font-weight: 700 !important;
-    line-height: 1.25;
-    white-space: nowrap;
-}
-
-/* Section label */
-.sidebar-section-label,
-.role-label,
-.sidebar-label {
-    display: block;
-    flex: 0 0 auto;
-    padding: 0 12px 10px !important;
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
     margin: 0 !important;
-    color: rgba(255, 255, 255, 0.55) !important;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 10px !important;
-    font-weight: 700 !important;
+    padding: 1px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    object-fit: contain !important;
+    object-position: center !important;
+}
+
+.brand-name {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.sidebar-label {
+    flex: 0 0 auto;
+    margin: 0 0 12px;
+    padding: 0 9px;
+    color: #b9cbe3;
+    font-size: 10px;
+    font-weight: 700;
     letter-spacing: 0.08em;
     line-height: 1.4;
     text-transform: uppercase;
 }
 
-/* Navigation containers */
-.nav-menu,
-.navigation,
 .sidebar-menu {
-    display: flex !important;
+    display: flex;
     flex: 1 1 auto;
-    flex-direction: column !important;
+    flex-direction: column;
     align-items: stretch;
-    gap: 4px !important;
+    gap: 7px;
     min-width: 0;
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-/* Links: shared styles for all student page HTML variants */
-.nav-link,
-.sidebar-menu .menu-item,
-.sidebar-menu a,
-.nav-menu .nav-link,
-.navigation .nav-link {
-    display: flex !important;
-    align-items: center !important;
+.sidebar-menu .menu-item {
+    display: flex;
+    align-items: center;
     gap: 9px;
     width: 100%;
     min-width: 0;
-    min-height: 40px !important;
-    height: auto;
-    padding: 11px 14px !important;
-    margin: 0 !important;
+    min-height: 38px;
+    padding: 0 16px;
     border: 0;
-    border-radius: 8px !important;
+    border-radius: 9px;
     background: transparent;
-    color: rgba(255, 255, 255, 0.85) !important;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 13px !important;
-    font-weight: 500 !important;
+    color: #e0e9f6;
+    font-size: 13px;
+    font-weight: 400;
     line-height: 1.35;
-    text-align: left;
-    text-decoration: none !important;
-    white-space: normal;
     transition: background-color 0.2s ease, color 0.2s ease;
-    box-shadow: none;
 }
 
-.nav-link:hover,
-.sidebar-menu .menu-item:hover,
-.sidebar-menu a:hover,
-.nav-menu .nav-link:hover,
-.navigation .nav-link:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
-    color: #fff !important;
+.sidebar-menu .menu-item::before {
+    display: inline-flex;
+    flex: 0 0 18px;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 20px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1;
 }
 
-.nav-link.active,
-.sidebar-menu .menu-item.active,
-.sidebar-menu a.active,
-.nav-menu .nav-link.active,
-.navigation .nav-link.active {
-    background: #234d7d !important;
-    color: #fff !important;
-    font-weight: 600 !important;
+.sidebar-menu .menu-item:nth-child(1)::before { content: "▦"; }
+.sidebar-menu .menu-item:nth-child(2)::before {
+    content: "⌕";
+    font-size: 22px;
+}
+.sidebar-menu .menu-item:nth-child(3)::before { content: "▤"; }
+.sidebar-menu .menu-item:nth-child(4)::before { content: "▣"; }
+.sidebar-menu .menu-item:nth-child(5)::before { content: "◎"; }
+
+.sidebar-menu .menu-item:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
 }
 
-/* Footer: Help & Support and Logout sit at the bottom */
-.sidebar-footer,
-.sidebar-bottom {
-    display: flex !important;
-    flex: 0 0 auto;
-    flex-direction: column !important;
-    align-items: stretch;
-    gap: 10px !important;
-    margin: auto 0 0 !important;
-    padding: 12px !important;
-    border: 0 !important;
-    border-top: 0 !important;
-    background: transparent !important;
-}
-
-.sidebar-footer a,
-.sidebar-bottom a,
-.sidebar-bottom .menu-item,
-.sidebar-bottom .support-link,
-.support-link {
-    display: block;
-    width: 100%;
-    min-height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: 0;
-    border-radius: 0 !important;
-    background: transparent !important;
-    color: rgba(255, 255, 255, 0.65) !important;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 11px !important;
-    font-weight: 400 !important;
-    line-height: 1.4;
-    text-decoration: none !important;
-    white-space: normal;
-}
-
-.sidebar-footer a:hover,
-.sidebar-bottom a:hover,
-.sidebar-bottom .menu-item:hover,
-.support-link:hover {
-    color: #fff !important;
-    background: transparent !important;
-}
-
-.sidebar-footer .logout,
-.sidebar-bottom .logout,
-.sidebar-bottom .logout-link,
-.logout-link {
-    color: #fff !important;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    line-height: 1.4;
-}
-
-/* Content starts after the 225px sidebar */
-.main-content {
-    width: calc(100% - 225px) !important;
-    min-width: 0 !important;
-    max-width: none;
-    margin-left: 225px !important;
-    padding: 28px 36px !important;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-/* Normalize common page headings */
-.page-header h1,
-.page-title {
-    color: #162a45;
-    font-family: 'Inter', sans-serif;
+.sidebar-menu .menu-item.active {
+    background: var(--sidebar-active);
+    color: #fff;
     font-weight: 700;
 }
 
-.page-header p,
-.page-subtitle {
-    color: #7a8899;
-    font-family: 'Inter', sans-serif;
+.sidebar-bottom {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 17px;
+    margin: auto 0 0;
+    padding: 24px 9px 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* ================= TABLET ================= */
-@media (max-width: 900px) {
-    .main-content {
-        padding: 24px 22px !important;
-    }
+.sidebar-bottom .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    color: #e0e9f6;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
 }
+
+.sidebar-bottom .menu-item::before {
+    display: inline-flex;
+    flex: 0 0 18px;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 20px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.sidebar-bottom .menu-item:first-child::before {
+    content: "?";
+}
+
+.sidebar-bottom .menu-item.logout {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.sidebar-bottom .menu-item.logout::before {
+    content: "⇥";
+    font-size: 20px;
+}
+
 
 @media (max-width: 768px) {
-    .layout {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        max-width: none !important;
-    }
-
     .sidebar {
-        position: relative !important;
-        inset: auto !important;
+        position: relative;
+        inset: auto;
         flex: 0 0 auto;
-        width: 100% !important;
-        min-width: 0 !important;
-        max-width: none !important;
-        height: auto !important;
-        min-height: 0 !important;
-        max-height: none !important;
-        padding: 16px !important;
-        overflow: visible !important;
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        padding: 15px 16px 12px;
+        overflow: visible;
+        gap: 10px;
     }
 
-    .sidebar-brand,
-    .brand,
     .sidebar-logo {
-        padding: 0 8px 12px !important;
-        margin: 0 !important;
+        margin: 0 0 4px;
+        padding: 4px 8px 8px;
     }
 
-    .sidebar-section-label,
-    .role-label,
+    .sidebar-logo::after,
     .sidebar-label {
-        display: none !important;
+        display: none;
     }
 
-    .nav-menu,
-    .navigation,
     .sidebar-menu {
         flex: 0 0 auto;
-        flex-direction: row !important;
-        gap: 6px !important;
+        flex-direction: row;
+        gap: 6px;
         width: 100%;
         max-width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
-        padding: 2px 0 8px;
+        padding: 2px 0 7px;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: thin;
     }
 
-    .nav-link,
-    .sidebar-menu .menu-item,
-    .sidebar-menu a,
-    .nav-menu .nav-link,
-    .navigation .nav-link {
+    .sidebar-menu .menu-item {
         flex: 0 0 auto;
         width: auto;
-        min-height: 38px !important;
-        padding: 10px 13px !important;
+        min-height: 38px;
+        padding: 9px 13px;
         white-space: nowrap;
     }
 
-    .sidebar-footer,
     .sidebar-bottom {
-        flex-direction: row !important;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        gap: 10px 20px !important;
-        margin: 6px 0 0 !important;
-        padding: 10px 8px 0 !important;
-    }
-
-    .sidebar-footer a,
-    .sidebar-bottom a,
-    .sidebar-bottom .menu-item,
-    .sidebar-bottom .support-link,
-    .support-link,
-    .sidebar-footer .logout,
-    .sidebar-bottom .logout,
-    .sidebar-bottom .logout-link,
-    .logout-link {
-        width: auto;
-    }
-
-    .main-content {
-        width: 100% !important;
-        max-width: none !important;
-        margin: 0 !important;
-        padding: 24px 20px !important;
+        display: none;
     }
 }
 
-/* ================= SMARTPHONE ================= */
 @media (max-width: 560px) {
     .sidebar {
-        padding: 13px 12px !important;
+        padding: 13px 12px;
     }
 
-    .sidebar-brand,
-    .brand,
     .sidebar-logo {
-        gap: 9px !important;
-        padding-bottom: 10px !important;
+        gap: 9px;
+        padding-bottom: 10px;
     }
 
-    .sidebar-brand span,
-    .brand span,
-    .sidebar-logo span,
-    .sidebar-logo strong {
-        font-size: 15px !important;
+    .brand-name {
+        font-size: 15px;
     }
 
-    .nav-link,
-    .sidebar-menu .menu-item,
-    .sidebar-menu a,
-    .nav-menu .nav-link,
-    .navigation .nav-link {
-        min-height: 36px !important;
-        padding: 9px 11px !important;
-        font-size: 12px !important;
-    }
-
-    .sidebar-footer,
-    .sidebar-bottom {
-        gap: 9px 15px !important;
-        padding: 8px 7px 0 !important;
-    }
-
-    .main-content {
-        padding: 20px 14px !important;
+    .sidebar-menu .menu-item {
+        min-height: 36px;
+        padding: 9px 11px;
+        font-size: 12px;
     }
 }
 
 @media (max-width: 360px) {
     .sidebar {
-        padding: 11px 9px !important;
+        padding: 11px 9px;
     }
 
+    .sidebar-menu .menu-item {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 768px) {
     .main-content {
-        padding: 17px 10px !important;
-    }
-
-    .nav-link,
-    .sidebar-menu .menu-item,
-    .sidebar-menu a,
-    .nav-menu .nav-link,
-    .navigation .nav-link {
-        padding: 8px 10px !important;
-        font-size: 11px !important;
+        width: 100%;
+        margin: 0;
     }
 }
