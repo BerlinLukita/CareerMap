@@ -13,7 +13,6 @@ function e($value) {
 }
 
 $studentId = (int) $_SESSION["user_id"];
-$userName = $_SESSION["name"] ?? "Mahasiswa";
 
 $sql = "
     SELECT
@@ -32,7 +31,6 @@ $sql = "
 $stmt = $pdo->prepare($sql);
 $stmt->execute(["student_id" => $studentId]);
 $applications = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 $totalApplications = count($applications);
 
 function statusLabel($status) {
@@ -48,7 +46,9 @@ function statusLabel($status) {
 }
 
 function formatDate($date) {
-    if (!$date) return "-";
+    if (!$date) {
+        return "-";
+    }
 
     $months = [
         1 => "Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
@@ -57,8 +57,12 @@ function formatDate($date) {
 
     $timestamp = strtotime($date);
 
+    if ($timestamp === false) {
+        return "-";
+    }
+
     return date("d", $timestamp) . " " .
-        $months[(int)date("n", $timestamp)] . " " .
+        $months[(int) date("n", $timestamp)] . " " .
         date("Y", $timestamp);
 }
 ?>
@@ -68,59 +72,40 @@ function formatDate($date) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Lamaran Saya - CareerMap</title>
-
     <link rel="stylesheet" href="../assets/css/lamaran.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-
 <div class="dashboard-layout">
-
-    <!-- SIDEBAR -->
     <aside class="sidebar">
-
         <div class="sidebar-logo">
-            <img src="../assets/images/logo-uajy.jpg" alt="CareerMap">
-            <span>CareerMap</span>
+            <span class="brand-logo-circle">
+                <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
+            </span>
+            <span class="brand-name">CareerMap</span>
         </div>
 
         <div class="sidebar-label">MAHASISWA</div>
 
         <nav class="sidebar-menu">
-
             <a href="dashboard.php" class="menu-item">Dashboard</a>
-
             <a href="cari_lowongan.php" class="menu-item">Cari Lowongan</a>
-
-            <a href="lamaran_saya.php" class="menu-item active">Lamaran Saya</a>
-
+            <a href="lamaran_saya.php" class="menu-item active" aria-current="page">Lamaran Saya</a>
             <a href="lowongan_disimpan.php" class="menu-item">Lowongan Disimpan</a>
-
             <a href="profile.php" class="menu-item">Profil Saya</a>
-
         </nav>
 
         <div class="sidebar-bottom">
-            <a href="index.php" class="menu-item">
-    Bantuan & Pusat Dukungan
-</a>
-
-            <a href="../auth/logout.php" class="menu-item logout">
-                Keluar
-            </a>
+            <a href="index.php" class="menu-item">Bantuan &amp; Pusat Dukungan</a>
+            <a href="../auth/logout.php" class="menu-item logout">Keluar</a>
         </div>
-
     </aside>
 
-    <!-- KONTEN -->
     <main class="main-content">
-
         <header class="page-header">
             <div>
                 <h1>Lamaran Saya</h1>
@@ -129,21 +114,16 @@ function formatDate($date) {
         </header>
 
         <section class="application-container">
-
             <div class="application-heading">
                 <h2>Daftar Lamaran</h2>
-
                 <span class="total-badge">
                     <?php echo $totalApplications; ?> Lamaran
                 </span>
             </div>
 
             <?php if ($totalApplications > 0): ?>
-
                 <div class="table-wrapper">
-
                     <table class="application-table">
-
                         <thead>
                             <tr>
                                 <th>Posisi</th>
@@ -153,71 +133,46 @@ function formatDate($date) {
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-
                         <tbody>
-
                             <?php foreach ($applications as $application): ?>
-
                                 <tr>
-
                                     <td class="position-cell">
                                         <?php echo e($application["title"]); ?>
                                     </td>
-
-                                    <td>
-                                        <?php echo e($application["company_name"]); ?>
-                                    </td>
-
-                                    <td>
-                                        <?php echo e(formatDate($application["applied_at"])); ?>
-                                    </td>
-
+                                    <td><?php echo e($application["company_name"]); ?></td>
+                                    <td><?php echo e(formatDate($application["applied_at"])); ?></td>
                                     <td>
                                         <span class="status-badge status-<?php echo e($application["status"]); ?>">
                                             <?php echo e(statusLabel($application["status"])); ?>
                                         </span>
                                     </td>
-
                                     <td>
                                         <a
-                                            href="detail_lamaran.php?id=<?php echo (int)$application["application_id"]; ?>"
+                                            href="detail_lamaran.php?id=<?php echo (int) $application["application_id"]; ?>"
                                             class="detail-button"
                                         >
-                                            Detail →
+                                            Detail <span aria-hidden="true">→</span>
                                         </a>
                                     </td>
-
                                 </tr>
-
                             <?php endforeach; ?>
-
                         </tbody>
-
                     </table>
-
                 </div>
-
             <?php else: ?>
-
                 <div class="empty-state">
                     <h3>Belum Ada Lamaran</h3>
                     <p>
                         Kamu belum mengirim lamaran pekerjaan.
                         Temukan lowongan yang sesuai dan mulai melamar.
                     </p>
-
                     <a href="cari_lowongan.php" class="detail-button">
-                        Cari Lowongan →
+                        Cari Lowongan <span aria-hidden="true">→</span>
                     </a>
                 </div>
-
             <?php endif; ?>
-
         </section>
-
     </main>
-
 </div>
-
 </body>
 </html>

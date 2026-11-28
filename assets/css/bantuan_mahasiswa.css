@@ -1175,3 +1175,457 @@ textarea {
         padding: 8px 10px;
     }
 }
+
+
+
+/* ==========================================================
+   CAREermap — SIDEBAR MAHASISWA SERAGAM
+   Acuan visual: css/dashboard-perusahaan.css
+   Berlaku untuk Dashboard, Cari Lowongan, Lamaran Saya,
+   Lowongan Disimpan, Profil Saya, Bantuan & Dukungan.
+========================================================== */
+
+:root {
+    --sidebar-bg: #133863;
+    --sidebar-active: #234d7d;
+    --sidebar-hover: rgba(255, 255, 255, 0.08);
+    --main-bg: #f6f8fb;
+    --card-bg: #ffffff;
+    --primary-blue: #184e8e;
+    --primary-blue-hover: #123c6e;
+    --text-dark: #162a45;
+    --text-muted: #7a8899;
+    --border-color: #e8eef5;
+}
+
+/* Global sizing and full-width page */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-width: 320px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--main-bg);
+    color: var(--text-dark);
+    overflow-x: hidden;
+}
+
+/* Main wrappers used by the different student pages */
+.layout {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* One consistent 225px fixed sidebar — same as company dashboard */
+.sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    bottom: 0 !important;
+    z-index: 1000;
+    display: flex !important;
+    flex: 0 0 225px;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: stretch;
+    width: 225px !important;
+    min-width: 225px !important;
+    max-width: 225px !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh;
+    padding: 20px 14px !important;
+    margin: 0 !important;
+    background: #133863 !important;
+    color: #fff !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Brand/logo: normalize different markup names */
+.sidebar-brand,
+.brand,
+.sidebar-logo {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto;
+    gap: 10px !important;
+    min-height: 30px;
+    padding: 4px 8px 24px !important;
+    margin: 0 !important;
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.25;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.sidebar-brand img,
+.brand img,
+.sidebar-logo img,
+.sidebar .sidebar-brand img,
+.sidebar .brand img,
+.sidebar .sidebar-logo img {
+    display: block !important;
+    flex: 0 0 30px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
+    padding: 1px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    background: #fff !important;
+}
+
+.sidebar-brand span,
+.brand span,
+.sidebar-logo span,
+.sidebar-logo strong {
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+/* Section label */
+.sidebar-section-label,
+.role-label,
+.sidebar-label {
+    display: block;
+    flex: 0 0 auto;
+    padding: 0 12px 10px !important;
+    margin: 0 !important;
+    color: rgba(255, 255, 255, 0.55) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+/* Navigation containers */
+.nav-menu,
+.navigation,
+.sidebar-menu {
+    display: flex !important;
+    flex: 1 1 auto;
+    flex-direction: column !important;
+    align-items: stretch;
+    gap: 4px !important;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Links: shared styles for all student page HTML variants */
+.nav-link,
+.sidebar-menu .menu-item,
+.sidebar-menu a,
+.nav-menu .nav-link,
+.navigation .nav-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px;
+    width: 100%;
+    min-width: 0;
+    min-height: 40px !important;
+    height: auto;
+    padding: 11px 14px !important;
+    margin: 0 !important;
+    border: 0;
+    border-radius: 8px !important;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.35;
+    text-align: left;
+    text-decoration: none !important;
+    white-space: normal;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    box-shadow: none;
+}
+
+.nav-link:hover,
+.sidebar-menu .menu-item:hover,
+.sidebar-menu a:hover,
+.nav-menu .nav-link:hover,
+.navigation .nav-link:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #fff !important;
+}
+
+.nav-link.active,
+.sidebar-menu .menu-item.active,
+.sidebar-menu a.active,
+.nav-menu .nav-link.active,
+.navigation .nav-link.active {
+    background: #234d7d !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+}
+
+/* Footer: Help & Support and Logout sit at the bottom */
+.sidebar-footer,
+.sidebar-bottom {
+    display: flex !important;
+    flex: 0 0 auto;
+    flex-direction: column !important;
+    align-items: stretch;
+    gap: 10px !important;
+    margin: auto 0 0 !important;
+    padding: 12px !important;
+    border: 0 !important;
+    border-top: 0 !important;
+    background: transparent !important;
+}
+
+.sidebar-footer a,
+.sidebar-bottom a,
+.sidebar-bottom .menu-item,
+.sidebar-bottom .support-link,
+.support-link {
+    display: block;
+    width: 100%;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 1.4;
+    text-decoration: none !important;
+    white-space: normal;
+}
+
+.sidebar-footer a:hover,
+.sidebar-bottom a:hover,
+.sidebar-bottom .menu-item:hover,
+.support-link:hover {
+    color: #fff !important;
+    background: transparent !important;
+}
+
+.sidebar-footer .logout,
+.sidebar-bottom .logout,
+.sidebar-bottom .logout-link,
+.logout-link {
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1.4;
+}
+
+/* Content starts after the 225px sidebar */
+.main-content {
+    width: calc(100% - 225px) !important;
+    min-width: 0 !important;
+    max-width: none;
+    margin-left: 225px !important;
+    padding: 28px 36px !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Normalize common page headings */
+.page-header h1,
+.page-title {
+    color: #162a45;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+
+.page-header p,
+.page-subtitle {
+    color: #7a8899;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ================= TABLET ================= */
+@media (max-width: 900px) {
+    .main-content {
+        padding: 24px 22px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .layout {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .sidebar {
+        position: relative !important;
+        inset: auto !important;
+        flex: 0 0 auto;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        padding: 16px !important;
+        overflow: visible !important;
+    }
+
+    .sidebar-brand,
+    .brand,
+    .sidebar-logo {
+        padding: 0 8px 12px !important;
+        margin: 0 !important;
+    }
+
+    .sidebar-section-label,
+    .role-label,
+    .sidebar-label {
+        display: none !important;
+    }
+
+    .nav-menu,
+    .navigation,
+    .sidebar-menu {
+        flex: 0 0 auto;
+        flex-direction: row !important;
+        gap: 6px !important;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2px 0 8px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .nav-link,
+    .sidebar-menu .menu-item,
+    .sidebar-menu a,
+    .nav-menu .nav-link,
+    .navigation .nav-link {
+        flex: 0 0 auto;
+        width: auto;
+        min-height: 38px !important;
+        padding: 10px 13px !important;
+        white-space: nowrap;
+    }
+
+    .sidebar-footer,
+    .sidebar-bottom {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px 20px !important;
+        margin: 6px 0 0 !important;
+        padding: 10px 8px 0 !important;
+    }
+
+    .sidebar-footer a,
+    .sidebar-bottom a,
+    .sidebar-bottom .menu-item,
+    .sidebar-bottom .support-link,
+    .support-link,
+    .sidebar-footer .logout,
+    .sidebar-bottom .logout,
+    .sidebar-bottom .logout-link,
+    .logout-link {
+        width: auto;
+    }
+
+    .main-content {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 24px 20px !important;
+    }
+}
+
+/* ================= SMARTPHONE ================= */
+@media (max-width: 560px) {
+    .sidebar {
+        padding: 13px 12px !important;
+    }
+
+    .sidebar-brand,
+    .brand,
+    .sidebar-logo {
+        gap: 9px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .sidebar-brand span,
+    .brand span,
+    .sidebar-logo span,
+    .sidebar-logo strong {
+        font-size: 15px !important;
+    }
+
+    .nav-link,
+    .sidebar-menu .menu-item,
+    .sidebar-menu a,
+    .nav-menu .nav-link,
+    .navigation .nav-link {
+        min-height: 36px !important;
+        padding: 9px 11px !important;
+        font-size: 12px !important;
+    }
+
+    .sidebar-footer,
+    .sidebar-bottom {
+        gap: 9px 15px !important;
+        padding: 8px 7px 0 !important;
+    }
+
+    .main-content {
+        padding: 20px 14px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .sidebar {
+        padding: 11px 9px !important;
+    }
+
+    .main-content {
+        padding: 17px 10px !important;
+    }
+
+    .nav-link,
+    .sidebar-menu .menu-item,
+    .sidebar-menu a,
+    .nav-menu .nav-link,
+    .navigation .nav-link {
+        padding: 8px 10px !important;
+        font-size: 11px !important;
+    }
+}

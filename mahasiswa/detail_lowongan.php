@@ -18,13 +18,9 @@ function e($value) {
 $jobId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 $job = null;
 $savedNotice = "";
-
-// Token keamanan untuk aksi simpan / batal simpan.
 if (empty($_SESSION["csrf_saved_jobs"])) {
     $_SESSION["csrf_saved_jobs"] = bin2hex(random_bytes(32));
 }
-
-// Proses tombol simpan atau hapus simpanan.
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["saved_action"])) {
     $token = $_POST["csrf_token"] ?? "";
     $postedJobId = filter_input(INPUT_POST, "job_id", FILTER_VALIDATE_INT);
@@ -148,21 +144,12 @@ if ($job) {
 
 <div class="layout">
 
-    <!-- =================================
-         SIDEBAR
-    ================================== -->
-
     <aside class="sidebar">
 
         <div class="brand">
-
-            <img
-                src="../assets/images/logo%20uajy.png"
-                alt="Logo Universitas Atma Jaya Yogyakarta"
-            >
-
+            <img src="../assets/images/logo-uajy.jpg"
+                 alt="Logo Universitas Atma Jaya Yogyakarta">
             <span>CareerMap</span>
-
         </div>
 
         <div class="role-label">
@@ -208,10 +195,6 @@ if ($job) {
     </aside>
 
 
-    <!-- =================================
-         MAIN CONTENT
-    ================================== -->
-
     <main class="main-content">
 
         <?php if ($savedNotice !== ""): ?>
@@ -237,8 +220,6 @@ if ($job) {
 
         <?php else: ?>
 
-            <!-- PAGE HEADER -->
-
             <header class="page-header">
 
                 <div>
@@ -258,18 +239,10 @@ if ($job) {
             </header>
 
 
-            <!-- =================================
-                 DETAIL CONTENT GRID
-            ================================== -->
-
             <div class="detail-layout">
 
 
-                <!-- LEFT: JOB INFORMATION -->
-
                 <section class="job-information-card">
-
-                    <!-- JOB HEADER -->
 
                     <div class="job-header">
 
@@ -308,8 +281,6 @@ if ($job) {
                     </div>
 
 
-                    <!-- DESCRIPTION -->
-
                     <section class="information-section">
 
                         <h3>Deskripsi Pekerjaan</h3>
@@ -320,8 +291,6 @@ if ($job) {
 
                     </section>
 
-
-                    <!-- QUALIFICATIONS -->
 
                     <section class="information-section">
 
@@ -341,8 +310,6 @@ if ($job) {
 
                     </section>
 
-
-                    <!-- JOB INFORMATION -->
 
                     <section class="information-section job-meta-section">
 
@@ -372,16 +339,12 @@ if ($job) {
                 </section>
 
 
-                <!-- RIGHT: COMPANY LOCATION -->
-
                 <aside class="right-column">
 
                     <section class="company-location-card">
 
                         <h3>Lokasi Perusahaan</h3>
 
-
-                        <!-- MAP ILLUSTRATION -->
 
                         <div class="mini-map">
 
@@ -423,8 +386,6 @@ if ($job) {
 
                     </section>
 
-
-                    <!-- APPLY BUTTON -->
 
                     <a
                         href="form_lamaran.php?job_id=<?php echo (int)$job["id"]; ?>"

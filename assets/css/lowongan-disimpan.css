@@ -1,9 +1,4 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-/* =========================================
-   1. GLOBAL
-========================================= */
 
 * {
     margin: 0;
@@ -12,18 +7,19 @@
 }
 
 :root {
-    --navy: #133863;
-    --sidebar-active: #234d7d;
-    --sidebar-hover: rgba(255, 255, 255, 0.08);
-    --navy-hover: #234d7d;
+    --navy: #1B416F;
+    --navy-hover: #28588D;
     --blue: #1959A8;
-    --background: #f6f8fb;
+    --background: #F3F6FC;
     --white: #FFFFFF;
-    --text: #162a45;
-    --muted: #7a8899;
-    --border: #e8eef5;
+    --text: #203D67;
+    --muted: #7186A6;
+    --border: #DCE6F5;
     --light-blue: #EAF2FF;
     --red: #DD4447;
+    --sidebar-bg: #133863;
+    --sidebar-hover: rgba(255, 255, 255, 0.10);
+    --sidebar-active: #234D7D;
 }
 
 body {
@@ -31,7 +27,6 @@ body {
     background: var(--background);
     color: var(--text);
     min-height: 100vh;
-    overflow-x: hidden;
 }
 
 a {
@@ -43,164 +38,248 @@ button {
     font-family: inherit;
 }
 
-/* =========================================
-   2. MAIN LAYOUT
-========================================= */
-
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
     width: 100%;
 }
 
-/* =========================================
-   3. SIDEBAR - SAMA DENGAN DASHBOARD PERUSAHAAN
-========================================= */
-
- .sidebar {
-    width: 225px;
-    min-width: 225px;
-    background-color: #133863;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
+    inset: 0 auto 0 0;
+    z-index: 100;
+    display: flex;
+    flex: 0 0 225px;
+    flex-direction: column;
+    width: 225px;
     height: 100vh;
     padding: 20px 14px;
-    z-index: 100;
+    overflow-x: hidden;
     overflow-y: auto;
+    background: var(--sidebar-bg);
+    color: #fff;
 }
 
-/* BRAND / LOGO */
 .sidebar-logo {
+    position: relative;
     display: flex;
+    flex: 0 0 auto;
     align-items: center;
     gap: 10px;
+    min-height: 36px;
+    margin: 0 0 28px;
     padding: 4px 8px 24px;
-    margin-bottom: 0;
-}
-
-.sidebar-logo img {
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
-    max-width: 30px;
-    max-height: 30px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: #ffffff;
-    padding: 1px;
-    flex-shrink: 0;
-    display: block;
-}
-
-.sidebar-logo span {
-    color: #ffffff;
-    font-size: 15px;
+    color: #fff;
+    font-size: 16px;
     font-weight: 700;
+    line-height: 1.25;
     white-space: nowrap;
 }
 
-/* ROLE LABEL */
+.sidebar-logo::after {
+    position: absolute;
+    right: 9px;
+    bottom: 0;
+    left: 9px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    content: "";
+}
+
+.brand-logo-circle {
+    display: flex;
+    flex: 0 0 36px;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.brand-logo-circle img {
+    display: block;
+    flex: 0 0 auto;
+    width: 25px;
+    height: 29px;
+    min-width: 25px;
+    min-height: 29px;
+    max-width: 25px;
+    max-height: 29px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    object-fit: contain;
+    object-position: center;
+}
+
+.brand-name {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.sidebar-logo img {
+    display: block !important;
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    padding: 1px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    background: #fff !important;
+}
+
 .sidebar-label {
+    flex: 0 0 auto;
+    margin: 0 0 12px;
+    padding: 0 9px;
+    color: #b9cbe3;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.55);
-    padding: 0 12px 10px;
-    margin: 0;
+    line-height: 1.4;
     text-transform: uppercase;
 }
 
-/* NAVIGATION */
 .sidebar-menu {
-    list-style: none;
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
-    gap: 4px;
+    align-items: stretch;
+    gap: 7px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-.menu-item {
+.sidebar-menu .menu-item {
     display: flex;
     align-items: center;
-    min-height: 40px;
-    padding: 11px 14px;
-    border-radius: 8px;
-    color: rgba(255, 255, 255, 0.85);
-    text-decoration: none;
+    gap: 9px;
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #e0e9f6;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 400;
+    line-height: 1.35;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.menu-item:hover {
-    background-color: var(--sidebar-hover);
-    color: #ffffff;
+.sidebar-menu .menu-item::before {
+    display: inline-flex;
+    flex: 0 0 18px;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 20px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1;
 }
 
-.menu-item.active {
-    background-color: var(--sidebar-active);
-    color: #ffffff;
-    font-weight: 600;
+.sidebar-menu .menu-item:nth-child(1)::before { content: "▦"; }
+.sidebar-menu .menu-item:nth-child(2)::before {
+    content: "⌕";
+    font-size: 22px;
+}
+.sidebar-menu .menu-item:nth-child(3)::before { content: "▤"; }
+.sidebar-menu .menu-item:nth-child(4)::before { content: "▣"; }
+.sidebar-menu .menu-item:nth-child(5)::before { content: "◎"; }
+
+.sidebar-menu .menu-item:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
 }
 
-/* SIDEBAR FOOTER */
+.sidebar-menu .menu-item.active {
+    background: var(--sidebar-active);
+    color: #fff;
+    font-weight: 700;
+}
+
 .sidebar-bottom {
-    margin-top: auto;
-    padding: 12px;
     display: flex;
+    flex: 0 0 auto;
     flex-direction: column;
-    gap: 10px;
-    border-top: 0;
+    gap: 17px;
+    margin: auto 0 0;
+    padding: 24px 9px 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.bottom-link {
-    color: rgba(255, 255, 255, 0.65);
+.sidebar-bottom .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    color: #e0e9f6;
     font-size: 11px;
+    font-weight: 400;
     line-height: 1.4;
-    transition: color 0.2s ease;
 }
 
-.bottom-link:hover {
-    color: #ffffff;
-}
-
-.logout-link {
-    color: #ffffff;
-    font-size: 13px;
+.sidebar-bottom .menu-item::before {
+    display: inline-flex;
+    flex: 0 0 18px;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 20px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 17px;
     font-weight: 600;
+    line-height: 1;
 }
 
-/* =========================================
-   4. MAIN CONTENT
-========================================= */
+.sidebar-bottom .menu-item:first-child::before {
+    content: "?";
+}
+
+.sidebar-bottom .menu-item.logout {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.sidebar-bottom .menu-item.logout::before {
+    content: "⇥";
+    font-size: 20px;
+}
 
 .main-content {
-    flex: 1;
-    min-width: 0;
-    min-height: 100vh;
-
-    margin-left: 225px;
     width: calc(100% - 225px);
-    padding: 28px 36px;
-
+    min-height: 100vh;
+    margin-left: 225px;
+    padding: 31px 30px;
     background: var(--background);
 }
-
-/* =========================================
-   5. PAGE HEADER
-========================================= */
 
 .page-header {
     margin-bottom: 26px;
 }
 
 .page-header h1 {
-    font-size: clamp(23px, 2vw, 29px);
+    font-size: 26px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 6px;
@@ -209,12 +288,7 @@ button {
 .page-header p {
     color: var(--muted);
     font-size: 12px;
-    line-height: 1.5;
 }
-
-/* =========================================
-   6. ALERT
-========================================= */
 
 .alert {
     padding: 12px 15px;
@@ -235,35 +309,23 @@ button {
     color: #C63838;
 }
 
-/* =========================================
-   7. SAVED JOBS GRID
-========================================= */
-
 .saved-jobs-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px 22px;
-    max-width: 900px;
+    gap: 28px 30px;
+    max-width: 780px;
 }
-
-/* =========================================
-   8. SAVED JOB CARD
-========================================= */
 
 .saved-job-card {
     min-width: 0;
-    min-height: 120px;
-
+    min-height: 142px;
     background: white;
     border: 1px solid var(--border);
     border-radius: 12px;
-
-    padding: 14px 16px;
-
+    padding: 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
     transition: 0.2s ease;
 }
 
@@ -271,35 +333,26 @@ button {
     border-color: #C7D8EF;
 }
 
-/* CARD TOP */
-
 .job-card-top {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 16px;
     min-width: 0;
 }
 
-/* COMPANY INITIAL */
-
 .company-initial {
-    width: 46px;
-    height: 46px;
-    min-width: 46px;
-
+    width: 43px;
+    height: 43px;
+    min-width: 43px;
     border-radius: 10px;
     background: var(--light-blue);
     color: var(--blue);
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 20px;
     font-weight: 700;
 }
-
-/* JOB INFORMATION */
 
 .job-information {
     flex: 1;
@@ -316,25 +369,20 @@ button {
 
 .job-information p {
     color: var(--muted);
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1.5;
 }
-
-/* DELETE BUTTON */
 
 .delete-button {
     width: 27px;
     height: 30px;
     min-width: 27px;
-
     border: none;
     background: transparent;
     color: #69809F;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     cursor: pointer;
     transition: 0.2s;
 }
@@ -344,51 +392,37 @@ button {
     transform: scale(1.08);
 }
 
-/* CARD BOTTOM */
-
 .job-card-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    margin-top: 14px;
+    margin-top: 17px;
 }
-
-/* SAVED BADGE */
 
 .saved-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     background: var(--light-blue);
     color: var(--blue);
-
     border-radius: 20px;
-    padding: 5px 13px;
-
-    font-size: 10px;
+    padding: 6px 13px;
+    font-size: 9px;
     font-weight: 700;
 }
 
-/* DETAIL BUTTON */
-
 .detail-button {
-    min-width: 110px;
-    height: 36px;
-    padding: 0 14px;
-
+    width: 113px;
+    height: 34px;
     border-radius: 7px;
     background: var(--blue);
     color: white;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-
     transition: 0.2s;
 }
 
@@ -396,45 +430,33 @@ button {
     background: #104781;
 }
 
-/* =========================================
-   9. EMPTY STATE
-========================================= */
-
 .empty-state {
     min-height: 350px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     text-align: center;
-
     background: white;
     border: 1px solid var(--border);
     border-radius: 12px;
-
     padding: 35px 20px;
 }
 
 .empty-icon {
     width: 72px;
     height: 72px;
-
     background: var(--light-blue);
     color: var(--blue);
-
     border-radius: 50%;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     margin-bottom: 18px;
 }
 
 .empty-state h2 {
-    font-size: 16px;
+    font-size: 17px;
     margin-bottom: 8px;
 }
 
@@ -455,19 +477,13 @@ button {
     font-weight: 700;
 }
 
-/* =========================================
-   10. MODAL OVERLAY
-========================================= */
-
 .modal-overlay {
     position: fixed;
     inset: 0;
     z-index: 999;
-
     display: none;
     justify-content: center;
     align-items: center;
-
     padding: 20px;
     background: rgba(22, 42, 72, 0.40);
 }
@@ -480,22 +496,14 @@ body.modal-open {
     overflow: hidden;
 }
 
-/* =========================================
-   11. DELETE MODAL
-========================================= */
-
 .delete-modal {
     width: 100%;
     max-width: 440px;
-
     background: white;
     border-radius: 15px;
-
     padding: 29px 30px;
     text-align: center;
-
     box-shadow: 0 12px 40px rgba(20, 43, 75, 0.12);
-
     animation: modalAppear 0.2s ease;
 }
 
@@ -511,27 +519,20 @@ body.modal-open {
     }
 }
 
-/* MODAL ICON */
-
 .modal-icon {
     width: 53px;
     height: 53px;
-
     margin: 0 auto 12px;
-
     border-radius: 50%;
     background: #FFF0F0;
     color: var(--red);
-
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* MODAL TEXT */
-
 .delete-modal h2 {
-    font-size: 18px;
+    font-size: 21px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 12px;
@@ -540,13 +541,10 @@ body.modal-open {
 .delete-modal p {
     max-width: 300px;
     margin: 0 auto;
-
     color: var(--muted);
     font-size: 12px;
     line-height: 1.6;
 }
-
-/* MODAL BUTTONS */
 
 .modal-actions {
     display: flex;
@@ -564,17 +562,13 @@ body.modal-open {
 .confirm-delete-button {
     width: 119px;
     height: 38px;
-
     border: none;
     border-radius: 8px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 11px;
     font-weight: 700;
-
     cursor: pointer;
     transition: 0.2s;
 }
@@ -598,344 +592,88 @@ body.modal-open {
     background: #C93438;
 }
 
-/* =========================================
-   12. RESPONSIVE - mengikuti Dashboard Perusahaan
-========================================= */
-
-/* Laptop / tablet landscape */
-@media (max-width: 1100px) {
-    .main-content {
-        padding: 24px;
-    }
+@media (max-width: 900px) {
 
     .saved-jobs-grid {
-        gap: 20px;
-        max-width: 100%;
+        grid-template-columns: 1fr;
+        max-width: 600px;
+        gap: 17px;
     }
+
 }
 
-/* Tablet and mobile */
-@media (max-width: 768px) {
-    .dashboard-layout {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
+@media (max-width: 600px) {
 
     .sidebar {
         position: relative;
-        top: auto;
-        left: auto;
-        right: auto;
-        bottom: auto;
         width: 100%;
         min-width: 0;
-        height: auto;
-        min-height: 0;
-        padding: 15px 16px 12px;
-        overflow: visible;
-        gap: 10px;
+        min-height: auto;
+        padding: 15px;
+    }
+
+    .dashboard-layout {
+        display: block;
     }
 
     .sidebar-logo {
-        padding: 4px 8px 8px;
-        margin: 0;
+        margin-bottom: 15px;
     }
 
     .sidebar-label {
-        padding: 0 8px 5px;
+        margin-bottom: 8px;
     }
 
     .sidebar-menu {
-        width: 100%;
         flex-direction: row;
-        gap: 6px;
         overflow-x: auto;
-        overflow-y: hidden;
-        padding: 2px 0 7px;
-        scrollbar-width: thin;
-        -webkit-overflow-scrolling: touch;
+        padding-bottom: 5px;
     }
 
     .menu-item {
-        flex: 0 0 auto;
-        min-height: 38px;
-        padding: 9px 13px;
         white-space: nowrap;
+        padding: 0 11px;
+        min-height: 34px;
     }
 
     .sidebar-bottom {
-        width: 100%;
-        margin-top: 0;
-        padding: 8px 8px 2px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 14px;
+        display: none;
     }
 
     .main-content {
         width: 100%;
         margin-left: 0;
-        padding: 24px 20px;
-    }
-
-    .saved-jobs-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        max-width: 100%;
-        gap: 16px;
-    }
-}
-
-/* Smartphone */
-@media (max-width: 560px) {
-    .main-content {
-        padding: 20px 14px;
-    }
-
-    .page-header {
-        gap: 12px;
-        align-items: flex-start;
-        margin-bottom: 22px;
+        padding: 23px 15px;
     }
 
     .page-header h1 {
-        font-size: 21px;
-        line-height: 1.35;
-    }
-
-    .page-header p {
-        font-size: 12px;
-        line-height: 1.5;
+        font-size: 22px;
     }
 
     .saved-jobs-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 14px;
+        grid-template-columns: 1fr;
     }
 
     .saved-job-card {
-        min-height: 132px;
+        min-height: 140px;
         padding: 15px;
     }
 
-    .company-initial {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-        font-size: 18px;
-    }
-
-    .job-information h2 {
-        font-size: 13px;
-    }
-
-    .job-information p {
-        font-size: 10px;
-    }
-
-    .job-card-bottom {
-        margin-top: 14px;
-    }
-
-    .saved-badge {
-        padding: 5px 10px;
-        font-size: 10px;
-    }
-
-    .detail-button {
-        min-width: 105px;
-        height: 34px;
-        font-size: 11px;
-    }
-
-    .empty-state {
-        min-height: 300px;
-        padding: 28px 16px;
-    }
-
     .delete-modal {
-        max-width: 400px;
-        padding: 25px 20px;
-    }
-}
-
-/* Very small phone */
-@media (max-width: 360px) {
-    .main-content {
-        padding: 17px 11px;
+        padding: 25px 18px;
     }
 
-    .sidebar {
-        padding: 13px 11px 10px;
-    }
-
-    .sidebar-logo span {
-        font-size: 16px;
-    }
-
-    .menu-item {
-        padding: 9px 10px;
-        font-size: 12px;
-    }
-
-    .saved-job-card {
-        padding: 13px;
-    }
-
-    .job-card-top {
-        gap: 9px;
-    }
-
-    .job-information h2 {
-        font-size: 12px;
-    }
-
-    .job-information p {
-        font-size: 10px;
-    }
-
-    .job-card-bottom {
-        align-items: flex-start;
-        flex-wrap: wrap;
-    }
-
-    .detail-button {
-        min-width: 100px;
-        font-size: 10px;
+    .delete-modal h2 {
+        font-size: 19px;
     }
 
     .modal-actions {
-        gap: 8px;
+        gap: 9px;
     }
 
     .cancel-button,
     .confirm-delete-button {
-        width: 108px;
-    }
-}
-
-
-/* =========================================
-   TYPOGRAPHY HIERARCHY - konsisten dengan Profil Mahasiswa
-   ========================================= */
-body,
-.main-content {
-    font-family: 'Inter', sans-serif;
-}
-
-.page-header h1 {
-    font-size: clamp(23px, 2vw, 29px);
-    line-height: 1.25;
-    font-weight: 700;
-}
-
-.page-header p {
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.alert {
-    font-size: 11px;
-    line-height: 1.5;
-}
-
-.job-information h2 {
-    font-size: 14px;
-    line-height: 1.35;
-    font-weight: 700;
-}
-
-.job-information p {
-    font-size: 11px;
-    line-height: 1.5;
-}
-
-.saved-badge {
-    font-size: 10px;
-    line-height: 1.3;
-}
-
-.detail-button,
-.browse-button,
-.cancel-button,
-.confirm-delete-button {
-    font-size: 11px;
-    line-height: 1.3;
-}
-
-.empty-state h2 {
-    font-size: 16px;
-    line-height: 1.35;
-}
-
-.empty-state p,
-.delete-modal p {
-    font-size: 11px;
-    line-height: 1.6;
-}
-
-.delete-modal h2 {
-    font-size: 18px;
-    line-height: 1.35;
-}
-
-/* HP: judul dan informasi tetap punya tingkatan ukuran */
-@media (max-width: 560px) {
-    .page-header h1 {
-        font-size: 23px;
+        width: 110px;
     }
 
-    .page-header p {
-        font-size: 11px;
-    }
-
-    .job-information h2 {
-        font-size: 14px;
-    }
-
-    .job-information p {
-        font-size: 11px;
-    }
-}
-
-@media (max-width: 360px) {
-    .page-header h1 {
-        font-size: 21px;
-    }
-
-    .job-information h2 {
-        font-size: 13px;
-    }
-
-    .job-information p {
-        font-size: 10px;
-    }
-}
-
-
-/* =========================================
-   PERBAIKAN FOOTER SIDEBAR
-   Ukuran lebih kecil dan posisi lebih ke kiri
-========================================= */
-
-.sidebar-bottom {
-    padding-left: 0 !important;
-    padding-right: 8px !important;
-    gap: 8px;
-}
-
-.sidebar-bottom .menu-item {
-    font-size: 10px !important;
-    font-weight: 500;
-    line-height: 1.4;
-    padding: 0 !important;
-    margin-left: 0 !important;
-    min-height: auto;
-    background: transparent;
-    border-radius: 0;
-}
-
-.sidebar-bottom .menu-item:hover {
-    background: transparent;
-    color: #ffffff;
 }

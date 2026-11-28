@@ -153,6 +153,15 @@ function distanceUrl($value, $keyword, $type, $category) {
     <title>Cari Lowongan | CareerMap</title>
 
     <link rel="stylesheet" href="../assets/css/cari-lowongan.css">
+    <style>
+       <div class="brand">
+    <span class="brand-logo-circle">
+        <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
+    </span>
+    <span>CareerMap</span>
+</div>
+        }
+    </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <style>
@@ -174,14 +183,8 @@ function distanceUrl($value, $keyword, $type, $category) {
     <aside class="sidebar">
 
         <div class="brand">
-
-            <img
-                src="../assets/images/logo-uajy.jpg"
-                alt="Logo UAJY"
-            >
-
+            <img src="../assets/images/logo-uajy.jpg" alt="Logo UAJY">
             <span>CareerMap</span>
-
         </div>
 
         <div class="role-label">
