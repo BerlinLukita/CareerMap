@@ -135,10 +135,13 @@ button {
     min-height: 36px !important;
     max-width: 36px !important;
     max-height: 36px !important;
-    padding: 1px !important;
+    margin: 0 !important;
+    padding: 3px !important;
+    border: 0 !important;
     border-radius: 50% !important;
-    object-fit: cover !important;
-    background: #fff !important;
+    background: #FFFFFF !important;
+    object-fit: contain !important;
+    object-position: center !important;
 }
 
 .sidebar-label {
@@ -263,7 +266,17 @@ button {
 
 .sidebar-bottom .menu-item.logout::before {
     content: "⇥";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 18px;
+    width: 18px;
+    height: 20px;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
     font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
 }
 
 .main-content {
@@ -676,4 +689,24 @@ body.modal-open {
         width: 110px;
     }
 
+}
+
+
+.sidebar-bottom .menu-item.logout::before,
+.sidebar-bottom .menu-item.logout-link::before,
+.sidebar-bottom .logout-link::before,
+.sidebar-bottom a.logout::before,
+.sidebar-bottom a.logout-link::before {
+    content: "⇥" !important;
+    display: inline-flex !important;
+    flex: 0 0 18px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 18px !important;
+    height: 20px !important;
+    color: #FFFFFF !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
 }
