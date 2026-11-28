@@ -1285,3 +1285,460 @@ body {
         font-size: 12px;
     }
 }
+
+
+
+/* =========================================================
+   FINAL RESPONSIVE + FULL WIDTH PATCH
+   Berlaku untuk desktop, laptop, tablet, dan smartphone.
+   Letakkan di bagian paling akhir stylesheet.
+========================================================= */
+
+/* Reset lebar halaman agar tidak dibatasi container 1600px */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    min-height: 100svh;
+    margin: 0;
+    overflow-x: clip;
+    background: var(--background);
+}
+
+.layout {
+    display: flex;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+    margin: 0;
+}
+
+/* Desktop: sidebar tetap konsisten dan konten mengisi sisa layar */
+.sidebar {
+    flex: 0 0 225px;
+    width: 225px;
+    min-width: 225px;
+    max-width: 225px;
+    height: 100vh;
+    height: 100svh;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.main-content {
+    flex: 1 1 auto;
+    width: calc(100% - 225px);
+    min-width: 0;
+    max-width: none;
+    padding: clamp(20px, 2.5vw, 40px);
+}
+
+.page-header,
+.detail-layout,
+.job-header,
+.job-title,
+.job-information-card,
+.right-column,
+.company-location-card,
+.company-location-info {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(250px, 0.9fr);
+    width: 100%;
+    gap: clamp(14px, 1.6vw, 24px);
+}
+
+.job-information-card {
+    min-height: 0;
+    overflow-wrap: anywhere;
+}
+
+.description,
+.job-title h2,
+.job-title p,
+.qualification-list li,
+.job-meta-grid p,
+.company-location-info p {
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+img,
+svg,
+video,
+iframe {
+    max-width: 100%;
+}
+
+.mini-map {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Laptop: kolom detail dibuat lebih lega, sidebar tetap 225px */
+@media (max-width: 1100px) {
+    .sidebar {
+        flex-basis: 210px;
+        width: 210px;
+        min-width: 210px;
+        max-width: 210px;
+    }
+
+    .main-content {
+        width: calc(100% - 210px);
+        padding: 22px 20px;
+    }
+
+    .detail-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .job-information-card {
+        padding: 22px;
+    }
+
+    .right-column {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(190px, 0.65fr);
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .job-header {
+        flex-wrap: wrap;
+    }
+
+    .job-header-actions {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+/* Tablet dan layar sempit: sidebar menjadi header navigasi */
+@media (max-width: 760px) {
+    .layout {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 100vh;
+        min-height: 100svh;
+    }
+
+    .sidebar {
+        position: relative;
+        inset: auto;
+        flex: 0 0 auto;
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+        padding: 14px 16px;
+        overflow: visible;
+    }
+
+    .brand {
+        margin: 0 0 12px;
+    }
+
+    .role-label {
+        display: none;
+    }
+
+    .navigation {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        max-width: 100%;
+        gap: 7px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2px 0 8px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .nav-link {
+        flex: 0 0 auto;
+        min-height: 38px;
+        white-space: nowrap;
+    }
+
+    .sidebar-footer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px 20px;
+        margin-top: 8px;
+        padding: 10px 9px 0;
+    }
+
+    .main-content {
+        flex: 1 1 auto;
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        margin: 0;
+        padding: 22px 18px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .detail-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .job-information-card {
+        width: 100%;
+        min-height: 0;
+        padding: 20px;
+    }
+
+    .right-column {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 14px;
+    }
+
+    .company-location-card,
+    .apply-button {
+        width: 100%;
+        max-width: none;
+    }
+
+    .apply-button {
+        margin: 0;
+    }
+}
+
+/* Smartphone */
+@media (max-width: 560px) {
+    .sidebar {
+        padding: 12px;
+    }
+
+    .brand {
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .navigation {
+        gap: 6px;
+    }
+
+    .nav-link {
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+
+    .sidebar-footer {
+        gap: 10px 16px;
+        padding: 9px 8px 0;
+    }
+
+    .main-content {
+        padding: 18px 12px;
+    }
+
+    .page-header {
+        margin-bottom: 18px;
+    }
+
+    .page-header h1 {
+        font-size: clamp(20px, 6vw, 23px);
+        line-height: 1.25;
+    }
+
+    .page-header p {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .user-avatar {
+        flex: 0 0 36px;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+
+    .job-information-card {
+        padding: 16px 14px;
+        border-radius: 11px;
+    }
+
+    .job-header {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        align-items: start;
+        gap: 10px;
+        margin-bottom: 22px;
+    }
+
+    .company-logo {
+        grid-column: 1;
+        grid-row: 1;
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+    }
+
+    .job-title {
+        grid-column: 2;
+        grid-row: 1;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .job-title h2 {
+        font-size: 16px;
+        line-height: 1.35;
+    }
+
+    .job-header-actions {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+        min-width: 0;
+        margin: 4px 0 0;
+        gap: 8px;
+    }
+
+    .job-header-actions form {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .job-header-actions .report-button,
+    .job-header-actions .detail-save-button,
+    .detail-save-button {
+        width: 100%;
+        min-width: 0;
+        min-height: 40px;
+    }
+
+    .information-section {
+        margin-bottom: 21px;
+    }
+
+    .information-section h3 {
+        font-size: 14px;
+        margin-bottom: 11px;
+    }
+
+    .description,
+    .qualification-list li,
+    .job-meta-grid p {
+        font-size: 11px;
+        line-height: 1.7;
+    }
+
+    .qualification-list {
+        padding-left: 18px;
+    }
+
+    .job-meta-grid {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 10px;
+    }
+
+    .right-column {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .company-location-card {
+        padding: 15px;
+    }
+
+    .mini-map {
+        height: clamp(145px, 48vw, 185px);
+    }
+
+    .apply-button {
+        width: 100%;
+        min-height: 44px;
+        margin: 0;
+    }
+
+    .not-found {
+        padding: 38px 15px;
+    }
+}
+
+/* Ponsel sangat kecil */
+@media (max-width: 360px) {
+    .main-content {
+        padding: 15px 9px;
+    }
+
+    .job-information-card {
+        padding: 14px 11px;
+    }
+
+    .job-title h2 {
+        font-size: 14px;
+    }
+
+    .company-location-card {
+        padding: 13px;
+    }
+
+    .sidebar {
+        padding: 11px 9px;
+    }
+
+    .brand span {
+        font-size: 16px;
+    }
+
+    .nav-link {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+}
+
+/* Desktop lebar: konten tetap memenuhi viewport, bukan dibatasi 1600px */
+@media (min-width: 1601px) {
+    .layout {
+        max-width: none;
+    }
+
+    .main-content {
+        padding: 40px clamp(36px, 3vw, 64px);
+    }
+}
